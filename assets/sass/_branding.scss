@@ -1,0 +1,19 @@
+.institution {
+	&-stolaf .carleton {
+		display: none;
+	}
+
+	&-carleton .stolaf {
+		display: none;
+	}
+}
+
+.footer-branding {
+    text-align: center;
+    padding: 2em 1em;
+
+	img {
+		width: 90%;
+		max-width: 800px;
+	}
+}

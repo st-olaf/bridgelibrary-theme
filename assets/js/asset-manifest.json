@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/main.js",
+    "main.js.map": "/main.js.map",
+    "1.chunk.js": "/1.chunk.js",
+    "1.chunk.js.map": "/1.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.ef047833d9586a01d30521585aff9a6a.js": "/precache-manifest.ef047833d9586a01d30521585aff9a6a.js",
+    "service-worker.js": "/service-worker.js"
+  }
+}

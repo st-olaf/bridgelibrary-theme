@@ -1,0 +1,25 @@
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.entry-content {
+	h2,
+	h3,
+	h4,
+	p,
+	ul {
+		margin-bottom: 0.5em;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	h2 {
+		font-size: 1.7rem !important;
+	}
+
+	h3 {
+		font-size: 1.5rem !important;
+	}
+}

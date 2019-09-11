@@ -1,0 +1,26 @@
+.widget {
+	margin-bottom: 0;
+	position: relative;
+	border-top-right-radius: 2em;
+	border-bottom-right-radius: 2em;
+
+}
+
+.widget_nav_menu {
+	a {
+		display: block;
+		padding: 1em 1.4em;
+		font-weight: initial;
+
+		&:hover {
+			background-color: $bg-hover;
+		}
+		&.active {
+			background-color: $bg-active;
+		}
+	}
+
+	#menu-sidebar > li > a {
+		font-weight: 800;
+	}
+}

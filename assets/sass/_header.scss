@@ -1,0 +1,37 @@
+.main-header-bar {
+    background-color: $color-blue-dark;
+
+    &, a {
+        color: $color-white;
+    }
+
+    li:hover > a,
+    li:hover > .ast-menu-toggle,
+    .ast-masthead-custom-menu-items a:hover,
+    li.focus > a,
+    li.focus > .ast-menu-toggle,
+    .current-menu-item > a,
+    .current-menu-ancestor > a,
+    .current_page_item > a,
+    .current-menu-item > .ast-menu-toggle,
+    .current-menu-ancestor > .ast-menu-toggle,
+    .current_page_item > .ast-menu-toggle {
+        color: $color-offwhite;
+    }
+}
+
+.ast-site-identity {
+    flex-wrap: wrap;
+
+	.site-title a {
+		&, &:hover, &:focus, &:visited {
+			color: $color-white;
+			font-weight: 700;
+		}
+	}
+}
+
+.single .hentry {
+    h2 { margin-bottom: 20px; }
+    .single-layout-1 + h2 { margin-top: 35px; }
+}
