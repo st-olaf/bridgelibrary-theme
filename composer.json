@@ -1,0 +1,12 @@
+{
+    "name": "luminfire/bridge-library-theme",
+    "description": "Custom theme for Bridge Library portal",
+    "type": "wordpress-theme",
+    "authors": [
+        {
+            "name": "Andrew Minion",
+            "email": "andrew.minion@luminfire.com"
+        }
+    ],
+    "require": {}
+}
