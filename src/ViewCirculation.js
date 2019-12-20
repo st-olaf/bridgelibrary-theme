@@ -3,7 +3,7 @@ import CardContainer from './CardContainer.js';
 
 class ViewCirculation extends React.Component {
 	render() {
-		var requestHeaderContent = <p><a className="button carleton" href="https://apps.carleton.edu/campus/library/ill/">Interlibrary Loan</a><a className="button stolaf" href="https://ezproxy.stolaf.edu/loginurl=https://stolaf.illiad.oclc.org/illiad/illiad.dll">Interlibrary Loan</a></p>
+		var requestHeaderContent = <p><a className="button carleton" href="https://apps.carleton.edu/campus/library/ill/">Interlibrary Loan</a><a className="button stolaf" href="https://ezproxy.stolaf.edu/login?url=https://stolaf.illiad.oclc.org/illiad/illiad.dll">Interlibrary Loan</a></p>
 
 		return (
 			<div className="entry-content clear">
