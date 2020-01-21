@@ -137,16 +137,17 @@ class ViewCourse extends React.Component {
 				<div className="card-container">
 					{librarianCards}
 				</div>
-				{(coreResourceCards.length > 0) ? <h2>Core Resources</h2>: <div></div>}
+				{(courseData.coreResources.length > 0) ? <h2>Core Resources</h2> : <div></div>}
 				{printTypes(coreResourceTypes, this.props.handleClick)}
 				<div className="card-container">
 					{coreResourceCards}
 				</div>
-				{(resourceCards.length > 0) ? <h2>Resources</h2> : <div></div>}
+				{(courseData.relatedCoursesResources.length > 0) ? <h2>Related Resources</h2> : <div></div>}
+
 				{printTypes(resourceTypes, this.props.handleClick)}
 				{ (!resourcesCheck) ? <div className="card-container">{resourceCards}</div> : 
 					<div>
-						{(resourceCards.lengh > 0) ? <h3>Other Resources</h3> : <div></div>}
+						{(resourceCards.length > 0) ? <h3>Other Resources</h3> : <div></div>}
 						<div className="card-container">
 							{resourceCards}
 						</div>
