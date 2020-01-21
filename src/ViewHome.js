@@ -17,12 +17,9 @@ class ViewHome extends React.Component {
 					header="Courses"
 					handleClick={this.props.handleClick}
 				/>
-				<CardContainer
-					userData={this.props.parentState.userData}
-					type="librarians"
-					header="Librarians"
-					handleClick={this.props.handleClick}
-				/>
+
+				
+
 				<CardContainer
 					userData={this.props.parentState.userData}
 					type="primoFavorites"

@@ -131,9 +131,7 @@ class ViewCourse extends React.Component {
 		}
 		return (
 			<div className="entry-content clear">
-				<ul>
-					{meta.length > 0 && meta.map((meta, i) => <Meta key={i} meta={meta} />)}
-				</ul>
+
 
 				{(librarianCards.length > 0) ? <h2>Librarians</h2> : <div></div>}
 				<div className="card-container">

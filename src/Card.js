@@ -7,7 +7,7 @@ class Card extends React.Component {
 		function resourceCheck (props) {
 			if (props.type === "resources" || props.type === "primoFavorites") {
 				return (
-					<a href={props.externalUrl}>{props.resource.title}</a>
+					<a href={props.externalUrl} target="_blank" aria-label="resources" dangerouslySetInnerHTML={{__html: props.resource.title}} />
 				)
 			} else {
 				return (
