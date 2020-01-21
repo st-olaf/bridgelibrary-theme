@@ -400,7 +400,7 @@ class App extends React.Component {
 					<main id="main" className="site-main" role="main">
 						<article itemType="https://schema.org/CreativeWork" itemScope="itemscope" className="page type-page status-publish ast-article-single">
 							<header className="entry-header ast-no-thumbnail ast-no-meta">
-								<h1 className="entry-title" itemProp="headline">{this.getObjectTitle(this.state.currentObject)}</h1>
+								<h1 className="entry-title" itemProp="headline" dangerouslySetInnerHTML={{__html: this.getObjectTitle(this.state.currentObject)}} />
 							</header>
 							{currentView}
 						</article>
