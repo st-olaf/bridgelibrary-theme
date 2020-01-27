@@ -5,6 +5,7 @@ import Meta from './Meta.js';
 
 class ViewCourse extends React.Component {
 	render() {
+		console.log(this.props)
 		function formatDate(date) {
 			var format = {
 					month: 'long',
@@ -137,12 +138,12 @@ class ViewCourse extends React.Component {
 				<div className="card-container">
 					{librarianCards}
 				</div>
-				{(courseData.coreResources.length > 0) ? <h2>Core Resources</h2> : <div></div>}
+				{(null !== courseData.coreResources && courseData.coreResources.length > 0) ? <h2>Core Resources</h2> : <div></div>}
 				{printTypes(coreResourceTypes, this.props.handleClick)}
 				<div className="card-container">
 					{coreResourceCards}
 				</div>
-				{(courseData.relatedCoursesResources.length > 0) ? <h2>Related Resources</h2> : <div></div>}
+				{(null !== courseData.relatedResources && courseData.relatedCoursesResources.length > 0) ? <h2>Related Resources</h2> : <div></div>}
 
 				{printTypes(resourceTypes, this.props.handleClick)}
 				{ (!resourcesCheck) ? <div className="card-container">{resourceCards}</div> : 
