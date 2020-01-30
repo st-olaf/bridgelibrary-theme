@@ -23,7 +23,7 @@ class ViewHome extends React.Component {
 				<CardContainer
 					userData={this.props.parentState.userData}
 					type="primoFavorites"
-					header="Primo Favorites"
+					header="Catalyst Favorites"
 					handleClick={this.props.handleClick}
 				/>
 			</div>

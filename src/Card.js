@@ -11,7 +11,7 @@ class Card extends React.Component {
 				)
 			} else {
 				return (
-					<Link to={props.prefixUrl + props.resource.slug} onClick={(e) => props.handleClick(props.resource.slug, props.type)}>{props.resource.title}</Link>
+					<Link to={props.prefixUrl + props.resource.slug} onClick={(e) => props.handleClick(props.resource.slug, props.type)} dangerouslySetInnerHTML={{__html: props.resource.title}} />
 				)
 			}
 		}
@@ -20,6 +20,7 @@ class Card extends React.Component {
 		return (
 			<div className={className}>
 				{this.props.resource.title && <h3 className="title">{resourceCheck(this.props)}</h3>}
+
 				{(this.props.type === "resources" || this.props.type === "primoFavorites") ? <div></div> : 
 				( this.props.meta &&  <ul className="meta">
 					{this.props.meta.map((meta, i) => <Meta key={i} meta={meta} />)}

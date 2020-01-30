@@ -63,7 +63,7 @@ class CourseWidget extends React.Component {
 		}
         return (
             <li className={widgetClass}>
-                <Link to={"/courses/" + this.props.course.slug} onClick={(e) => this.props.handleClick(this.props.course.slug, 'courses')}>{getCourseTitle(this.props.course)}</Link>
+                <Link to={"/courses/" + this.props.course.slug} onClick={(e) => this.props.handleClick(this.props.course.slug, 'courses')} dangerouslySetInnerHTML={{__html: getCourseTitle(this.props.course)}}></Link>
             </li>
         )
     }

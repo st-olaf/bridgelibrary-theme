@@ -87,6 +87,8 @@ class ViewCourse extends React.Component {
 				resourceCards = []
 			}
 
+			console.log(resourceCards)
+
 			if (null !== courseData.coreResources && courseData.coreResources.length > 0) {
 				groupResources(courseData.coreResources, coreResourceTypes, coreResourcesWithoutType);
 				coreResourceCards = coreResourcesWithoutType.map((resource) => {
@@ -95,6 +97,8 @@ class ViewCourse extends React.Component {
 			} else {
 				coreResourceCards = []
 			}
+
+
 
 			if (this.props.parentState.userData.librarians && this.props.parentState.userData.librarians.length > 0) {
 				librarianCards = this.props.parentState.userData.librarians.map((librarian) => {
@@ -138,12 +142,19 @@ class ViewCourse extends React.Component {
 				<div className="card-container">
 					{librarianCards}
 				</div>
-				{(null !== courseData.coreResources && courseData.coreResources.length > 0) ? <h2>Core Resources</h2> : <div></div>}
+
+
+
+
+
 				{printTypes(coreResourceTypes, this.props.handleClick)}
 				<div className="card-container">
 					{coreResourceCards}
 				</div>
-				{(null !== courseData.relatedResources && courseData.relatedCoursesResources.length > 0) ? <h2>Related Resources</h2> : <div></div>}
+
+				{console.log(coreResourceCards)}
+
+
 
 				{printTypes(resourceTypes, this.props.handleClick)}
 				{ (!resourcesCheck) ? <div className="card-container">{resourceCards}</div> : 
