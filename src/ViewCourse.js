@@ -123,7 +123,8 @@ class ViewCourse extends React.Component {
 			for (var key in types) {
 				output.push(
 					<div key={key + "wrapper"}>
-						<h3>{key}</h3>
+
+						<h3 dangerouslySetInnerHTML={{__html: key}}></h3>
 						<div className="card-container">
 						{types[key].map((resource) => {
 						return <CardResource key={resource.id} courseSlug={course.slug} resource={resource} handleClick={click} type="resources"/>

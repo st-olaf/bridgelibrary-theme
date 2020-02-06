@@ -15,7 +15,7 @@ class Card extends React.Component {
 				)
 			}
 		}
-		const className = 'card ' + this.props.type.replace(/s/, "");
+		const className = 'card ' + this.props.type.replace(/s$/, "");
 
 		return (
 			<div className={className}>
