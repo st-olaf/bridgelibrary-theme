@@ -51,7 +51,7 @@ class Bridge_Library_Content {
 	 */
 	public function page_content() {
 		if ( is_front_page() && ! is_user_logged_in() ) {
-			echo '<p>Please <a href="' . esc_url( wp_login_url( '/' ) ) . '">log in</a> to access your content.</p>';
+			echo '<p>Please <a href="' . esc_url( wp_login_url( '/' ) ) . '">log in</a> using the "Sign in with Google" link and your college Gmail account.</p>';
 		} else {
 			get_template_part( 'template-parts/react', 'none' );
 		}
