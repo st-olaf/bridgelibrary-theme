@@ -10,7 +10,7 @@ class ViewHome extends React.Component {
 		}
 		return (
 			<div className="entry-content clear">
-				<SupportWidget institution={this.props.parentState.userData.bridgeLibraryInstitution} />
+
 				<CardContainer
 					userData={this.props.parentState.userData}
 					type="courses"
@@ -26,6 +26,7 @@ class ViewHome extends React.Component {
 					header="Catalyst Favorites"
 					handleClick={this.props.handleClick}
 				/>
+				<SupportWidget institution={this.props.parentState.userData.bridgeLibraryInstitution} />
 			</div>
 		)
 	}
