@@ -3,43 +3,46 @@ import CardResource from "./CardResource.js";
 import CardLibrarian from "./CardLibrarian.js";
 import Meta from "./Meta.js";
 
+function formatDate(date) {
+    var format = {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+        },
+        y = date.substr(0, 4),
+        m = date.substr(4, 2),
+        d = date.substr(6, 2);
+    date = new Date(y, m, d);
+    return date.toLocaleDateString(undefined, format);
+}
+
+function groupResources(resources, resourceTypes, withoutType) {
+    resources.forEach(resource => {
+        if (resource.resourceData.resourceType.length > 0) {
+            var typeName = "";
+            resource.resourceData.resourceType.forEach(type => {
+                typeName = type.name;
+                if (type.ancestors !== null) {
+                    type.ancestors.forEach(ancestor => {
+                        typeName = ancestor.name + ": " + typeName;
+                    });
+                }
+                if (typeof resourceTypes[typeName] === "undefined") {
+                    resourceTypes[typeName] = [resource];
+                } else {
+                    resourceTypes[typeName].push(resource);
+                }
+            });
+        } else if (resource.resourceData.resourceType.length === 0) {
+            withoutType.push(resource);
+        }
+    });
+}
+
 class ViewCourse extends React.Component {
     render() {
         console.log(this.props);
-        function formatDate(date) {
-            var format = {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric"
-                },
-                y = date.substr(0, 4),
-                m = date.substr(4, 2),
-                d = date.substr(6, 2);
-            date = new Date(y, m, d);
-            return date.toLocaleDateString(undefined, format);
-        }
-        function groupResources(resources, resourceTypes, withoutType) {
-            resources.forEach(resource => {
-                if (resource.resourceData.resourceType.length > 0) {
-                    var typeName = "";
-                    resource.resourceData.resourceType.forEach(type => {
-                        typeName = type.name;
-                        if (type.ancestors !== null) {
-                            type.ancestors.forEach(ancestor => {
-                                typeName = ancestor.name + ": " + typeName;
-                            });
-                        }
-                        if (typeof resourceTypes[typeName] === "undefined") {
-                            resourceTypes[typeName] = [resource];
-                        } else {
-                            resourceTypes[typeName].push(resource);
-                        }
-                    });
-                } else if (resource.resourceData.resourceType.length === 0) {
-                    withoutType.push(resource);
-                }
-            });
-        }
+
         var resourcesCheck = false;
         var resourceTypes = {};
         var coreResourceTypes = {};
@@ -51,6 +54,7 @@ class ViewCourse extends React.Component {
             coreResourceCards = [],
             librarianCards = [],
             meta = [];
+
         if ("undefined" !== typeof courseData && null !== courseData) {
             meta = [
                 {
@@ -165,41 +169,20 @@ class ViewCourse extends React.Component {
         if (0 === librarianCards.length) {
             librarianCards = [];
         }
-        function printTypes(types, click) {
-            var output = [];
-            for (var key in types) {
-                output.push(
-                    <div key={key + "wrapper"}>
-                        <h3 dangerouslySetInnerHTML={{ __html: key }}></h3>
-                        <div className="card-container">
-                            {types[key].map(resource => {
-                                return (
-                                    <CardResource
-                                        key={resource.id}
-                                        courseSlug={course.slug}
-                                        resource={resource}
-                                        handleClick={click}
-                                        type="resources"
-                                    />
-                                );
-                            })}
-                        </div>
-                    </div>
-                );
-            }
-            return output;
-        }
+
+        console.log(coreResourceCards);
+
         return (
             <div className="entry-content clear">
                 {librarianCards.length > 0 ? <h2>Librarians</h2> : <div></div>}
                 <div className="card-container">{librarianCards}</div>
 
-                {printTypes(coreResourceTypes, this.props.handleClick)}
+                {printTypes(coreResourceTypes, this.props.handleClick, course)}
+
                 <div className="card-container">{coreResourceCards}</div>
 
-                {console.log(coreResourceCards)}
+                {printTypes(resourceTypes, this.props.handleClick, course)}
 
-                {printTypes(resourceTypes, this.props.handleClick)}
                 {!resourcesCheck ? (
                     <div className="card-container">{resourceCards}</div>
                 ) : (
@@ -215,6 +198,28 @@ class ViewCourse extends React.Component {
             </div>
         );
     }
+}
+
+function printTypes(types, click, course) {
+    return Object.keys(types).map(key => (
+        <div key={key + "wrapper"}>
+            <h3 dangerouslySetInnerHTML={{ __html: key }}></h3>
+
+            <div className="card-container">
+                {types[key].map(resource => {
+                    return (
+                        <CardResource
+                            key={resource.id}
+                            courseSlug={course.slug}
+                            resource={resource}
+                            handleClick={click}
+                            type="resources"
+                        />
+                    );
+                })}
+            </div>
+        </div>
+    ));
 }
 
 export default ViewCourse;
