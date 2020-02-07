@@ -38,6 +38,7 @@ class App extends React.Component {
 
             this.props.data.users.edges[0].node.userData.circulationData = circulationData;
         }
+
         this.state = {
             user: this.props.data.users.edges[0].node,
             userData: this.props.data.users.edges[0].node.userData,
@@ -488,13 +489,14 @@ class App extends React.Component {
         }
 
         return (
-            <div>
+            <>
                 <Sidebar
                     view={this.state.view}
                     parentState={this.state}
                     handleClick={this.handleClick}
                     error={this.props.error}
                 />
+
                 <div id="primary" className="content-area primary">
                     <main id="main" className="site-main" role="main">
                         <article
@@ -517,7 +519,7 @@ class App extends React.Component {
                         </article>
                     </main>
                 </div>
-            </div>
+            </>
         );
     }
 }

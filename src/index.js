@@ -27,9 +27,12 @@ function AppWrapper() {
     const { loading, error, data } = useQuery(USER_QUERY, {
         variables: { email: window.graphqlQuery.variables.email }
     });
+
     if (loading) return <Spinner />;
+
     var errorMessage = "";
     var queryError = false;
+
     if (error) {
         return (
             <div id="primary" className="content-area primary">
@@ -50,10 +53,12 @@ function AppWrapper() {
             </div>
         );
     }
+
     if (!error && 0 === data.users.edges.length) {
         queryError = true;
         errorMessage = "User not found: " + window.graphqlQuery.variables.email;
     }
+
     if (
         !error &&
         (data.users.edges[0].node.userData.courses === null ||
@@ -62,12 +67,14 @@ function AppWrapper() {
         queryError = true;
         errorMessage = "You have no courses.";
     }
+
     return (
         <Router>
             <DelayedQuery
                 currentData={data.users.edges[0].node.userData}
                 updateKey={setKey}
             />
+
             <Route
                 exact
                 path="/"
