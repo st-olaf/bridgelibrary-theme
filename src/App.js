@@ -21,6 +21,7 @@ class App extends React.Component {
          */
         var circulationData = this.props.data.users.edges[0].node.userData
             .circulationData;
+
         if ("string" === typeof circulationData) {
             circulationData = JSON.parse(circulationData);
 
@@ -142,95 +143,94 @@ class App extends React.Component {
                 fetchQuery = "";
         }
         this.setState({ loading: true, error: null });
-        fetch("https://" + process.env.REACT_APP_API_DOMAIN + "/graphql", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                query: fetchQuery,
-                variables: {
-                    slug: slugdata.slug
-                }
-            })
-        })
-            .then(response => {
-                return response.json();
-            })
-            .then(responseAsJson => {
-                if (responseAsJson.errors) {
+
+        console.log('fetchData called');
+
+        let response = fetch(
+            "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    query: fetchQuery,
+                    variables: {
+                        slug: slugdata.slug
+                    }
+                })
+            }
+        ).then(response => response.json());
+
+        response.then(responseAsJson => {
+            if (responseAsJson.errors) {
+                this.setState({
+                    loading: false,
+                    error: responseAsJson.errors[0],
+                    data: responseAsJson.data
+                });
+                return;
+            }
+
+            var mergedData = this.state.fetchedData;
+            switch (slugdata.type) {
+                case "courses":
+                    var newCourse = {};
+                    if (responseAsJson.data.courses.edges.length === 0) {
+                        newCourse = { title: "Course Not Found" };
+                    } else {
+                        newCourse = responseAsJson.data.courses.edges[0].node;
+                    }
+                    mergedData.courses.push(newCourse);
                     this.setState({
                         loading: false,
-                        error: responseAsJson.errors[0],
-                        data: responseAsJson.data
+                        error: null,
+                        data: responseAsJson.data,
+                        currentObject: newCourse,
+                        fetchedData: mergedData
                     });
-                } else {
-                    var mergedData = this.state.fetchedData;
-                    switch (slugdata.type) {
-                        case "courses":
-                            var newCourse = {};
-                            if (
-                                responseAsJson.data.courses.edges.length === 0
-                            ) {
-                                newCourse = { title: "Course Not Found" };
-                            } else {
-                                newCourse =
-                                    responseAsJson.data.courses.edges[0].node;
-                            }
-                            mergedData.courses.push(newCourse);
-                            this.setState({
-                                loading: false,
-                                error: null,
-                                data: responseAsJson.data,
-                                currentObject: newCourse,
-                                fetchedData: mergedData
-                            });
-                            break;
-                        case "resources":
-                            var newResource = {};
-                            if (
-                                responseAsJson.data.resources.edges.length === 0
-                            ) {
-                                newResource = { title: "Resource Not Found" };
-                            } else {
-                                newResource =
-                                    responseAsJson.data.resources.edges[0].node;
-                            }
-                            mergedData.resources.push(newResource);
-                            this.setState({
-                                loading: false,
-                                error: null,
-                                data: responseAsJson.data,
-                                currentObject: newResource,
-                                fetchedData: mergedData
-                            });
-                            break;
-                        case "librarians":
-                            var newLibrarian = {};
-                            if (
-                                responseAsJson.data.librarians.edges.length ===
-                                0
-                            ) {
-                                newLibrarian = { title: "Librarian Not Found" };
-                            } else {
-                                newLibrarian =
-                                    responseAsJson.data.librarians.edges[0]
-                                        .node;
-                            }
-                            mergedData.librarians.push(newLibrarian);
-                            this.setState({
-                                loading: false,
-                                error: null,
-                                data: responseAsJson.data,
-                                currentObject: newLibrarian,
-                                fetchedData: mergedData
-                            });
-                            break;
-                        default:
-                            fetchQuery = "";
+                    break;
+
+                case "resources":
+                    var newResource = {};
+                    if (responseAsJson.data.resources.edges.length === 0) {
+                        newResource = { title: "Resource Not Found" };
+                    } else {
+                        newResource =
+                            responseAsJson.data.resources.edges[0].node;
                     }
-                }
-            });
+                    mergedData.resources.push(newResource);
+                    this.setState({
+                        loading: false,
+                        error: null,
+                        data: responseAsJson.data,
+                        currentObject: newResource,
+                        fetchedData: mergedData
+                    });
+                    break;
+
+                case "librarians":
+                    var newLibrarian = {};
+                    if (responseAsJson.data.librarians.edges.length === 0) {
+                        newLibrarian = { title: "Librarian Not Found" };
+                    } else {
+                        newLibrarian =
+                            responseAsJson.data.librarians.edges[0].node;
+                    }
+                    mergedData.librarians.push(newLibrarian);
+                    this.setState({
+                        loading: false,
+                        error: null,
+                        data: responseAsJson.data,
+                        currentObject: newLibrarian,
+                        fetchedData: mergedData
+                    });
+                    break;
+
+                default:
+                    fetchQuery = "";
+            }
+        });
     }
 
     getCurrentObject(type, data = [], urlSlug = "") {
@@ -515,6 +515,7 @@ class App extends React.Component {
                                     }}
                                 />
                             </header>
+
                             {currentView}
                         </article>
                     </main>
