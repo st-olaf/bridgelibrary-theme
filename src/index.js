@@ -11,28 +11,14 @@ import Error from './Error.js';
 import { useQuery } from '@apollo/react-hooks';
 import LoadingData from './LoadingData.js';
 
-var globalKeyCheck = true
-
 const client = new ApolloClient({
     uri: 'https://'+process.env.REACT_APP_API_DOMAIN+'/graphql',
 })
 
 function DelayedQuery({currentData, updateKey}) {
-	const {loading, data, refetch, startPolling, stopPolling} = useQuery(USER_QUERY, {variables:{email: window.graphqlQuery.variables.email}, pollInterval: 10000});
+	const {loading} = useQuery(USER_QUERY, {variables:{email: window.graphqlQuery.variables.email}, pollInterval: 10000});
 	if (loading) return <p>Loading ...</p>;
-	if ((currentData.coursesCacheUpdated !== data.users.edges[0].node.userData.coursesCacheUpdated)||
-	currentData.librariansCacheUpdated !== data.users.edges[0].node.userData.librariansCacheUpdated
-	|| currentData.primoFavoritesCacheUpdated !== data.users.edges[0].node.userData.primoFavoritesCacheUpdated
-	|| currentData.circulationDataCacheUpdated !== data.users.edges[0].node.userData.circulationDataCacheUpdated) {
-		globalKeyCheck = false
-		stopPolling()
-		updateKey(false)
-	}
-	return (
-	  <div>
-		  {globalKeyCheck ? <LoadingData/> : <button onClick={() => {globalKeyCheck = true; startPolling(10000); updateKey(false); refetch()}}>Update</button>}
-	  </div>
-	);
+	return null;
 }
 
 function AppWrapper() {

@@ -18,8 +18,6 @@ class ViewHome extends React.Component {
 					handleClick={this.props.handleClick}
 				/>
 
-				
-
 				<CardContainer
 					userData={this.props.parentState.userData}
 					type="primoFavorites"
