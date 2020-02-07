@@ -1,4 +1,4 @@
-import { USER_QUERY } from "./Graphql"
+import { USER_QUERY } from "./Graphql";
 
 export let GET_COURSES = `query GetCourses($slug: String) {
                             courses(where: {name: $slug}, first: 1) {
@@ -111,10 +111,9 @@ export let GET_COURSES = `query GetCourses($slug: String) {
                                 }
                               }
                             }
-                          }`
+                          }`;
 
-export let GET_RESOURCES = 
-  `query GetResources($slug: String) {
+export let GET_RESOURCES = `query GetResources($slug: String) {
     resources(where: {name: $slug}, first: 1) {
       edges {
         node {
@@ -150,10 +149,9 @@ export let GET_RESOURCES =
         }
       }
     }
-  }`
-     
-export let GET_LIBRARIANS =  
-  `query GetLibrarians($slug: String) {
+  }`;
+
+export let GET_LIBRARIANS = `query GetLibrarians($slug: String) {
     librarians(where: {name: $slug}, first: 1){
       edges {
         node {
@@ -183,4 +181,4 @@ export let GET_LIBRARIANS =
         }
       }
     }
-  }`
+  }`;

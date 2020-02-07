@@ -10,7 +10,7 @@ class Spinner extends React.Component {
                     <span className="spinner-inner-3"></span>
                 </div>
             </div>
-        )
+        );
     }
 }
 
