@@ -3,10 +3,12 @@ import Meta from "./Meta.js";
 
 class ViewLibrarian extends React.Component {
     // TODO: add phoot.
+
     render() {
-        var librarianData = this.props.parentState.currentObject.librarianData,
-            meta = [];
-        if ("undefined" !== typeof librarianData && null !== librarianData) {
+        let librarianData = this.props.parentState.currentObject.librarianData;
+        let meta = [];
+
+        if (librarianData) {
             meta = [
                 {
                     type: "Academic Departments",
@@ -24,40 +26,31 @@ class ViewLibrarian extends React.Component {
             ];
 
             if (
-                null !== librarianData.librarianUserId &&
-                "undefined" !== typeof librarianData.librarianUserId.userData &&
-                null !== librarianData.librarianUserId.userData
+                librarianData.librarianUserId &&
+                librarianData.librarianUserId.userData
             ) {
+                let userData = librarianData.librarianUserId.userData;
+
                 meta.push(
                     {
                         type: "Email Address",
-                        value:
-                            librarianData.librarianUserId.userData.librarian
-                                .emailAddress
+                        value: userData.librarian.emailAddress
                     },
                     {
                         type: "Phone Number",
-                        value:
-                            librarianData.librarianUserId.userData.librarian
-                                .phoneNumber
+                        value: userData.librarian.phoneNumber
                     },
                     {
                         type: "Office Location",
-                        value:
-                            librarianData.librarianUserId.userData.librarian
-                                .officeLocation
+                        value: userData.librarian.officeLocation
                     },
                     {
                         type: "Website",
-                        value:
-                            librarianData.librarianUserId.userData.librarian
-                                .website
+                        value: userData.librarian.website
                     },
                     {
                         type: "Photo",
-                        value:
-                            librarianData.librarianUserId.userData.librarian
-                                .picture
+                        value: userData.librarian.picture
                     }
                 );
             }
