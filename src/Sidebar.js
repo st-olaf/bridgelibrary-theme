@@ -121,7 +121,7 @@ class CirculationWidget extends React.Component {
                     to={"/circulation-data/"}
                     onClick={e => this.props.handleClick("", "circulation")}
                 >
-                    Loans and Requests
+                    Checkouts and Requests
                 </Link>
             </li>
         );

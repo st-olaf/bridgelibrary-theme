@@ -22,17 +22,17 @@ class ViewCirculation extends React.Component {
 
         return (
             <div className="entry-content clear">
-                <p>
+                <p className="bridge-info">
                     For renewals, request cancellations, and more options,
                     please visit your account page in Catalyst:{" "}
                     <a
-                        className="button carleton"
+                        className="catalyst-link carleton"
                         href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:CCO&lang=en"
                     >
                         My Account
                     </a>
                     <a
-                        className="button stolaf"
+                        className="catalyst-link stolaf"
                         href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:SOC&lang=en"
                     >
                         My Account
@@ -42,7 +42,7 @@ class ViewCirculation extends React.Component {
                 <CardContainer
                     userData={this.props.parentState.userData.circulationData}
                     type="loans"
-                    header="Loans"
+                    header="Checkouts"
                     handleClick={this.props.handleClick}
                 />
                 <CardContainer
@@ -52,12 +52,7 @@ class ViewCirculation extends React.Component {
                     handleClick={this.props.handleClick}
                     headerContent={requestHeaderContent}
                 />
-                <CardContainer
-                    userData={this.props.parentState.userData.circulationData}
-                    type="fees"
-                    header="Fines &amp; Fees"
-                    handleClick={this.props.handleClick}
-                />
+
             </div>
         );
     }
