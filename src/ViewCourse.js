@@ -41,7 +41,7 @@ function groupResources(resources, resourceTypes, withoutType) {
 
 class ViewCourse extends React.Component {
     render() {
-        console.log(this.props);
+
 
         var resourcesCheck = false;
         var resourceTypes = {};
@@ -105,8 +105,6 @@ class ViewCourse extends React.Component {
                 resourceCards = [];
             }
 
-            console.log(resourceCards);
-
             if (
                 null !== courseData.coreResources &&
                 courseData.coreResources.length > 0
@@ -159,10 +157,11 @@ class ViewCourse extends React.Component {
                     })
                     .filter(librarian => {
                         return (
-                            librarian.length > 0 ||
-                            Object.keys(librarian).length > 0
+                            (librarian.length > 0 ||
+                            Object.keys(librarian).length > 0)
                         );
                     });
+
             }
         }
 
@@ -170,7 +169,7 @@ class ViewCourse extends React.Component {
             librarianCards = [];
         }
 
-        console.log(coreResourceCards);
+        console.log(this.props);
 
         return (
             <div className="entry-content clear">
