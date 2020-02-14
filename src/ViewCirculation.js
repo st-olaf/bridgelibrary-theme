@@ -4,7 +4,10 @@ import CardContainer from "./CardContainer.js";
 class ViewCirculation extends React.Component {
     render() {
         var requestHeaderContent = (
-            <p>
+            <div>
+            <h2>Interlibrary Loan</h2>
+            <p className="bridge-no-results">We are not currently importing your Interlibrary Loan account information into myLibrary (though
+                we plan to do that soon!).  In the meantime, you can view your account information here:{" "}
                 <a
                     className="ill-link carleton"
                     href="https://apps.carleton.edu/campus/library/ill/"
@@ -18,6 +21,7 @@ class ViewCirculation extends React.Component {
                     Interlibrary Loan Requests
                 </a>
             </p>
+            </div>
         );
 
         return (
