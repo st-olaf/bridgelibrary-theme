@@ -5,6 +5,7 @@ import SupportWidget from "./SupportWidget.js";
 
 class ViewHome extends React.Component {
     render() {
+        console.log(this.props);
         if (this.props.error) {
             return <Error message={this.props.errorMessage} />;
         }
