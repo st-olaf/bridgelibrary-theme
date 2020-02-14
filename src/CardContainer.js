@@ -53,12 +53,11 @@ class CardContainer extends React.Component {
             0 === this.state.userData.length
         ) {
             return (
-                <div>
-                    <h3>{this.props.header}</h3>
-                    <p>
+                <div className="bridge-card-container">
+                    <h2>{this.props.header}</h2>
+                    <p className="bridge-no-results">
                         You have no {this.props.header.toLowerCase()} to
-                        display. Please{" "}
-                        <Link to="/support/">contact support</Link> if you think
+                        display. Please <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1G0muhWFoVZ_4_AEPzr-ms7Trdk3YWO_cxF62vki9nqP-eQ/viewform?usp=sf_link">contact us</a> if you think
                         you should have some.
                     </p>
                     {headerContent}
@@ -111,7 +110,7 @@ class CardContainer extends React.Component {
         }
 
         return (
-            <div>
+            <div className="bridge-card-container">
                 <h2>{this.props.header}</h2>
                 <LastUpdated date={this.state.cacheDate} />
                 {headerContent}
