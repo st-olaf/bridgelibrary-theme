@@ -6,16 +6,16 @@ class ViewCirculation extends React.Component {
         var requestHeaderContent = (
             <p>
                 <a
-                    className="button carleton"
+                    className="ill-link carleton"
                     href="https://apps.carleton.edu/campus/library/ill/"
                 >
-                    Interlibrary Loan
+                    Interlibrary Loan Requests
                 </a>
                 <a
-                    className="button stolaf"
+                    className="ill-link stolaf"
                     href="https://ezproxy.stolaf.edu/login?url=https://stolaf.illiad.oclc.org/illiad/illiad.dll"
                 >
-                    Interlibrary Loan
+                    Interlibrary Loan Requests
                 </a>
             </p>
         );
