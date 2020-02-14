@@ -56,9 +56,8 @@ class CardContainer extends React.Component {
                 <div className="bridge-card-container">
                     <h2>{this.props.header}</h2>
                     <p className="bridge-no-results">
-                        You have no {this.props.header.toLowerCase()} to
-                        display. Please <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1G0muhWFoVZ_4_AEPzr-ms7Trdk3YWO_cxF62vki9nqP-eQ/viewform?usp=sf_link">contact us</a> if you think
-                        you should have some.
+                        We didn't find any {this.props.header.toLowerCase()} for your account. Please <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1G0muhWFoVZ_4_AEPzr-ms7Trdk3YWO_cxF62vki9nqP-eQ/viewform?usp=sf_link">submit a feedback form</a> if you think
+                        that is an error!
                     </p>
                     {headerContent}
                     {footerContent}
