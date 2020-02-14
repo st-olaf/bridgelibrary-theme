@@ -11,6 +11,14 @@ class ViewHome extends React.Component {
         }
         return (
             <div className="entry-content clear">
+                <h2>Welcome to myLibrary!</h2>
+
+                <p className="bridge-intro-paragraph">Here you will find all the library content that is specific to
+                    you--your library checkouts and requests, resources for your courses, and pinned records you saved
+                    in Catalyst.</p>
+
+                <p className="bridge-intro-paragraph">We are currently beta testing the site and encourage you to submit
+                    suggestions or problems using the "Feedback" link in the menu at the top of the page.</p>
                 <CardContainer
                     userData={this.props.parentState.userData}
                     type="courses"
