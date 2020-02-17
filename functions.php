@@ -142,3 +142,17 @@ function single_resource() {
 	}
 }
 add_action( 'astra_entry_content_single', 'single_resource', 11 );
+
+/**
+ * Filter out content if logged in.
+ *
+ * @param string $content Page Content.
+ * @return string Return content.
+ */
+function remove_content_if_logged_in( $content ) {
+	if ( is_user_logged_in() ) {
+		$content = '<h3> Loading... </h3>';
+	}
+	return $content;
+}
+add_filter( 'the_content', 'remove_content_if_logged_in' );
