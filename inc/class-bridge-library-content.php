@@ -51,7 +51,7 @@ class Bridge_Library_Content {
 	 */
 	public function page_content() {
 		if ( is_front_page() && ! is_user_logged_in() ) {
-            echo '<p id="bridge-login">Please <a href="/wp-login.php?gaautologin=true&redirect_to=https://my.bridgelibraries.org/"><img src="https://my.bridgelibraries.org/wp-content/plugins/googleappslogin-premium/img/btn_google_signin_dark_normal_web.png"></a> using your college Gmail account.</p>';
+			echo '<p id="bridge-login">Please <a href="' . esc_url( home_url( '/wp-login.php?gaautologin=true&redirect_to=' . home_url() ) ) . '"><img src="' . esc_url( get_stylesheet_directory_uri() . '/assets/img/sign-in-with-google.png' ) . '" alt="Sign in with Google" /></a> using your college Gmail account.</p>';
 		} else {
 			get_template_part( 'template-parts/react', 'none' );
 		}
