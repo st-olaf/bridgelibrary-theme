@@ -16,7 +16,7 @@
 	$primo_image_info = get_field( 'primo_image_info' );
 
 	if ( ! empty( $image_url ) ) {
-		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="manual image" src="' . esc_url( $image_url ) . '" alt="manual" /></a>';
+		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="manual image" src="' . esc_url( $image_url ) . '" alt="Manually-supplied image for ' . esc_attr( get_the_title() ) . '" /></a>';
 	} elseif ( ! empty( $primo_image_url ) ) {
 		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo image" src="' . esc_url( $primo_image_url ) . '"alt="primo" /></a>';
 	} elseif ( ! empty( $primo_image_info ) ) {
