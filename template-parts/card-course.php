@@ -20,7 +20,7 @@
 	} elseif ( ! empty( $primo_image_url ) ) {
 		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo image" src="' . esc_url( $primo_image_url ) . '" alt="Primo-supplied image for ' . esc_attr( get_the_title() ) . '" /></a>';
 	} elseif ( ! empty( $primo_image_info ) ) {
-		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo callback" src="' . esc_url( $primo_image_info ) . '" alt="callback" /></a>';
+		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo callback" src="' . esc_url( $primo_image_info ) . '" alt="Image from Google Books for ' . esc_attr( get_the_title() ) . '" /></a>';
 	}
 
 	$departments = get_the_terms( get_the_ID(), 'academic_department' );
