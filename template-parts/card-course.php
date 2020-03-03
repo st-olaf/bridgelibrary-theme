@@ -16,11 +16,11 @@
 	$primo_image_info = get_field( 'primo_image_info' );
 
 	if ( ! empty( $image_url ) ) {
-		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="manual image" src="' . esc_url( $image_url ) . '" /></a>';
+		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="manual image" src="' . esc_url( $image_url ) . '" alt="manual" /></a>';
 	} elseif ( ! empty( $primo_image_url ) ) {
-		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo image" src="' . esc_url( $primo_image_url ) . '" /></a>';
+		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo image" src="' . esc_url( $primo_image_url ) . '"alt="primo" /></a>';
 	} elseif ( ! empty( $primo_image_info ) ) {
-		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo callback" src="' . esc_url( $primo_image_info ) . '" /></a>';
+		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="primo callback" src="' . esc_url( $primo_image_info ) . '" alt="callback" /></a>';
 	}
 
 	$departments = get_the_terms( get_the_ID(), 'academic_department' );
