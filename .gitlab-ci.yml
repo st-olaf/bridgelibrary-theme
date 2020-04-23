@@ -16,4 +16,4 @@ Deploy to Dev:
     - master
   #when: manual
   script:
-    - ssh $SSH_USER@$SSH_IP "$(pwd)";
+    - /usr/bin/ssh -l "$SSH_USER" "$SSH_IP" "$(pwd)";
