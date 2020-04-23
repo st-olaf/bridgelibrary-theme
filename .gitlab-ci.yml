@@ -16,4 +16,4 @@ Deploy to Dev:
     - master
   #when: manual
   script:
-    - ssh stolaf_dev "ls";
+    - ssh stolaf_dev "cd webapps/bridge-dev/wp-content/themes/bridgelibrary-theme && git checkout master && git pull --ff-only origin master && exit";
