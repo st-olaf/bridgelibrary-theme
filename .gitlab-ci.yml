@@ -16,4 +16,4 @@ Deploy to Dev:
     - master
   when: manual
   script:
-    - ssh stolaf_dev "$(pwd)";
+    - ssh $SSH_USER@$SSH_IP "$(pwd)";
