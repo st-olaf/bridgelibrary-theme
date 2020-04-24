@@ -30,10 +30,21 @@ function AppWrapper() {
 
     if (loading) return <Spinner />;
 
-    var errorMessage = "";
-    var queryError = false;
+    var errorMessage = '',
+    	queryError = false;
 
-    if (error) {
+	if (error) {
+		queryError = true;
+		errorMessage = error.message;
+	} else if (0 === data.users.edges.length) {
+        queryError = true;
+        errorMessage = "User not found: " + window.graphqlQuery.variables.email;
+    } else if (data.users.edges[0].node.userData.courses === null || 0 === data.users.edges[0].node.userData.courses.length) {
+        queryError = true;
+        errorMessage = "You have no courses.";
+	}
+
+    if (error || queryError) {
         return (
             <div id="primary" className="content-area primary">
                 <main id="main" className="site-main" role="main">
@@ -47,25 +58,11 @@ function AppWrapper() {
                                 Error
                             </h1>
                         </header>
-                        <Error message={error.message} />
+                        <Error message={errorMessage} />
                     </article>
                 </main>
             </div>
         );
-    }
-
-    if (!error && 0 === data.users.edges.length) {
-        queryError = true;
-        errorMessage = "User not found: " + window.graphqlQuery.variables.email;
-    }
-
-    if (
-        !error &&
-        (data.users.edges[0].node.userData.courses === null ||
-            0 === data.users.edges[0].node.userData.courses.length)
-    ) {
-        queryError = true;
-        errorMessage = "You have no courses.";
     }
 
     return (
