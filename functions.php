@@ -112,6 +112,22 @@ function single_course() {
 
 			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 		}
+
+		$librarians = get_field( 'librarians' );
+		if ( ! empty( $librarians ) ) {
+			$librarians    = array_unique( $librarians );
+			$original_post = $post;
+
+			echo '<h2>Librarians</h2>';
+			echo '<div class="card-container">';
+			foreach ( $librarians as $librarian_id ) {
+				$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				include 'template-parts/card-resource.php';
+			}
+			echo '</div>';
+
+			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+		}
 	}
 }
 add_action( 'astra_entry_content_single', 'single_course', 11 );

@@ -39,6 +39,7 @@ class Sidebar extends React.Component {
         }
 
         return (
+            
             <div
                 itemType="https://schema.org/WPSideBar"
                 itemScope="itemscope"
@@ -46,6 +47,7 @@ class Sidebar extends React.Component {
                 className="widget-area secondary"
                 role="complementary"
             >
+                <Link to="#primary" className="hidden">Skip to Content</Link>
                 <div className="sidebar-main">
                     <aside className="widget widget_nav_menu">
                         <div className="menu-sidebar-container">
