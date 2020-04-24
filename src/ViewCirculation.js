@@ -28,18 +28,18 @@ class ViewCirculation extends React.Component {
             <div className="entry-content clear">
                 <p className="bridge-info">
                     For renewals, request cancellations, and more options,
-                    please visit your account page in Catalyst:{" "}
+                    please visit{" "}
                     <a
                         className="catalyst-link carleton"
                         href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:CCO&lang=en"
                     >
-                        My Account
+                        your account page in Catalyst
                     </a>
                     <a
                         className="catalyst-link stolaf"
                         href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:SOC&lang=en"
                     >
-                        My Account
+                        your account page in Catalyst
                     </a>
                 </p>
 

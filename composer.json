@@ -6,6 +6,10 @@
         {
             "name": "Andrew Minion",
             "email": "andrew.minion@luminfire.com"
+        },
+        {
+            "name": "Jack Caspers",
+            "email": "jack.caspers@luminfire.com"
         }
     ],
     "require": {

@@ -26,11 +26,11 @@ if ( is_object( $related_user ) ) {
 
 		echo '<a href="' . esc_url( get_the_permalink() ) . '">';
 		if ( ! empty( $picture_url ) ) {
-			echo '<img class="manual image" src="' . esc_url( $picture_url ) . '" />';
+			echo '<img class="manual image" src="' . esc_url( $picture_url ) . '" alt="Librarian" />';
 		} elseif ( ! empty( $google_url ) ) {
-			echo '<img class="google image" src="' . esc_url( $google_url ) . '" />';
+			echo '<img class="google image" src="' . esc_url( $google_url ) . '" alt="Librarian" />';
 		} elseif ( ! empty( $avatar_url ) ) {
-			echo '<img class="avatar image" src="' . esc_url( $avatar_url ) . '" />';
+			echo '<img class="avatar image" src="' . esc_url( $avatar_url ) . '" alt="Librarian" />';
 		}
 		echo '</a>';
 		?>
