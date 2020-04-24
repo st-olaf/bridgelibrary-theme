@@ -15,6 +15,7 @@ Deploy to Dev:
     - develop
   #when: manual
   script:
-    - ssh stolaf_dev "cd webapps/bridge-dev/wp-content/themes/bridgelibrary-theme && git checkout develop && git pull --ff-only origin develop && exit";
+    - ssh stolaf_dev "cd webapps/bridge-dev/wp-content/themes/bridgelibrary-theme && git reset --hard && git checkout develop && git pull --ff-only origin develop && exit";
     - ssh stolaf_dev "cd webapps/bridge-dev/wp-content/themes/bridgelibrary-theme && npm install"
+    - ssh stolaf_dev "cd webapps/bridge-dev/wp-content/themes/bridgelibrary-theme && rm -rf .env.production and mv .env.development .env.production"
     - ssh stolaf_dev "cd webapps/bridge-dev/wp-content/themes/bridgelibrary-theme && npm run build"
