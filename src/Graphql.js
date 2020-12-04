@@ -73,9 +73,9 @@ export const USER_QUERY = gql`
                                                         id
                                                         name
                                                         ancestors {
-															nodes {
-																name
-															}
+                                                            nodes {
+                                                                name
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -113,45 +113,45 @@ export const USER_QUERY = gql`
                                                         id
                                                         name
                                                         ancestors {
-															nodes {
-																name
-															}
+                                                            nodes {
+                                                                name
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
                                     }
-									librarians {
-										... on Librarian {
-											id
-											slug
-											title
-											librarianData {
-												academicDepartment {
-													... on AcademicDepartment {
-														name
-													}
-												}
-												librarianUserId {
-													id
-													userData {
-														pictureUrl
-														librarian {
-															emailAddress
-															picture {
-																sourceUrl
-																title
-															}
-															phoneNumber
-															officeLocation
-															website
-														}
-													}
-												}
-											}
-										}
-									}
+                                    librarians {
+                                        ... on Librarian {
+                                            id
+                                            slug
+                                            title
+                                            librarianData {
+                                                academicDepartment {
+                                                    ... on AcademicDepartment {
+                                                        name
+                                                    }
+                                                }
+                                                librarianUserId {
+                                                    id
+                                                    userData {
+                                                        pictureUrl
+                                                        librarian {
+                                                            emailAddress
+                                                            picture {
+                                                                sourceUrl
+                                                                title
+                                                            }
+                                                            phoneNumber
+                                                            officeLocation
+                                                            website
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
