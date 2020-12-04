@@ -6,7 +6,7 @@ export const USER_QUERY = gql`
             edges {
                 node {
                     id
-                    userId
+                    databaseId
                     name
                     email
                     nicename
@@ -73,7 +73,9 @@ export const USER_QUERY = gql`
                                                         id
                                                         name
                                                         ancestors {
-                                                            name
+                                                            nodes {
+                                                                name
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -111,7 +113,39 @@ export const USER_QUERY = gql`
                                                         id
                                                         name
                                                         ancestors {
-                                                            name
+                                                            nodes {
+                                                                name
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    librarians {
+                                        ... on Librarian {
+                                            id
+                                            slug
+                                            title
+                                            librarianData {
+                                                academicDepartment {
+                                                    ... on AcademicDepartment {
+                                                        name
+                                                    }
+                                                }
+                                                librarianUserId {
+                                                    id
+                                                    userData {
+                                                        pictureUrl
+                                                        librarian {
+                                                            emailAddress
+                                                            picture {
+                                                                sourceUrl
+                                                                title
+                                                            }
+                                                            phoneNumber
+                                                            officeLocation
+                                                            website
                                                         }
                                                     }
                                                 }

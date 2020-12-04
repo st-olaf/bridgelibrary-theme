@@ -52,6 +52,7 @@ class ViewCourse extends React.Component {
             courseData = this.props.parentState.currentObject.courseData,
             resourceCards = [],
             coreResourceCards = [],
+            librarians = [],
             librarianCards = [],
             meta = [];
 
@@ -129,40 +130,36 @@ class ViewCourse extends React.Component {
                 coreResourceCards = [];
             }
 
-            if (
+            if (courseData.librarians && courseData.librarians.length > 0) {
+                librarians = courseData.librarians;
+            } else if (
                 this.props.parentState.userData.librarians &&
                 this.props.parentState.userData.librarians.length > 0
             ) {
-                librarianCards = this.props.parentState.userData.librarians
-                    .map(librarian => {
-                        var departments = librarian.librarianData.academicDepartment.find(
-                            dept => {
-                                return (
-                                    dept.name ===
-                                    courseData.academicDepartment[0].name
-                                );
-                            }
-                        );
-                        if ("undefined" !== typeof departments) {
-                            return (
-                                <CardLibrarian
-                                    key={librarian.id}
-                                    resource={librarian}
-                                    handleClick={this.props.handleClick}
-                                    type="librarians"
-                                />
-                            );
-                        }
-                        return [];
-                    })
-                    .filter(librarian => {
-                        return (
-                            (librarian.length > 0 ||
-                            Object.keys(librarian).length > 0)
-                        );
+                librarians = this.props.parentState.userData.librarians.filter(librarian => {
+                    console.log({
+                        name: librarian.title,
+                        courseDepartment: courseData.academicDepartment[0].name,
                     });
 
+                    var departments = librarian.librarianData.academicDepartment.filter(dept => {
+                        return dept.name === courseData.academicDepartment[0].name;
+                    });
+
+                    return departments.length > 0;
+                });
             }
+
+            librarianCards = librarians.map(librarian => {
+                return (
+                    <CardLibrarian
+                        key={librarian.id}
+                        resource={librarian}
+                        handleClick={this.props.handleClick}
+                        type="librarians"
+                    />
+                );
+            });
         }
 
         if (0 === librarianCards.length) {
