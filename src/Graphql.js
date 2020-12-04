@@ -73,7 +73,9 @@ export const USER_QUERY = gql`
                                                         id
                                                         name
                                                         ancestors {
-                                                            name
+															nodes {
+																name
+															}
                                                         }
                                                     }
                                                 }
@@ -111,7 +113,9 @@ export const USER_QUERY = gql`
                                                         id
                                                         name
                                                         ancestors {
-                                                            name
+															nodes {
+																name
+															}
                                                         }
                                                     }
                                                 }
