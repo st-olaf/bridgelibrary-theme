@@ -122,6 +122,36 @@ export const USER_QUERY = gql`
                                             }
                                         }
                                     }
+									librarians {
+										... on Librarian {
+											id
+											slug
+											title
+											librarianData {
+												academicDepartment {
+													... on AcademicDepartment {
+														name
+													}
+												}
+												librarianUserId {
+													id
+													userData {
+														pictureUrl
+														librarian {
+															emailAddress
+															picture {
+																sourceUrl
+																title
+															}
+															phoneNumber
+															officeLocation
+															website
+														}
+													}
+												}
+											}
+										}
+									}
                                 }
                             }
                         }
