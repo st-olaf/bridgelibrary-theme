@@ -6,7 +6,7 @@ export const USER_QUERY = gql`
             edges {
                 node {
                     id
-                    userId
+                    databaseId
                     name
                     email
                     nicename
