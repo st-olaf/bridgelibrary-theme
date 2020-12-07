@@ -17,45 +17,7 @@ export const USER_QUERY = gql`
                             ...Resource
                         }
                         courses {
-                            ... on Course {
-                                id
-                                slug
-                                title
-                                courseData {
-                                    almaId
-                                    courseCode
-                                    courseNumber
-                                    startDate
-                                    endDate
-                                    institution {
-                                        ... on Institution {
-                                            id
-                                            name
-                                        }
-                                    }
-                                    academicDepartment {
-                                        ... on AcademicDepartment {
-                                            id
-                                            name
-                                        }
-                                    }
-                                    courseTerm {
-                                        ... on CourseTerm {
-                                            id
-                                            name
-                                        }
-                                    }
-                                    coreResources {
-                                        ...Resource
-                                    }
-                                    relatedCoursesResources {
-                                        ...Resource
-                                    }
-                                    librarians {
-                                        ...Librarian
-                                    }
-                                }
-                            }
+                            ...Course
                         }
                         coursesCacheUpdated
                         primoFavorites {
@@ -70,6 +32,46 @@ export const USER_QUERY = gql`
                         circulationDataCacheUpdated
                     }
                 }
+            }
+        }
+    }
+
+    fragment Course on Course {
+        id
+        slug
+        title
+        courseData {
+            almaId
+            courseCode
+            courseNumber
+            startDate
+            endDate
+            institution {
+                ... on Institution {
+                    id
+                    name
+                }
+            }
+            academicDepartment {
+                ... on AcademicDepartment {
+                    id
+                    name
+                }
+            }
+            courseTerm {
+                ... on CourseTerm {
+                    id
+                    name
+                }
+            }
+            coreResources {
+                ...Resource
+            }
+            relatedCoursesResources {
+                ...Resource
+            }
+            librarians {
+                ...Librarian
             }
         }
     }
