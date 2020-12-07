@@ -52,6 +52,10 @@ class CardContainer extends React.Component {
             null === this.state.userData ||
             0 === this.state.userData.length
         ) {
+            if ('userFavorites' === this.props.type) {
+                return ''; // Display nothing when a user has no favorites.
+            }
+
             return (
                 <div className="bridge-card-container">
                     <h2>{this.props.header}</h2>
@@ -86,6 +90,7 @@ class CardContainer extends React.Component {
                     break;
                 case "resources":
                 case "primoFavorites":
+                case "userFavorites":
                     card = <CardResource {...theseProps} />;
                     break;
                 case "librarians":

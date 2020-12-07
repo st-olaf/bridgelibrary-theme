@@ -13,6 +13,54 @@ export const USER_QUERY = gql`
                     userData {
                         alternateId
                         bridgeLibraryInstitution
+                        userFavorites {
+                            ... on Resource {
+                                __typename
+                                id
+                                slug
+                                title
+                                content
+                                resourceData {
+                                    almaId
+                                    primoId
+                                    url
+                                    imageUrl {
+                                        id
+                                        altText
+                                        sourceUrl
+                                    }
+                                    primoImageUrl
+                                    primoImageInfo
+                                    author
+                                    isbn
+                                    publicationYear
+                                    resourceFormat {
+                                        ... on ResourceFormat {
+                                            id
+                                            name
+                                        }
+                                    }
+                                    resourceType {
+                                        ... on ResourceType {
+                                            id
+                                            name
+                                            ancestors {
+                                                nodes {
+                                                    name
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            ... on Course {
+                                __typename
+                                id
+                                slug
+                                title
+                                content
+                            }
+                        }
                         courses {
                             ... on Course {
                                 id

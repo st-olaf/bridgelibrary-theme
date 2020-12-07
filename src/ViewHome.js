@@ -5,7 +5,6 @@ import SupportWidget from "./SupportWidget.js";
 
 class ViewHome extends React.Component {
     render() {
-        console.log(this.props);
         if (this.props.error) {
             return <Error message={this.props.errorMessage} />;
         }
@@ -19,6 +18,14 @@ class ViewHome extends React.Component {
 
                 <p className="bridge-intro-paragraph">We are currently beta testing the site and encourage you to submit
                     suggestions or problems using the "Feedback" link in the menu at the top of the page.</p>
+
+                <CardContainer
+                    userData={this.props.parentState.userData}
+                    type="userFavorites"
+                    header="Favorite Resources"
+                    handleClick={this.props.handleClick}
+                />
+
                 <CardContainer
                     userData={this.props.parentState.userData}
                     type="courses"
