@@ -53,13 +53,6 @@ export const USER_QUERY = gql`
                                     }
                                 }
                             }
-                            ... on Course {
-                                __typename
-                                id
-                                slug
-                                title
-                                content
-                            }
                         }
                         courses {
                             ... on Course {
