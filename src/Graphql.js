@@ -14,45 +14,7 @@ export const USER_QUERY = gql`
                         alternateId
                         bridgeLibraryInstitution
                         userFavorites {
-                            ... on Resource {
-                                __typename
-                                id
-                                slug
-                                title
-                                content
-                                resourceData {
-                                    almaId
-                                    primoId
-                                    url
-                                    imageUrl {
-                                        id
-                                        altText
-                                        sourceUrl
-                                    }
-                                    primoImageUrl
-                                    primoImageInfo
-                                    author
-                                    isbn
-                                    publicationYear
-                                    resourceFormat {
-                                        ... on ResourceFormat {
-                                            id
-                                            name
-                                        }
-                                    }
-                                    resourceType {
-                                        ... on ResourceType {
-                                            id
-                                            name
-                                            ancestors {
-                                                nodes {
-                                                    name
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            ...Resource
                         }
                         courses {
                             ... on Course {
@@ -84,182 +46,96 @@ export const USER_QUERY = gql`
                                         }
                                     }
                                     coreResources {
-                                        ... on Resource {
-                                            id
-                                            slug
-                                            title
-                                            content
-                                            resourceData {
-                                                almaId
-                                                primoId
-                                                url
-                                                imageUrl {
-                                                    id
-                                                    altText
-                                                    sourceUrl
-                                                }
-                                                primoImageUrl
-                                                primoImageInfo
-                                                author
-                                                isbn
-                                                publicationYear
-                                                resourceFormat {
-                                                    ... on ResourceFormat {
-                                                        id
-                                                        name
-                                                    }
-                                                }
-                                                resourceType {
-                                                    ... on ResourceType {
-                                                        id
-                                                        name
-                                                        ancestors {
-                                                            nodes {
-                                                                name
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        ...Resource
                                     }
                                     relatedCoursesResources {
-                                        ... on Resource {
-                                            id
-                                            slug
-                                            title
-                                            content
-                                            resourceData {
-                                                almaId
-                                                primoId
-                                                url
-                                                imageUrl {
-                                                    id
-                                                    altText
-                                                    sourceUrl
-                                                }
-                                                primoImageUrl
-                                                primoImageInfo
-                                                author
-                                                isbn
-                                                publicationYear
-                                                resourceFormat {
-                                                    ... on ResourceFormat {
-                                                        id
-                                                        name
-                                                    }
-                                                }
-                                                resourceType {
-                                                    ... on ResourceType {
-                                                        id
-                                                        name
-                                                        ancestors {
-                                                            nodes {
-                                                                name
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        ...Resource
                                     }
                                     librarians {
-                                        ... on Librarian {
-                                            id
-                                            slug
-                                            title
-                                            librarianData {
-                                                academicDepartment {
-                                                    ... on AcademicDepartment {
-                                                        name
-                                                    }
-                                                }
-                                                librarianUserId {
-                                                    id
-                                                    userData {
-                                                        pictureUrl
-                                                        librarian {
-                                                            emailAddress
-                                                            picture {
-                                                                sourceUrl
-                                                                title
-                                                            }
-                                                            phoneNumber
-                                                            officeLocation
-                                                            website
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        ...Librarian
                                     }
                                 }
                             }
                         }
                         coursesCacheUpdated
                         primoFavorites {
-                            ... on Resource {
-                                id
-                                slug
-                                title
-                                content
-                                resourceData {
-                                    almaId
-                                    primoId
-                                    url
-                                    imageUrl {
-                                        id
-                                        altText
-                                        sourceUrl
-                                    }
-                                    primoImageUrl
-                                    primoImageInfo
-                                    author
-                                    isbn
-                                    publicationYear
-                                    resourceFormat {
-                                        ... on ResourceFormat {
-                                            id
-                                            name
-                                        }
-                                    }
-                                }
-                            }
+                            ...Resource
                         }
                         primoFavoritesCacheUpdated
                         librarians {
-                            ... on Librarian {
-                                id
-                                slug
-                                title
-                                librarianData {
-                                    academicDepartment {
-                                        ... on AcademicDepartment {
-                                            name
-                                        }
-                                    }
-                                    librarianUserId {
-                                        id
-                                        userData {
-                                            pictureUrl
-                                            librarian {
-                                                emailAddress
-                                                picture {
-                                                    sourceUrl
-                                                    title
-                                                }
-                                                phoneNumber
-                                                officeLocation
-                                                website
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            ...Librarian
                         }
                         librariansCacheUpdated
                         circulationData
                         circulationDataCacheUpdated
+                    }
+                }
+            }
+        }
+    }
+
+    fragment Librarian on Librarian {
+        id
+        slug
+        title
+        librarianData {
+            academicDepartment {
+                ... on AcademicDepartment {
+                    name
+                }
+            }
+            librarianUserId {
+                id
+                userData {
+                    pictureUrl
+                    librarian {
+                        emailAddress
+                        picture {
+                            sourceUrl
+                            title
+                        }
+                        phoneNumber
+                        officeLocation
+                        website
+                    }
+                }
+            }
+        }
+    }
+
+    fragment Resource on Resource {
+        id
+        slug
+        title
+        content
+        resourceData {
+            almaId
+            primoId
+            url
+            imageUrl {
+                id
+                altText
+                sourceUrl
+            }
+            primoImageUrl
+            primoImageInfo
+            author
+            isbn
+            publicationYear
+            resourceFormat {
+                ... on ResourceFormat {
+                    id
+                    name
+                }
+            }
+            resourceType {
+                ... on ResourceType {
+                    id
+                    name
+                    ancestors {
+                        nodes {
+                            name
+                        }
                     }
                 }
             }
