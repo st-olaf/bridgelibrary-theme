@@ -7,12 +7,18 @@ class Card extends React.Component {
     constructor (props) {
         super(props);
 
-       this.state = {
-           isFavorite: this.isFavorite(this.props.userFavorites),
-       };
+        if ('undefined' === typeof props.userFavorites) {
+            var isFavorite = false;
+        } else {
+            var isFavorite = this.isFavorite(props.userFavorites);
+        }
 
-       this.updateFavorites = this.updateFavorites.bind(this);
-   }
+        this.state = {
+            isFavorite,
+        };
+
+        this.updateFavorites = this.updateFavorites.bind(this);
+    }
 
     updateFavorites(favoriteIds) {
         this.setState({
@@ -76,12 +82,16 @@ class Card extends React.Component {
 
         return (
             <div className={classes.join(" ")}>
-                <Favorite
-                    userId={this.props.userId}
-                    resourceId={this.props.resource.id}
-                    isFavorite={this.state.isFavorite}
-                    updateFavorites={this.updateFavorites}
-                />
+                {
+                    this.props.type !== 'courses' &&
+                    this.props.type !== 'librarians' &&
+                    <Favorite
+                        userId={this.props.userId}
+                        resourceId={this.props.resource.id}
+                        isFavorite={this.state.isFavorite}
+                        updateFavorites={this.updateFavorites}
+                    />
+                }
 
                 {this.props.resource.title && (
                     <h3 className="title">{resourceCheck(this.props)}</h3>
