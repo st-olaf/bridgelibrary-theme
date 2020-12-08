@@ -20,6 +20,7 @@ class ViewHome extends React.Component {
                     suggestions or problems using the "Feedback" link in the menu at the top of the page.</p>
 
                 <CardContainer
+                    userId={this.props.parentState.user.id}
                     userData={this.props.parentState.userData}
                     type="userFavorites"
                     header="Favorite Resources"
@@ -27,6 +28,7 @@ class ViewHome extends React.Component {
                 />
 
                 <CardContainer
+                    userId={this.props.parentState.user.id}
                     userData={this.props.parentState.userData}
                     type="courses"
                     header="Courses"
@@ -34,6 +36,7 @@ class ViewHome extends React.Component {
                 />
 
                 <CardContainer
+                    userId={this.props.parentState.user.id}
                     userData={this.props.parentState.userData}
                     type="primoFavorites"
                     header="Catalyst Favorites"

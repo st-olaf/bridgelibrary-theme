@@ -144,3 +144,33 @@ export const USER_QUERY = gql`
         }
     }
 `;
+
+export const ADD_USER_FAVORITE = gql`
+    mutation ADD_USER_FAVORITE($userId: ID, $favoriteId: ID) {
+        addUserFavorite(
+            input: {
+                clientMutationId: "addUserFavorite"
+                id: $userId
+                favoriteId: $favoriteId
+            }
+        ) {
+            id
+            favorites
+        }
+    }
+`;
+
+export const REMOVE_USER_FAVORITE = gql`
+    mutation REMOVE_USER_FAVORITE($userId: ID, $favoriteId: ID) {
+        removeUserFavorite(
+            input: {
+                clientMutationId: "removeUserFavorite"
+                id: $userId
+                favoriteId: $favoriteId
+            }
+        ) {
+            id
+            favorites
+        }
+    }
+`;

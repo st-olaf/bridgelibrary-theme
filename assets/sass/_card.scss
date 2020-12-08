@@ -4,6 +4,7 @@
 }
 
 .card {
+    position: relative;
     display: block;
     width: 100%;
     border: 1px solid silver;
@@ -16,6 +17,22 @@
 
     @media screen and (min-width: 920px) {
         width: calc(33% - 1em);
+    }
+
+    .favorite {
+        position: absolute;
+        top: 0.5em;
+        right: 0.5em;
+        cursor: pointer;
+
+        .dashicons {
+            font-size: 15px;
+            color: $color-gray-med;
+        }
+    }
+
+    &.favorited .dashicons {
+        color: $color-red;
     }
 
     &.librarian {
