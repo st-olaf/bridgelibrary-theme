@@ -1,8 +1,47 @@
 import React from "react";
 import Meta from "./Meta.js";
+import Favorite from "./Favorite.js";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class Card extends React.Component {
+    constructor (props) {
+        super(props);
+
+        if ('undefined' === typeof props.userFavorites) {
+            var isFavorite = false;
+        } else {
+            var isFavorite = this.isFavorite(props.userFavorites);
+        }
+
+        this.state = {
+            isFavorite,
+        };
+
+        this.updateFavorites = this.updateFavorites.bind(this);
+    }
+
+    updateFavorites(favoriteIds) {
+        this.setState({
+            isFavorite: this.isFavorite(favoriteIds),
+        });
+    }
+
+    /**
+     * Determine if this object is favorited.
+     *
+     * @param {Array} favoriteIds Array of object IDs.
+     * @returns {Boolean}
+     */
+    isFavorite(favoriteIds) {
+        return favoriteIds.filter(object => {
+            if ('string' === typeof object) {
+                return object === this.props.resource.id;
+            } else {
+                return object.id === this.props.resource.id;
+            }
+        }).length > 0;
+    }
+
     render() {
         function resourceCheck(props) {
             if (props.type === "resources" || props.type === "primoFavorites") {
@@ -29,10 +68,31 @@ class Card extends React.Component {
                 );
             }
         }
-        const className = "card " + this.props.type.replace(/s$/, "");
+
+        var classes = [
+            "card",
+            this.props.type.replace(/s$/, "")
+        ];
+
+        if (this.state.isFavorite) {
+            classes.push("favorited");
+        } else {
+            classes.splice(classes.indexOf("favorited"), 1);
+        }
 
         return (
-            <div className={className}>
+            <div className={classes.join(" ")}>
+                {
+                    this.props.type !== 'courses' &&
+                    this.props.type !== 'librarians' &&
+                    <Favorite
+                        userId={this.props.userId}
+                        resourceId={this.props.resource.id}
+                        isFavorite={this.state.isFavorite}
+                        updateFavorites={this.updateFavorites}
+                    />
+                }
+
                 {this.props.resource.title && (
                     <h3 className="title">{resourceCheck(this.props)}</h3>
                 )}
