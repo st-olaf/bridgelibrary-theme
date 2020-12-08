@@ -33,6 +33,10 @@ class Card extends React.Component {
      * @returns {Boolean}
      */
     isFavorite(favoriteIds) {
+        if (null === favoriteIds) {
+            return false;
+        }
+
         return favoriteIds.filter(object => {
             if ('string' === typeof object) {
                 return object === this.props.resource.id;
