@@ -52,6 +52,10 @@ class CardContainer extends React.Component {
             null === this.state.userData ||
             0 === this.state.userData.length
         ) {
+            if ('userFavorites' === this.props.type) {
+                return ''; // Display nothing when a user has no favorites.
+            }
+
             return (
                 <div className="bridge-card-container">
                     <h2>{this.props.header}</h2>
@@ -74,10 +78,12 @@ class CardContainer extends React.Component {
         for (var i = 0; i < resources.length; i++) {
             var card = null,
                 theseProps = {
+                    userId: this.props.userId,
+                    userFavorites: this.props.userData.userFavorites,
                     key: resources[i].id,
                     resource: resources[i],
                     handleClick: this.props.handleClick,
-                    type: this.props.type
+                    type: this.props.type,
                 };
 
             switch (this.state.dataType) {
@@ -86,6 +92,7 @@ class CardContainer extends React.Component {
                     break;
                 case "resources":
                 case "primoFavorites":
+                case "userFavorites":
                     card = <CardResource {...theseProps} />;
                     break;
                 case "librarians":

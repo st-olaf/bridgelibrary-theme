@@ -39,7 +39,7 @@ class Sidebar extends React.Component {
         }
 
         return (
-            
+
             <div
                 itemType="https://schema.org/WPSideBar"
                 itemScope="itemscope"
@@ -86,9 +86,13 @@ class CourseWidget extends React.Component {
         }
 
         function getCourseTitle(course) {
-            var splitCode = course.courseData.courseCode.split("|");
-            var courseTitle =
-                splitCode[1] + " " + splitCode[2] + ": " + course.title;
+            var courseTitle = course.title;
+
+            if ('undefined' !== typeof course.courseData.courseCode && null !== course.courseData.courseCode && course.courseData.courseCode.length > 0) {
+                var splitCode = course.courseData.courseCode.split("|"),
+                    courseTitle = splitCode[1] + " " + splitCode[2] + ": " + courseTitle;
+            }
+
             return courseTitle;
         }
         return (

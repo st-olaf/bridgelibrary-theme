@@ -4,6 +4,10 @@ import Card from "./Card.js";
 class CardCourse extends Card {
     render() {
         function formatDate(date) {
+            if (null === date) {
+                return '';
+            }
+
             var format = {
                     month: "long",
                     day: "numeric",

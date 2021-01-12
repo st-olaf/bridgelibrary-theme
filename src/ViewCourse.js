@@ -18,7 +18,7 @@ function formatDate(date) {
 
 function groupResources(resources, resourceTypes, withoutType) {
     resources.forEach(resource => {
-        if (resource.resourceData.resourceType.length > 0) {
+        if (null !== resource.resourceData.resourceType && resource.resourceData.resourceType.length > 0) {
             var typeName = "";
             resource.resourceData.resourceType.forEach(type => {
                 typeName = type.name;
@@ -33,7 +33,7 @@ function groupResources(resources, resourceTypes, withoutType) {
                     resourceTypes[typeName].push(resource);
                 }
             });
-        } else if (resource.resourceData.resourceType.length === 0) {
+        } else {
             withoutType.push(resource);
         }
     });
@@ -52,6 +52,7 @@ class ViewCourse extends React.Component {
             courseData = this.props.parentState.currentObject.courseData,
             resourceCards = [],
             coreResourceCards = [],
+            librarians = [],
             librarianCards = [],
             meta = [];
 
@@ -95,6 +96,8 @@ class ViewCourse extends React.Component {
                             key={resource.id}
                             courseSlug={course.slug}
                             resource={resource}
+                            userId={this.props.parentState.user.id}
+                            userFavorites={this.props.parentState.userData.userFavorites}
                             handleClick={this.props.handleClick}
                             type="resources"
                         />
@@ -120,6 +123,8 @@ class ViewCourse extends React.Component {
                             key={resource.id}
                             courseSlug={course.slug}
                             resource={resource}
+                            userId={this.props.parentState.user.id}
+                            userFavorites={this.props.parentState.userData.userFavorites}
                             handleClick={this.props.handleClick}
                             type="resources"
                         />
@@ -129,40 +134,38 @@ class ViewCourse extends React.Component {
                 coreResourceCards = [];
             }
 
-            if (
+            if (courseData.librarians && courseData.librarians.length > 0) {
+                librarians = courseData.librarians;
+            } else if (
                 this.props.parentState.userData.librarians &&
                 this.props.parentState.userData.librarians.length > 0
             ) {
-                librarianCards = this.props.parentState.userData.librarians
-                    .map(librarian => {
-                        var departments = librarian.librarianData.academicDepartment.find(
-                            dept => {
-                                return (
-                                    dept.name ===
-                                    courseData.academicDepartment[0].name
-                                );
-                            }
-                        );
-                        if ("undefined" !== typeof departments) {
-                            return (
-                                <CardLibrarian
-                                    key={librarian.id}
-                                    resource={librarian}
-                                    handleClick={this.props.handleClick}
-                                    type="librarians"
-                                />
-                            );
-                        }
-                        return [];
-                    })
-                    .filter(librarian => {
-                        return (
-                            (librarian.length > 0 ||
-                            Object.keys(librarian).length > 0)
-                        );
+                librarians = this.props.parentState.userData.librarians.filter(librarian => {
+                    console.log({
+                        name: librarian.title,
+                        courseDepartment: courseData.academicDepartment[0].name,
                     });
 
+                    var departments = librarian.librarianData.academicDepartment.filter(dept => {
+                        return dept.name === courseData.academicDepartment[0].name;
+                    });
+
+                    return departments.length > 0;
+                });
             }
+
+            librarianCards = librarians.map(librarian => {
+                return (
+                    <CardLibrarian
+                        key={librarian.id}
+                        resource={librarian}
+                        userId={this.props.parentState.user.id}
+                        userFavorites={this.props.parentState.userData.userFavorites}
+                        handleClick={this.props.handleClick}
+                        type="librarians"
+                    />
+                );
+            });
         }
 
         if (0 === librarianCards.length) {
@@ -176,11 +179,11 @@ class ViewCourse extends React.Component {
                 {librarianCards.length > 0 ? <h2>Librarians</h2> : <div></div>}
                 <div className="card-container">{librarianCards}</div>
 
-                {printTypes(coreResourceTypes, this.props.handleClick, course)}
+                {printTypes(coreResourceTypes, this.props.handleClick, course, this.props.parentState.user.id, this.props.parentState.userData.userFavorites)}
 
                 <div className="card-container">{coreResourceCards}</div>
 
-                {printTypes(resourceTypes, this.props.handleClick, course)}
+                {printTypes(resourceTypes, this.props.handleClick, course, this.props.parentState.user.id, this.props.parentState.userData.userFavorites)}
 
                 {!resourcesCheck ? (
                     <div className="card-container">{resourceCards}</div>
@@ -199,7 +202,7 @@ class ViewCourse extends React.Component {
     }
 }
 
-function printTypes(types, click, course) {
+function printTypes(types, click, course, userId, userFavorites) {
     return Object.keys(types).map(key => (
         <div key={key + "wrapper"}>
             <h3 dangerouslySetInnerHTML={{ __html: key }}></h3>
@@ -211,6 +214,8 @@ function printTypes(types, click, course) {
                             key={resource.id}
                             courseSlug={course.slug}
                             resource={resource}
+                            userId={userId}
+                            userFavorites={userFavorites}
                             handleClick={click}
                             type="resources"
                         />

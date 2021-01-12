@@ -12,11 +12,14 @@ class CardResource extends Card {
                 : "/resources/");
         return (
             <Card
+                userId={this.props.userId}
+                userFavorites={this.props.userFavorites}
                 resource={this.props.resource}
                 externalUrl={this.props.resource.resourceData.url}
                 handleClick={this.props.handleClick}
                 type={this.props.type}
                 prefixUrl={prefixUrl}
+                {...this.props}
             />
         );
     }
