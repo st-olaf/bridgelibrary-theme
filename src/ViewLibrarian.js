@@ -2,10 +2,9 @@ import React from "react";
 import Meta from "./Meta.js";
 
 class ViewLibrarian extends React.Component {
-    // TODO: add phoot.
+    // TODO: add photo.
 
     render() {
-        console.log(this.props);
 
         return (
             <div className="entry-content clear">
