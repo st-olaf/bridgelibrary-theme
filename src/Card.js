@@ -7,10 +7,11 @@ class Card extends React.Component {
     constructor (props) {
         super(props);
 
+        var isFavorite;
         if ('undefined' === typeof props.userFavorites) {
-            var isFavorite = false;
+            isFavorite = false;
         } else {
-            var isFavorite = this.isFavorite(props.userFavorites);
+            isFavorite = this.isFavorite(props.userFavorites);
         }
 
         this.state = {
@@ -53,6 +54,7 @@ class Card extends React.Component {
                     <a
                         href={props.externalUrl}
                         target="_blank"
+                        rel="noopener noreferrer"
                         dangerouslySetInnerHTML={{
                             __html: props.resource.title
                         }}
