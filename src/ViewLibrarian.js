@@ -2,8 +2,6 @@ import React from "react";
 import Meta from "./Meta.js";
 
 class ViewLibrarian extends React.Component {
-    // TODO: add photo.
-
     render() {
 
         return (
