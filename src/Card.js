@@ -49,7 +49,7 @@ class Card extends React.Component {
 
     render() {
         function resourceCheck(props) {
-            if (props.type === "resources" || props.type === "primoFavorites") {
+            if (props.type === "resources" || props.type === "primoFavorites" ||  props.type === "userInterestFeed") {
                 return (
                     <a
                         href={props.externalUrl}
@@ -91,6 +91,7 @@ class Card extends React.Component {
                 {
                     this.props.type !== 'courses' &&
                     this.props.type !== 'librarians' &&
+                    this.props.type !== 'userInterestFeed' &&
                     <Favorite
                         userId={this.props.userId}
                         resourceId={this.props.resource.id}

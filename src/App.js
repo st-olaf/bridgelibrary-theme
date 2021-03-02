@@ -196,8 +196,7 @@ class App extends React.Component {
                     if (responseAsJson.data.resources.edges.length === 0) {
                         newResource = { title: "Resource Not Found" };
                     } else {
-                        newResource =
-                            responseAsJson.data.resources.edges[0].node;
+                        newResource = responseAsJson.data.resources.edges[0].node;
                     }
                     mergedData.resources.push(newResource);
                     this.setState({
@@ -475,6 +474,13 @@ class App extends React.Component {
         } else if ("fees" === this.state.view) {
             currentView = (
                 <ViewFee
+                    parentState={this.state}
+                    handleClick={this.handleClick}
+                />
+            );
+        } else if ("user-interest-feeds" === this.state.view) {
+            currentView = (
+                <ViewUserInterestFeeds
                     parentState={this.state}
                     handleClick={this.handleClick}
                 />

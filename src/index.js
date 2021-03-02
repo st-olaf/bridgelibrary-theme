@@ -212,6 +212,20 @@ function AppWrapper() {
                     />
                 )}
             />
+            <Route
+                exact
+                path="/user-interest-feeds/"
+                render={props => (
+                    <App
+                        key={key ? 1 : Date.now()}
+                        {...props}
+                        view={"user-interest-feeds"}
+                        data={data}
+                        error={queryError}
+                        errorMessage={errorMessage}
+                    />
+                )}
+            />
         </Router>
     );
 }

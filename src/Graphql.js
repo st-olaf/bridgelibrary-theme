@@ -31,6 +31,9 @@ export const USER_QUERY = gql`
                         circulationData
                         circulationDataCacheUpdated
                     }
+                    userInterestFeeds {
+                        ...UserInterestFeed
+                    }
                 }
             }
         }
@@ -142,6 +145,13 @@ export const USER_QUERY = gql`
                 }
             }
         }
+    }
+
+    fragment UserInterestFeed on UserInterestFeed {
+        id
+        feedName
+        slug
+        subscribeUrl
     }
 `;
 
