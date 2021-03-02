@@ -8,6 +8,7 @@ import ViewLoan from "./ViewLoan";
 import ViewRequest from "./ViewRequest";
 import ViewFee from "./ViewFee";
 import ViewSupport from "./ViewSupport";
+import ViewUserInterestFeeds from "./ViewUserInterestFeeds";
 import Sidebar from "./Sidebar.js";
 import Spinner from "./Spinner.js";
 import { GET_COURSES, GET_RESOURCES, GET_LIBRARIANS } from "./FetchData.js";
