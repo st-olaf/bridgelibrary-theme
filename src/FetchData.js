@@ -212,3 +212,20 @@ export let GET_LIBRARIANS = `query GetLibrarians($slug: String) {
       }
     }
   }`;
+
+
+export let GET_USERINTERESTFEEDS = `query GET_USERINTERESTFEEDS($userId: ID!) {
+    userInterestFeeds {
+        nodes {
+            id
+            feedName
+            slug
+            subscribeUrl(userId: $userId)
+            recentItems(userId: $userId) {
+                title
+                description
+                link
+            }
+        }
+    }
+}`;

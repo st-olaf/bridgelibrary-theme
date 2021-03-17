@@ -50,4 +50,12 @@
 			list-style-type: none;
 		}
 	}
+
+    &.userInterestFeed {
+        width: 100%;
+
+        h5 {
+            margin: 20px 0 0;
+        }
+    }
 }

@@ -152,6 +152,11 @@ export const USER_QUERY = gql`
         feedName
         slug
         subscribeUrl
+        recentItems {
+            title
+            description
+            link
+        }
     }
 `;
 

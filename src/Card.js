@@ -121,6 +121,9 @@ class Card extends React.Component {
                 {this.props.description && (
                     <p className="description">{this.props.description}</p>
                 )}
+                {this.props.extraContent && (
+                    <div className="extraContent">{this.props.extraContent}</div>
+                )}
             </div>
         );
     }
