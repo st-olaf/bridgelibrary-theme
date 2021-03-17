@@ -83,7 +83,9 @@ class Card extends React.Component {
         if (this.state.isFavorite) {
             classes.push("favorited");
         } else {
-            classes.splice(classes.indexOf("favorited"), 1);
+            if (classes.indexOf("favorited") > -1) {
+                classes.splice(classes.indexOf("favorited"), 1);
+            }
         }
 
         return (
