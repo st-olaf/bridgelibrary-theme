@@ -11,7 +11,7 @@ import ViewSupport from "./ViewSupport";
 import ViewUserInterestFeeds from "./ViewUserInterestFeeds";
 import Sidebar from "./Sidebar.js";
 import Spinner from "./Spinner.js";
-import { GET_COURSES, GET_RESOURCES, GET_LIBRARIANS } from "./FetchData.js";
+import { GET_COURSES, GET_RESOURCES, GET_LIBRARIANS, GET_USERINTERESTFEEDS } from "./FetchData.js";
 
 class App extends React.Component {
     constructor(props) {
@@ -127,18 +127,30 @@ class App extends React.Component {
         };
     }
 
+    getUserId() {
+        return this.user.id;
+    }
+
     fetchData() {
         var slugdata = this.getUrlSlug();
-        var fetchQuery;
+        var fetchQuery,
+            fetchVariables = {};
         switch (slugdata.type) {
             case "courses":
                 fetchQuery = GET_COURSES;
+                fetchVariables.slug = slugdata.slug;
                 break;
             case "resources":
                 fetchQuery = GET_RESOURCES;
+                fetchVariables.slug = slugdata.slug;
                 break;
             case "librarians":
                 fetchQuery = GET_LIBRARIANS;
+                fetchVariables.slug = slugdata.slug;
+                break;
+            case "user-interest-feeds":
+                fetchQuery = GET_USERINTERESTFEEDS;
+                fetchVariables.userId = this.getUserId();
                 break;
             default:
                 fetchQuery = "";
@@ -156,9 +168,7 @@ class App extends React.Component {
                 },
                 body: JSON.stringify({
                     query: fetchQuery,
-                    variables: {
-                        slug: slugdata.slug
-                    }
+                    variables: fetchVariables
                 })
             }
         ).then(response => response.json());
