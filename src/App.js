@@ -132,8 +132,8 @@ class App extends React.Component {
     }
 
     fetchData() {
-        var slugdata = this.getUrlSlug();
-        var fetchQuery,
+        var slugdata = this.getUrlSlug(),
+            fetchQuery,
             fetchVariables = {};
         switch (slugdata.type) {
             case "courses":
@@ -157,9 +157,7 @@ class App extends React.Component {
         }
         this.setState({ loading: true, error: null });
 
-        console.log('fetchData called');
-
-        let response = fetch(
+        fetch(
             "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql",
             {
                 method: "POST",
@@ -171,9 +169,9 @@ class App extends React.Component {
                     variables: fetchVariables
                 })
             }
-        ).then(response => response.json());
-
-        response.then(responseAsJson => {
+        )
+        .then(response => response.json())
+        .then(responseAsJson => {
             if (responseAsJson.errors) {
                 this.setState({
                     loading: false,
