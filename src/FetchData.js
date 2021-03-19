@@ -1,147 +1,120 @@
 import { USER_QUERY } from "./Graphql";
 
-export let GET_COURSES = `query GetCourses($slug: String) {
-                            courses(where: {name: $slug}, first: 1) {
-                              edges {
-                                node {
-                                  id
-                                  title
-                                  slug
-                                  courseData {
-                                    almaId,
-                                    courseCode,
-                                    courseNumber,
-                                    startDate,
-                                    endDate,
-                                    institution {
-                                      ... on Institution {
-                                        id,
-                                        name,
-                                      }
-                                    },
-                                    academicDepartment {
-                                      ... on AcademicDepartment {
-                                        id,
-                                        name,
-                                      }
-                                    },
-                                    courseTerm {
-                                      ... on CourseTerm {
-                                        id,
-                                        name,
-                                      }
-                                    },
-                                    coreResources {
-                                      ... on Resource {
-                                        id,
-                                        slug,
-                                        title,
-                                        content,
-                                        resourceData {
-                                          almaId,
-                                          primoId,
-                                          url,
-                                          imageUrl {
-                                            id,
-                                            altText,
-                                            sourceUrl,
-                                          },
-                                          primoImageUrl,
-                                          primoImageInfo,
-                                          author,
-                                          isbn,
-                                          publicationYear,
-                                          resourceFormat {
-                                            ... on ResourceFormat {
-                                              id,
-                                              name,
-                                            },
-                                          },
-                                          resourceType {
-                                            ... on ResourceType {
-                                              id,
-                                              name,
-                                              ancestors {
-                                                name,
-                                              },
-                                            },
-                                          },
-                                        },
-                                      },
-                                    },
-                                    relatedCoursesResources {
-                                      ... on Resource {
-                                        id,
-                                        slug,
-                                        title,
-                                        content,
-                                        resourceData {
-                                          almaId,
-                                          primoId,
-                                          url,
-                                          imageUrl {
-                                            id,
-                                            altText,
-                                            sourceUrl,
-                                          },
-                                          primoImageUrl,
-                                          primoImageInfo,
-                                          author,
-                                          isbn,
-                                          publicationYear,
-                                          resourceFormat {
-                                            ... on ResourceFormat {
-                                              id,
-                                              name,
-                                            },
-                                          },
-                                          resourceType {
-                                            ... on ResourceType {
-                                              id,
-                                              name,
-                                              ancestors {
-                                                name,
-                                              },
-                                            },
-                                          },
-                                        },
-                                      },
-									},
-									librarians {
-										... on Librarian {
-											id
-											slug
-											title
-											librarianData {
-												academicDepartment {
-													... on AcademicDepartment {
-														name
-													}
-												}
-												librarianUserId {
-													id
-													userData {
-														pictureUrl
-														librarian {
-															emailAddress
-															picture {
-																sourceUrl
-																title
-															}
-															phoneNumber
-															officeLocation
-															website
-														}
-													}
-												}
-											}
-										}
-									},
-                                  }
-                                }
-                              }
+export let GET_COURSES = `
+    query GetCourses($slug: String) {
+        courses(where: {name: $slug}, first: 1) {
+            edges {
+                node {
+                    id
+                    title
+                    slug
+                    courseData {
+                        almaId
+                        courseCode
+                        courseNumber
+                        startDate
+                        endDate
+                        institution {
+                            ... on Institution {
+                                id
+                                name
                             }
-                          }`;
+                        }
+                        academicDepartment {
+                            ... on AcademicDepartment {
+                                id
+                                name
+                            }
+                        }
+                        courseTerm {
+                            ... on CourseTerm {
+                                id
+                                name
+                            }
+                        }
+                        coreResources {
+                            ...Resource
+                        }
+                        relatedCoursesResources {
+                            ...Resource
+                        }
+                        librarians {
+                            ...Librarian
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fragment Librarian on Librarian {
+        id
+        slug
+        title
+        librarianData {
+            academicDepartment {
+                ... on AcademicDepartment {
+                    name
+                }
+            }
+            librarianUserId {
+                id
+                userData {
+                    pictureUrl
+                    librarian {
+                        emailAddress
+                        picture {
+                            sourceUrl
+                            title
+                        }
+                        phoneNumber
+                        officeLocation
+                        website
+                    }
+                }
+            }
+        }
+    }
+
+    fragment Resource on Resource {
+        id
+        slug
+        title
+        content
+        resourceData {
+            almaId
+            primoId
+            url
+            imageUrl {
+                id
+                altText
+                sourceUrl
+            }
+            primoImageUrl
+            primoImageInfo
+            author
+            isbn
+            publicationYear
+            resourceFormat {
+                ... on ResourceFormat {
+                    id
+                    name
+                }
+            }
+            resourceType {
+                ... on ResourceType {
+                    id
+                    name
+                    ancestors {
+                        nodes {
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
 
 export let GET_RESOURCES = `query GetResources($slug: String) {
     resources(where: {name: $slug}, first: 1) {
