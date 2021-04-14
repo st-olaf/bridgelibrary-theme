@@ -49,7 +49,7 @@ class Card extends React.Component {
 
     render() {
         function resourceCheck(props) {
-            if (props.type === "resources" || props.type === "primoFavorites" ||  props.type === "userInterestFeed") {
+            if (props.type === "resources" || props.type === "primoFavorites") {
                 return (
                     <a
                         href={props.externalUrl}
@@ -60,6 +60,8 @@ class Card extends React.Component {
                         }}
                     />
                 );
+            } else if (props.type === 'userInterestFeed') {
+                return props.resource.title;
             } else {
                 return (
                     <Link
@@ -107,7 +109,7 @@ class Card extends React.Component {
                 )}
 
                 {this.props.type === "resources" ||
-                this.props.type === "primoFavorites" ? (
+                this.props.type === "primoFavorites" || this.props.type === "userInterestFeed" ? (
                     <div></div>
                 ) : (
                     this.props.meta && (

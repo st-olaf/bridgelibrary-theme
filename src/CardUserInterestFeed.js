@@ -3,20 +3,20 @@ import Card from "./Card.js";
 
 class CardUserInterestFeed extends Card {
     render() {
-        const meta = [
-            {
-                type: "Feed URL",
-                value: this.props.resource.subscribeUrl,
-            }
-        ];
+        const meta = [];
 
         return (
             <Card
                 resource={this.props.resource}
-                externalUrl={this.props.resource.subscribeUrl}
                 meta={meta}
                 extraContent={
                     <div>
+                        <p className="contains-button">
+                            <a href={this.props.resource.subscribeUrl} className="button">
+                                <span class="dashicons dashicons-rss"></span>
+                                View Feed
+                            </a>
+                        </p>
                         <h4>Recent Items</h4>
                         {this.props.resource.recentItems.map(item => {
                             return <div>
