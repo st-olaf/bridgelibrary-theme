@@ -120,12 +120,23 @@ function single_course() {
 			$original_post     = $post;
 
 			echo '<h2>Related Resources</h2>';
-			echo '<div class="card-container">';
+
+			$resource_types = array();
+
 			foreach ( $related_resources as $resource_id ) {
 				$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				ob_start();
 				include 'template-parts/card-resource.php';
+				$content = ob_get_clean();
+
+				foreach ( wp_get_post_terms( $post->ID, 'resource_type' ) as $resource_type ) {
+					$resource_types[ $resource_type->name ] .= $content;
+				}
 			}
-			echo '</div>';
+
+			foreach ( $resource_types as $title => $content ) {
+				echo '<div><h3>' . esc_attr( $title ) . '</h3><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+			}
 
 			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 		}
