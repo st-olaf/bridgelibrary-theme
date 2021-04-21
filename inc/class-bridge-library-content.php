@@ -54,7 +54,7 @@ class Bridge_Library_Content {
 	public function page_content() {
 		if ( is_front_page() && ! is_user_logged_in() ) {
 			echo '<p id="bridge-login">Please <a href="' . esc_url( home_url( '/wp-login.php?gaautologin=true&redirect_to=' . home_url() ) ) . '"><img src="' . esc_url( get_stylesheet_directory_uri() . '/assets/img/sign-in-with-google.png' ) . '" alt="Sign in with Google" /></a> using your college Gmail account.</p>';
-		} elseif ( is_front_page() || in_array( get_post_type(), $this->post_types, true ) ) {
+		} elseif ( is_user_logged_in() && ( is_front_page() || in_array( get_post_type(), $this->post_types, true ) ) ) {
 			get_template_part( 'template-parts/react', 'none' );
 		}
 	}
