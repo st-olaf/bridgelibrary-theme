@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import ApolloClient from "apollo-boost";
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { ApolloProvider } from "@apollo/react-components";
 import App from "./App.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -9,13 +10,29 @@ import Spinner from "./Spinner.js";
 import Error from "./Error.js";
 import { useQuery } from "@apollo/react-hooks";
 
+const httpLink = createHttpLink({
+    uri: "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql",
+});
+
+const authLink = setContext((_, { headers }) => {
+    return {
+        headers: {
+            ...headers,
+            'Authorization': 'Bearer '+window.graphqlQuery.variables.token,
+        }
+    }
+});
+
 const client = new ApolloClient({
-    uri: "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql"
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache()
 });
 
 function DelayedQuery({ currentData, updateKey }) {
     const { loading } = useQuery(USER_QUERY, {
-        variables: { email: window.graphqlQuery.variables.email },
+        variables: {
+            email: window.graphqlQuery.variables.email,
+        },
         pollInterval: 10000
     });
     if (loading) return <p>Loading ...</p>;
@@ -25,7 +42,9 @@ function DelayedQuery({ currentData, updateKey }) {
 function AppWrapper() {
     const [key, setKey] = useState(false);
     const { loading, error, data } = useQuery(USER_QUERY, {
-        variables: { email: window.graphqlQuery.variables.email }
+        variables: {
+            email: window.graphqlQuery.variables.email,
+        }
     });
 
     if (loading) return <Spinner />;

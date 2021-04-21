@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.3.15",
     "@apollo/react-components": "^3.0.0",
     "@apollo/react-hooks": "^3.0.0",
     "@babel/core": "7.4.3",
