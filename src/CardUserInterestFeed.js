@@ -20,7 +20,7 @@ class CardUserInterestFeed extends Card {
                         <h4>Recent Items</h4>
                         {this.props.resource.recentItems.map(item => {
                             return <div>
-                                <h5><a href={item.link} target="_blank" rel="nofollow">{item.title}</a></h5>
+                                <h5><a href={item.link} target="_blank" rel="noopener noreferrer">{item.title}</a></h5>
                                 <p>{item.description}</p>
                             </div>
                         })}
