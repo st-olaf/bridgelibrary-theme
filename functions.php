@@ -81,6 +81,23 @@ function bridge_get_timestamp( $type, $user_id ) {
 function single_course() {
 	global $post;
 	if ( is_singular( 'course' ) ) {
+
+		$librarians = get_field( 'librarians' );
+		if ( ! empty( $librarians ) ) {
+			$librarians    = array_unique( $librarians );
+			$original_post = $post;
+
+			echo '<h2>Librarians</h2>';
+			echo '<div class="card-container">';
+			foreach ( $librarians as $librarian_id ) {
+				$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				include 'template-parts/card-resource.php';
+			}
+			echo '</div>';
+
+			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+		}
+
 		$core_resources = get_field( 'core_resources' );
 		if ( ! empty( $core_resources ) ) {
 			$core_resources = array_unique( $core_resources );
@@ -106,22 +123,6 @@ function single_course() {
 			echo '<div class="card-container">';
 			foreach ( $related_resources as $resource_id ) {
 				$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-				include 'template-parts/card-resource.php';
-			}
-			echo '</div>';
-
-			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-		}
-
-		$librarians = get_field( 'librarians' );
-		if ( ! empty( $librarians ) ) {
-			$librarians    = array_unique( $librarians );
-			$original_post = $post;
-
-			echo '<h2>Librarians</h2>';
-			echo '<div class="card-container">';
-			foreach ( $librarians as $librarian_id ) {
-				$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 				include 'template-parts/card-resource.php';
 			}
 			echo '</div>';
