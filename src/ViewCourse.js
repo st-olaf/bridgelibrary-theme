@@ -1,7 +1,6 @@
 import React from "react";
 import CardResource from "./CardResource.js";
 import CardLibrarian from "./CardLibrarian.js";
-import Meta from "./Meta.js";
 
 function formatDate(date) {
     var format = {
@@ -53,32 +52,9 @@ class ViewCourse extends React.Component {
             resourceCards = [],
             coreResourceCards = [],
             librarians = [],
-            librarianCards = [],
-            meta = [];
+            librarianCards = [];
 
         if ("undefined" !== typeof courseData && null !== courseData) {
-            meta = [
-                {
-                    type: "Start Date",
-                    value: formatDate(courseData.startDate)
-                },
-                {
-                    type: "End Date",
-                    value: formatDate(courseData.endDate)
-                },
-                {
-                    type: "Academic Department",
-                    value: courseData.academicDepartment["0"].name
-                },
-                {
-                    type: "Course Number",
-                    value: courseData.courseNumber
-                },
-                {
-                    type: "Description",
-                    value: courseData.description
-                }
-            ];
 
             if (
                 null !== courseData.relatedCoursesResources &&
