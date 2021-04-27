@@ -140,9 +140,13 @@ class ViewCourse extends React.Component {
                 {librarianCards.length > 0 ? <h2>Librarians</h2> : <div></div>}
                 <div className="card-container">{librarianCards}</div>
 
+                {Object.keys(coreResourceTypes).length > 0 ? <h2>Core Resources</h2> : <div></div>}
+
                 {printTypes(coreResourceTypes, this.props.handleClick, course, this.props.parentState.user.id, this.props.parentState.userData.userFavorites)}
 
                 <div className="card-container">{coreResourceCards}</div>
+
+                {Object.keys(resourceTypes).length > 0 ? <h2>Resources</h2> : <div></div>}
 
                 {printTypes(resourceTypes, this.props.handleClick, course, this.props.parentState.user.id, this.props.parentState.userData.userFavorites)}
 
@@ -151,7 +155,7 @@ class ViewCourse extends React.Component {
                 ) : (
                     <div>
                         {resourceCards.length > 0 ? (
-                            <h3>Other Resources</h3>
+                            <h2>Other Resources</h2>
                         ) : (
                             <div></div>
                         )}
