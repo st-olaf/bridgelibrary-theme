@@ -42,6 +42,7 @@ class Bridge_Library_Content {
 		add_action( 'astra_entry_content_404_page', array( $this, 'page_content' ) );
 
 		add_filter( 'the_content', array( $this, 'remove_content_if_logged_in' ) );
+		add_action( 'do_graphql_request', array( $this, 'unhook_loading_content' ) );
 	}
 
 	/**
@@ -57,6 +58,15 @@ class Bridge_Library_Content {
 		} elseif ( is_user_logged_in() && ( is_front_page() || in_array( get_post_type(), $this->post_types, true ) ) ) {
 			get_template_part( 'template-parts/react', 'none' );
 		}
+	}
+
+	/**
+	 * Remove content hook during GraphQL request.
+	 *
+	 * @return void
+	 */
+	public function unhook_loading_content() {
+		remove_filter( 'the_content', array( $this, 'remove_content_if_logged_in' ) );
 	}
 
 	/**
