@@ -2,19 +2,6 @@ import React from "react";
 import CardResource from "./CardResource.js";
 import CardLibrarian from "./CardLibrarian.js";
 
-function formatDate(date) {
-    var format = {
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-        },
-        y = date.substr(0, 4),
-        m = date.substr(4, 2),
-        d = date.substr(6, 2);
-    date = new Date(y, m, d);
-    return date.toLocaleDateString(undefined, format);
-}
-
 function groupResources(resources, resourceTypes, withoutType) {
     resources.forEach(resource => {
         if (null !== resource.resourceData.resourceType && resource.resourceData.resourceType.length > 0) {
