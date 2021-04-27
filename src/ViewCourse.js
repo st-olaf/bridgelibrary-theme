@@ -135,8 +135,6 @@ class ViewCourse extends React.Component {
             librarianCards = [];
         }
 
-        console.log(this.props);
-
         return (
             <div className="entry-content clear">
                 {librarianCards.length > 0 ? <h2>Librarians</h2> : <div></div>}
