@@ -3,37 +3,35 @@ import gql from "graphql-tag";
 export const USER_QUERY = gql`
     query GET_USERS($email: String) {
         users(where: { search: $email }, first: 1) {
-            edges {
-                node {
-                    id
-                    databaseId
-                    name
-                    email
-                    nicename
-                    userData {
-                        alternateId
-                        bridgeLibraryInstitution
-                        userFavorites {
-                            ...Resource
-                        }
-                        courses {
-                            ...Course
-                        }
-                        coursesCacheUpdated
-                        primoFavorites {
-                            ...Resource
-                        }
-                        primoFavoritesCacheUpdated
-                        librarians {
-                            ...Librarian
-                        }
-                        librariansCacheUpdated
-                        circulationData
-                        circulationDataCacheUpdated
+            nodes {
+                id
+                databaseId
+                name
+                email
+                nicename
+                userData {
+                    alternateId
+                    bridgeLibraryInstitution
+                    userFavorites {
+                        ...Resource
                     }
-                    userInterestFeeds {
-                        ...UserInterestFeed
+                    courses {
+                        ...Course
                     }
+                    coursesCacheUpdated
+                    primoFavorites {
+                        ...Resource
+                    }
+                    primoFavoritesCacheUpdated
+                    librarians {
+                        ...Librarian
+                    }
+                    librariansCacheUpdated
+                    circulationData
+                    circulationDataCacheUpdated
+                }
+                userInterestFeeds {
+                    ...UserInterestFeed
                 }
             }
         }

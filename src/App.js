@@ -20,8 +20,7 @@ class App extends React.Component {
         /**
          * Normalize circulation data
          */
-        var circulationData = this.props.data.users.edges[0].node.userData
-            .circulationData;
+        var circulationData = this.props.data.users.nodes[0].userData.circulationData;
 
         if ("string" === typeof circulationData) {
             circulationData = JSON.parse(circulationData);
@@ -42,31 +41,31 @@ class App extends React.Component {
         }
 
         this.state = {
-            user: this.props.data.users.edges[0].node,
-            userData: this.props.data.users.edges[0].node.userData,
+            user: this.props.data.users.nodes[0],
+            userData: this.props.data.users.nodes[0].userData,
             view: this.props.view,
             currentView: this.props.currentView,
             currentObject: this.getCurrentObject(
                 this.props.view,
-                this.props.data.users.edges[0].node.userData
+                this.props.data.users.nodes[0].userData
             ),
-            data: this.props.data.users.edges[0].node.userData,
+            data: this.props.data.users.nodes[0].userData,
             loading: false,
             error: null,
             fetchedData: {
-                courses: this.props.data.users.edges[0].node.userData.courses
-                    ? this.props.data.users.edges[0].node.userData.courses.slice(
+                courses: this.props.data.users.nodes[0].userData.courses
+                    ? this.props.data.users.nodes[0].userData.courses.slice(
                           0
                       )
                     : [],
                 resources: [
-                    this.props.data.users.edges[0].node.userData.courses
+                    this.props.data.users.nodes[0].userData.courses
                         ? this.allResources()
                         : []
                 ],
-                librarians: this.props.data.users.edges[0].node.userData
+                librarians: this.props.data.users.nodes[0].userData
                     .librarians
-                    ? this.props.data.users.edges[0].node.userData.librarians.slice(
+                    ? this.props.data.users.nodes[0].userData.librarians.slice(
                           0
                       )
                     : []
@@ -87,7 +86,7 @@ class App extends React.Component {
 
     allResources() {
         var courseResources = [];
-        this.props.data.users.edges[0].node.userData.courses.forEach(course => {
+        this.props.data.users.nodes[0].userData.courses.forEach(course => {
             if (null !== course.courseData.relatedCoursesResources) {
                 course.courseData.relatedCoursesResources.forEach(resource =>
                     courseResources.push(resource)
@@ -185,10 +184,10 @@ class App extends React.Component {
             switch (slugdata.type) {
                 case "courses":
                     var newCourse = {};
-                    if (responseAsJson.data.courses.edges.length === 0) {
+                    if (responseAsJson.data.courses.nodes.length === 0) {
                         newCourse = { title: "Course Not Found" };
                     } else {
-                        newCourse = responseAsJson.data.courses.edges[0].node;
+                        newCourse = responseAsJson.data.courses.nodes[0];
                     }
                     mergedData.courses.push(newCourse);
                     this.setState({
@@ -202,10 +201,10 @@ class App extends React.Component {
 
                 case "resources":
                     var newResource = {};
-                    if (responseAsJson.data.resources.edges.length === 0) {
+                    if (responseAsJson.data.resources.nodes.length === 0) {
                         newResource = { title: "Resource Not Found" };
                     } else {
-                        newResource = responseAsJson.data.resources.edges[0].node;
+                        newResource = responseAsJson.data.resources.nodes[0];
                     }
                     mergedData.resources.push(newResource);
                     this.setState({
@@ -219,11 +218,11 @@ class App extends React.Component {
 
                 case "librarians":
                     var newLibrarian = {};
-                    if (responseAsJson.data.librarians.edges.length === 0) {
+                    if (responseAsJson.data.librarians.nodes.length === 0) {
                         newLibrarian = { title: "Librarian Not Found" };
                     } else {
                         newLibrarian =
-                            responseAsJson.data.librarians.edges[0].node;
+                            responseAsJson.data.librarians.nodes[0];
                     }
                     mergedData.librarians.push(newLibrarian);
                     this.setState({

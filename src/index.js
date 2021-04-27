@@ -55,10 +55,10 @@ function AppWrapper() {
 	if (error) {
 		queryError = true;
 		errorMessage = error.message;
-	} else if (0 === data.users.edges.length) {
+	} else if (0 === data.users.nodes.length) {
         queryError = true;
         errorMessage = "User not found: " + window.graphqlQuery.variables.email;
-    } else if (data.users.edges[0].node.userData.courses === null || 0 === data.users.edges[0].node.userData.courses.length) {
+    } else if (data.users.nodes[0].userData.courses === null || 0 === data.users.nodes[0].userData.courses.length) {
         queryError = true;
         errorMessage = "You have no courses.";
 	}
@@ -87,7 +87,7 @@ function AppWrapper() {
     return (
         <Router>
             <DelayedQuery
-                currentData={data.users.edges[0].node.userData}
+                currentData={data.users.nodes[0].userData}
                 updateKey={setKey}
             />
 
