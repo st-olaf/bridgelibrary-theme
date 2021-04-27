@@ -108,8 +108,7 @@ class Card extends React.Component {
                     <h3 className="title">{resourceCheck(this.props)}</h3>
                 )}
 
-                {this.props.type === "resources" ||
-                this.props.type === "primoFavorites" || this.props.type === "userInterestFeed" ? (
+                {this.props.type === "resources" || this.props.type === "primoFavorites" || this.props.type === "userInterestFeed" ? (
                     <div></div>
                 ) : (
                     this.props.meta && (
