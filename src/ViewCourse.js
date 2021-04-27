@@ -25,6 +25,30 @@ function groupResources(resources, resourceTypes, withoutType) {
     });
 }
 
+function printTypes(types, click, course, userId, userFavorites) {
+    return Object.keys(types).map(key => (
+        <div key={key + "wrapper"}>
+            <h3 dangerouslySetInnerHTML={{ __html: key }}></h3>
+
+            <div className="card-container">
+                {types[key].map(resource => {
+                    return (
+                        <CardResource
+                            key={resource.id}
+                            courseSlug={course.slug}
+                            resource={resource}
+                            userId={userId}
+                            userFavorites={userFavorites}
+                            handleClick={click}
+                            type="resources"
+                        />
+                    );
+                })}
+            </div>
+        </div>
+    ));
+}
+
 class ViewCourse extends React.Component {
     render() {
 
@@ -165,30 +189,6 @@ class ViewCourse extends React.Component {
             </div>
         );
     }
-}
-
-function printTypes(types, click, course, userId, userFavorites) {
-    return Object.keys(types).map(key => (
-        <div key={key + "wrapper"}>
-            <h3 dangerouslySetInnerHTML={{ __html: key }}></h3>
-
-            <div className="card-container">
-                {types[key].map(resource => {
-                    return (
-                        <CardResource
-                            key={resource.id}
-                            courseSlug={course.slug}
-                            resource={resource}
-                            userId={userId}
-                            userFavorites={userFavorites}
-                            handleClick={click}
-                            type="resources"
-                        />
-                    );
-                })}
-            </div>
-        </div>
-    ));
 }
 
 export default ViewCourse;
