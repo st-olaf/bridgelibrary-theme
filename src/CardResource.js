@@ -3,13 +3,15 @@ import Card from "./Card.js";
 
 class CardResource extends Card {
     render() {
-        var prefixUrl =
-            (this.props.type === "resources"
-                ? "/courses/" + this.props.courseSlug
-                : "") +
-            (this.props.type === "primoFavorites"
-                ? "/primo-favorites/"
-                : "/resources/");
+        var description = this.props.resource.resourceData.description,
+            prefixUrl =
+                (this.props.type === "resources"
+                    ? "/courses/" + this.props.courseSlug
+                    : "") +
+                (this.props.type === "primoFavorites"
+                    ? "/primo-favorites/"
+                    : "/resources/");
+
         return (
             <Card
                 userId={this.props.userId}
@@ -19,6 +21,7 @@ class CardResource extends Card {
                 handleClick={this.props.handleClick}
                 type={this.props.type}
                 prefixUrl={prefixUrl}
+                description={description}
                 {...this.props}
             />
         );

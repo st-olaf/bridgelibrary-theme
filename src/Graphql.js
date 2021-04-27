@@ -127,6 +127,7 @@ export const USER_QUERY = gql`
             author
             isbn
             publicationYear
+            description
             resourceFormat {
                 ... on ResourceFormat {
                     id
