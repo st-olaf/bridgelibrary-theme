@@ -103,11 +103,6 @@ export let GET_COURSES = `
                 ... on ResourceType {
                     id
                     name
-                    ancestors {
-                        nodes {
-                            name
-                        }
-                    }
                 }
             }
         }

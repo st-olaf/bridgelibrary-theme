@@ -8,11 +8,6 @@ function groupResources(resources, resourceTypes, withoutType) {
             var typeName = "";
             resource.resourceData.resourceType.forEach(type => {
                 typeName = type.name;
-                if (type.ancestors !== null) {
-                    type.ancestors.forEach(ancestor => {
-                        typeName = ancestor.name + ": " + typeName;
-                    });
-                }
                 if (typeof resourceTypes[typeName] === "undefined") {
                     resourceTypes[typeName] = [resource];
                 } else {

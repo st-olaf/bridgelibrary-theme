@@ -136,11 +136,6 @@ export const USER_QUERY = gql`
                 ... on ResourceType {
                     id
                     name
-                    ancestors {
-                        nodes {
-                            name
-                        }
-                    }
                 }
             }
         }
