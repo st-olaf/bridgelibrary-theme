@@ -1,11 +1,12 @@
 import React from "react";
 import Card from "./Card.js";
 import CardCourse from "./CardCourse.js";
-import CardResource from "./CardResource.js";
+import CardFee from "./CardFee.js";
 import CardLibrarian from "./CardLibrarian.js";
 import CardLoan from "./CardLoan.js";
 import CardRequest from "./CardRequest.js";
-import CardFee from "./CardFee.js";
+import CardResource from "./CardResource.js";
+import CardUserInterestFeed from "./CardUserInterestFeed.js";
 import LastUpdated from "./LastUpdated.js";
 import ButtonShowAll from "./ButtonShowAll.js";
 import { BrowserRouter as Link } from "react-router-dom";
@@ -106,6 +107,9 @@ class CardContainer extends React.Component {
                     break;
                 case "fees":
                     card = <CardFee {...theseProps} />;
+                    break;
+                case "userInterestFeed":
+                    card = <CardUserInterestFeed {...theseProps} />;
                     break;
                 default:
                     card = <Card {...theseProps} />;

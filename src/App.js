@@ -8,9 +8,10 @@ import ViewLoan from "./ViewLoan";
 import ViewRequest from "./ViewRequest";
 import ViewFee from "./ViewFee";
 import ViewSupport from "./ViewSupport";
+import ViewUserInterestFeeds from "./ViewUserInterestFeeds";
 import Sidebar from "./Sidebar.js";
 import Spinner from "./Spinner.js";
-import { GET_COURSES, GET_RESOURCES, GET_LIBRARIANS } from "./FetchData.js";
+import { GET_COURSES, GET_RESOURCES, GET_LIBRARIANS, GET_USERINTERESTFEEDS } from "./FetchData.js";
 
 class App extends React.Component {
     constructor(props) {
@@ -126,27 +127,37 @@ class App extends React.Component {
         };
     }
 
+    getUserId() {
+        return this.user.id;
+    }
+
     fetchData() {
-        var slugdata = this.getUrlSlug();
-        var fetchQuery;
+        var slugdata = this.getUrlSlug(),
+            fetchQuery,
+            fetchVariables = {};
         switch (slugdata.type) {
             case "courses":
                 fetchQuery = GET_COURSES;
+                fetchVariables.slug = slugdata.slug;
                 break;
             case "resources":
                 fetchQuery = GET_RESOURCES;
+                fetchVariables.slug = slugdata.slug;
                 break;
             case "librarians":
                 fetchQuery = GET_LIBRARIANS;
+                fetchVariables.slug = slugdata.slug;
+                break;
+            case "user-interest-feeds":
+                fetchQuery = GET_USERINTERESTFEEDS;
+                fetchVariables.userId = this.getUserId();
                 break;
             default:
                 fetchQuery = "";
         }
         this.setState({ loading: true, error: null });
 
-        console.log('fetchData called');
-
-        let response = fetch(
+        fetch(
             "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql",
             {
                 method: "POST",
@@ -155,14 +166,12 @@ class App extends React.Component {
                 },
                 body: JSON.stringify({
                     query: fetchQuery,
-                    variables: {
-                        slug: slugdata.slug
-                    }
+                    variables: fetchVariables
                 })
             }
-        ).then(response => response.json());
-
-        response.then(responseAsJson => {
+        )
+        .then(response => response.json())
+        .then(responseAsJson => {
             if (responseAsJson.errors) {
                 this.setState({
                     loading: false,
@@ -196,8 +205,7 @@ class App extends React.Component {
                     if (responseAsJson.data.resources.edges.length === 0) {
                         newResource = { title: "Resource Not Found" };
                     } else {
-                        newResource =
-                            responseAsJson.data.resources.edges[0].node;
+                        newResource = responseAsJson.data.resources.edges[0].node;
                     }
                     mergedData.resources.push(newResource);
                     this.setState({
@@ -475,6 +483,13 @@ class App extends React.Component {
         } else if ("fees" === this.state.view) {
             currentView = (
                 <ViewFee
+                    parentState={this.state}
+                    handleClick={this.handleClick}
+                />
+            );
+        } else if ("user-interest-feeds" === this.state.view) {
+            currentView = (
+                <ViewUserInterestFeeds
                     parentState={this.state}
                     handleClick={this.handleClick}
                 />

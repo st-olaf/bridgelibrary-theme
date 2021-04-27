@@ -19,6 +19,11 @@
         width: calc(33% - 1em);
     }
 
+    .contains-button {
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+    }
+
     .favorite {
         position: absolute;
         top: 0.5em;
@@ -50,4 +55,12 @@
 			list-style-type: none;
 		}
 	}
+
+    &.userInterestFeed {
+        width: 100%;
+
+        h5 {
+            margin: 20px 0 0;
+        }
+    }
 }

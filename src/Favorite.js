@@ -15,9 +15,10 @@ function Favorite(props) {
                 title="Mark as Favorite"
                 onClick={e => {
                     e.preventDefault();
+                    var result;
 
                     if (props.isFavorite) {
-                        var result = removeFavorite({
+                        result = removeFavorite({
                             variables: {
                                 userId: props.userId,
                                 favoriteId: props.resourceId,
@@ -29,7 +30,7 @@ function Favorite(props) {
                         });
 
                     } else {
-                        var result = addFavorite({
+                        result = addFavorite({
                             variables: {
                                 userId: props.userId,
                                 favoriteId: props.resourceId,
