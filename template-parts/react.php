@@ -8,6 +8,16 @@
  * @since 1.0.0.0
  */
 
+/**
+ * Allow longer session times.
+ */
+add_filter(
+	'graphql_jwt_auth_expire',
+	function() {
+		return HOUR_IN_SECONDS;
+	}
+);
+
 $graphql_query = array(
 	'variables' => array(
 		'email' => wp_get_current_user()->user_email,
