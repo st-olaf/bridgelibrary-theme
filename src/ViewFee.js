@@ -3,7 +3,7 @@ import Meta from "./Meta.js";
 
 class ViewFee extends React.Component {
     render() {
-        var fee = this.props.parentState.userData.circulationData.fees.find(
+        var fee = this.props.parentState.circulationData.fees.find(
                 fee => {
                     return (fee.id = this.props.parentState.currentObject.id);
                 }

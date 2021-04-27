@@ -36,13 +36,12 @@ class App extends React.Component {
                     return loan;
                 });
             }
-
-            this.props.data.users.edges[0].node.userData.circulationData = circulationData;
         }
 
         this.state = {
             user: this.props.data.users.nodes[0],
             userData: this.props.data.users.nodes[0].userData,
+            circulationData: circulationData,
             view: this.props.view,
             currentView: this.props.currentView,
             currentObject: this.getCurrentObject(

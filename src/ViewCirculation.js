@@ -44,13 +44,13 @@ class ViewCirculation extends React.Component {
                 </p>
 
                 <CardContainer
-                    userData={this.props.parentState.userData.circulationData}
+                    userData={this.props.parentState.circulationData}
                     type="loans"
                     header="Checkouts"
                     handleClick={this.props.handleClick}
                 />
                 <CardContainer
-                    userData={this.props.parentState.userData.circulationData}
+                    userData={this.props.parentState.circulationData}
                     type="requests"
                     header="Requests"
                     handleClick={this.props.handleClick}

@@ -13,7 +13,7 @@ class ViewLoan extends React.Component {
     }
 
     render() {
-        var loan = this.props.parentState.userData.circulationData.loans.find(
+        var loan = this.props.parentState.circulationData.loans.find(
             loan => {
                 return loan.id === this.props.parentState.currentObject.id;
             }

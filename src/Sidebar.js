@@ -57,10 +57,8 @@ class Sidebar extends React.Component {
                                 </li>
                                 {widgets}
                                 {this.props.error ||
-                                typeof this.props.parentState.userData
-                                    .circulationData === "undefined" ||
-                                this.props.parentState.userData.circulationData
-                                    .length === 0 ? (
+                                typeof this.props.parentState.circulationData === "undefined" ||
+                                this.props.parentState.circulationData.length === 0 ? (
                                     <div></div>
                                 ) : (
                                     <CirculationWidget {...this.props} />

@@ -3,7 +3,7 @@ import Meta from "./Meta.js";
 
 class ViewRequest extends React.Component {
     render() {
-        var request = this.props.parentState.userData.circulationData.requests.find(
+        var request = this.props.parentState.circulationData.requests.find(
                 request => {
                     return (request.id = this.props.parentState.currentObject.id);
                 }

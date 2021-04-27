@@ -10,12 +10,14 @@ class ViewUserInterestFeeds extends React.Component {
 
         const userInterestFeedsCards = theseProps.userInterestFeeds.map(
             userInterestFeed => {
-                userInterestFeed.title = userInterestFeed.feedName;
+                // React doesn’t like it when we try to modify the userInterestFeed directly.
+                var modifiedUserInterestFeed = {...userInterestFeed};
+                modifiedUserInterestFeed.title = userInterestFeed.feedName;
 
                 return (
                     <CardUserInterestFeed
                         type='userInterestFeed'
-                        resource={userInterestFeed}
+                        resource={modifiedUserInterestFeed}
                         handleClick={this.props.handleClick}
                     />
                 );
