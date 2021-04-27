@@ -25,7 +25,15 @@ function groupResources(resources, resourceTypes, withoutType) {
     });
 }
 
+function sortObj(obj) {
+    return Object.keys(obj).sort().reduce(function (result, key) {
+        result[key] = obj[key];
+        return result;
+    }, {});
+}
+
 function printTypes(types, click, course, userId, userFavorites) {
+    types = sortObj(types);
     return Object.keys(types).map(key => (
         <div key={key + "wrapper"}>
             <h3 dangerouslySetInnerHTML={{ __html: key }}></h3>
