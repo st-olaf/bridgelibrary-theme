@@ -57,14 +57,13 @@ class Sidebar extends React.Component {
                                 </li>
                                 {widgets}
                                 {this.props.error ||
-                                typeof this.props.parentState.userData
-                                    .circulationData === "undefined" ||
-                                this.props.parentState.userData.circulationData
-                                    .length === 0 ? (
+                                typeof this.props.parentState.circulationData === "undefined" ||
+                                this.props.parentState.circulationData.length === 0 ? (
                                     <div></div>
                                 ) : (
                                     <CirculationWidget {...this.props} />
                                 )}
+                                <UserInterestFeedsWidget {...this.props} />
                             </ul>
                         </div>
                     </aside>
@@ -128,6 +127,26 @@ class CirculationWidget extends React.Component {
                     onClick={e => this.props.handleClick("", "circulation")}
                 >
                     Checkouts and Requests
+                </Link>
+            </li>
+        );
+    }
+}
+
+class UserInterestFeedsWidget extends React.Component {
+    render() {
+        var widgetClass = "menu-item";
+
+        if ("userInterestFeeds" === this.props.parentState.view) {
+            widgetClass += " current-menu-item";
+        }
+        return (
+            <li className={widgetClass}>
+                <Link
+                    to={"/user-interest-feeds/"}
+                    onClick={e => this.props.handleClick("", "user-interest-feeds")}
+                >
+                    User Interest Feeds
                 </Link>
             </li>
         );

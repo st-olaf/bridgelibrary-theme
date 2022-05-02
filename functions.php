@@ -81,6 +81,23 @@ function bridge_get_timestamp( $type, $user_id ) {
 function single_course() {
 	global $post;
 	if ( is_singular( 'course' ) ) {
+
+		$librarians = get_field( 'librarians' );
+		if ( ! empty( $librarians ) ) {
+			$librarians    = array_unique( $librarians );
+			$original_post = $post;
+
+			echo '<h2>Librarians</h2>';
+			echo '<div class="card-container">';
+			foreach ( $librarians as $librarian_id ) {
+				$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				include 'template-parts/card-resource.php';
+			}
+			echo '</div>';
+
+			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+		}
+
 		$core_resources = get_field( 'core_resources' );
 		if ( ! empty( $core_resources ) ) {
 			$core_resources = array_unique( $core_resources );
@@ -103,28 +120,23 @@ function single_course() {
 			$original_post     = $post;
 
 			echo '<h2>Related Resources</h2>';
-			echo '<div class="card-container">';
+
+			$resource_types = array();
+
 			foreach ( $related_resources as $resource_id ) {
 				$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				ob_start();
 				include 'template-parts/card-resource.php';
+				$content = ob_get_clean();
+
+				foreach ( wp_get_post_terms( $post->ID, 'resource_type' ) as $resource_type ) {
+					$resource_types[ $resource_type->name ] .= $content;
+				}
 			}
-			echo '</div>';
 
-			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-		}
-
-		$librarians = get_field( 'librarians' );
-		if ( ! empty( $librarians ) ) {
-			$librarians    = array_unique( $librarians );
-			$original_post = $post;
-
-			echo '<h2>Librarians</h2>';
-			echo '<div class="card-container">';
-			foreach ( $librarians as $librarian_id ) {
-				$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-				include 'template-parts/card-resource.php';
+			foreach ( $resource_types as $title => $content ) {
+				echo '<div><h3>' . esc_attr( $title ) . '</h3><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
 			}
-			echo '</div>';
 
 			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 		}
@@ -158,17 +170,3 @@ function single_resource() {
 	}
 }
 add_action( 'astra_entry_content_single', 'single_resource', 11 );
-
-/**
- * Filter out content if logged in.
- *
- * @param string $content Page Content.
- * @return string Return content.
- */
-function remove_content_if_logged_in( $content ) {
-	if ( is_user_logged_in() ) {
-		$content = '<h3> Loading... </h3>';
-	}
-	return $content;
-}
-add_filter( 'the_content', 'remove_content_if_logged_in' );

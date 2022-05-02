@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import ApolloClient from "apollo-boost";
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { ApolloProvider } from "@apollo/react-components";
 import App from "./App.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -9,13 +10,29 @@ import Spinner from "./Spinner.js";
 import Error from "./Error.js";
 import { useQuery } from "@apollo/react-hooks";
 
+const httpLink = createHttpLink({
+    uri: "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql",
+});
+
+const authLink = setContext((_, { headers }) => {
+    return {
+        headers: {
+            ...headers,
+            'Authorization': 'Bearer '+window.graphqlQuery.variables.token,
+        }
+    }
+});
+
 const client = new ApolloClient({
-    uri: "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql"
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache()
 });
 
 function DelayedQuery({ currentData, updateKey }) {
     const { loading } = useQuery(USER_QUERY, {
-        variables: { email: window.graphqlQuery.variables.email },
+        variables: {
+            email: window.graphqlQuery.variables.email,
+        },
         pollInterval: 10000
     });
     if (loading) return <p>Loading ...</p>;
@@ -25,7 +42,9 @@ function DelayedQuery({ currentData, updateKey }) {
 function AppWrapper() {
     const [key, setKey] = useState(false);
     const { loading, error, data } = useQuery(USER_QUERY, {
-        variables: { email: window.graphqlQuery.variables.email }
+        variables: {
+            email: window.graphqlQuery.variables.email,
+        }
     });
 
     if (loading) return <Spinner />;
@@ -36,10 +55,10 @@ function AppWrapper() {
 	if (error) {
 		queryError = true;
 		errorMessage = error.message;
-	} else if (0 === data.users.edges.length) {
+	} else if (0 === data.users.nodes.length) {
         queryError = true;
         errorMessage = "User not found: " + window.graphqlQuery.variables.email;
-    } else if (data.users.edges[0].node.userData.courses === null || 0 === data.users.edges[0].node.userData.courses.length) {
+    } else if (data.users.nodes[0].userData.courses === null || 0 === data.users.nodes[0].userData.courses.length) {
         queryError = true;
         errorMessage = "You have no courses.";
 	}
@@ -68,7 +87,7 @@ function AppWrapper() {
     return (
         <Router>
             <DelayedQuery
-                currentData={data.users.edges[0].node.userData}
+                currentData={data.users.nodes[0].userData}
                 updateKey={setKey}
             />
 
@@ -206,6 +225,20 @@ function AppWrapper() {
                         key={key ? 1 : Date.now()}
                         {...props}
                         view={queryError ? "error" : "support"}
+                        data={data}
+                        error={queryError}
+                        errorMessage={errorMessage}
+                    />
+                )}
+            />
+            <Route
+                exact
+                path="/user-interest-feeds/"
+                render={props => (
+                    <App
+                        key={key ? 1 : Date.now()}
+                        {...props}
+                        view={"user-interest-feeds"}
                         data={data}
                         error={queryError}
                         errorMessage={errorMessage}

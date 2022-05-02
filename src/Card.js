@@ -7,10 +7,11 @@ class Card extends React.Component {
     constructor (props) {
         super(props);
 
+        var isFavorite;
         if ('undefined' === typeof props.userFavorites) {
-            var isFavorite = false;
+            isFavorite = false;
         } else {
-            var isFavorite = this.isFavorite(props.userFavorites);
+            isFavorite = this.isFavorite(props.userFavorites);
         }
 
         this.state = {
@@ -53,11 +54,14 @@ class Card extends React.Component {
                     <a
                         href={props.externalUrl}
                         target="_blank"
+                        rel="noopener noreferrer"
                         dangerouslySetInnerHTML={{
                             __html: props.resource.title
                         }}
                     />
                 );
+            } else if (props.type === 'userInterestFeed') {
+                return props.resource.title;
             } else {
                 return (
                     <Link
@@ -81,7 +85,9 @@ class Card extends React.Component {
         if (this.state.isFavorite) {
             classes.push("favorited");
         } else {
-            classes.splice(classes.indexOf("favorited"), 1);
+            if (classes.indexOf("favorited") > -1) {
+                classes.splice(classes.indexOf("favorited"), 1);
+            }
         }
 
         return (
@@ -89,6 +95,7 @@ class Card extends React.Component {
                 {
                     this.props.type !== 'courses' &&
                     this.props.type !== 'librarians' &&
+                    this.props.type !== 'userInterestFeed' &&
                     <Favorite
                         userId={this.props.userId}
                         resourceId={this.props.resource.id}
@@ -101,8 +108,7 @@ class Card extends React.Component {
                     <h3 className="title">{resourceCheck(this.props)}</h3>
                 )}
 
-                {this.props.type === "resources" ||
-                this.props.type === "primoFavorites" ? (
+                {this.props.type === "resources" || this.props.type === "primoFavorites" || this.props.type === "userInterestFeed" ? (
                     <div></div>
                 ) : (
                     this.props.meta && (
@@ -115,6 +121,9 @@ class Card extends React.Component {
                 )}
                 {this.props.description && (
                     <p className="description">{this.props.description}</p>
+                )}
+                {this.props.extraContent && (
+                    <div className="extraContent">{this.props.extraContent}</div>
                 )}
             </div>
         );
