@@ -63,7 +63,7 @@ class Sidebar extends React.Component {
                                 ) : (
                                     <CirculationWidget {...this.props} />
                                 )}
-                                <UserInterestFeedsWidget {...this.props} />
+                                {/* <UserInterestFeedsWidget {...this.props} /> */}
                             </ul>
                         </div>
                     </aside>
