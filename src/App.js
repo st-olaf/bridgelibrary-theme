@@ -485,13 +485,13 @@ class App extends React.Component {
                     handleClick={this.handleClick}
                 />
             );
-        } else if ("user-interest-feeds" === this.state.view) {
-            currentView = (
-                <ViewUserInterestFeeds
-                    parentState={this.state}
-                    handleClick={this.handleClick}
-                />
-            );
+        // } else if ("user-interest-feeds" === this.state.view) {
+        //     currentView = (
+        //         <ViewUserInterestFeeds
+        //             parentState={this.state}
+        //             handleClick={this.handleClick}
+        //         />
+        //     );
         } else if ("support" === this.state.view) {
             currentView = (
                 <ViewSupport
