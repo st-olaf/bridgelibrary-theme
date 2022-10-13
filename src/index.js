@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { render } from "react-dom";
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { ApolloProvider } from "@apollo/react-components";
+import { ApolloProvider } from "@apollo/client";
 import App from "./App.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { USER_QUERY } from "./Graphql.js";
 import Spinner from "./Spinner.js";
 import Error from "./Error.js";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 const httpLink = createHttpLink({
     uri: "https://" + process.env.REACT_APP_API_DOMAIN + "/graphql",
