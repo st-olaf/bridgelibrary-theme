@@ -8,7 +8,6 @@ import ViewLoan from "./ViewLoan";
 import ViewRequest from "./ViewRequest";
 import ViewFee from "./ViewFee";
 import ViewSupport from "./ViewSupport";
-import ViewUserInterestFeeds from "./ViewUserInterestFeeds";
 import Sidebar from "./Sidebar.js";
 import Spinner from "./Spinner.js";
 import { GET_COURSES, GET_RESOURCES, GET_LIBRARIANS, GET_USERINTERESTFEEDS } from "./FetchData.js";
@@ -248,11 +247,6 @@ class App extends React.Component {
 
         if (0 === urlSlug.length) {
             urlSlug = url.pop() || url.pop();
-        }
-
-        // Handle resources nested under courses.
-        if ("resources" === type) {
-            var courseSlug = url[4];
         }
 
         switch (type) {

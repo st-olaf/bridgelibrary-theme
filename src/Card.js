@@ -1,7 +1,7 @@
 import React from "react";
 import Meta from "./Meta.js";
 import Favorite from "./Favorite.js";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Link } from "react-router-dom";
 
 class Card extends React.Component {
     constructor (props) {
