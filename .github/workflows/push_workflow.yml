@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - develop
+      - automate-builds
 
 jobs:
   build-js-production:
@@ -26,6 +27,21 @@ jobs:
     name: Build JavaScript/CSS for staging server
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v1
+      - name: NPM Build
+        run: |
+          npm install
+          npm run build
+      - name: Put built assets in Artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: assets
+          path: assets
+  build-js-test:
+    name: Build JavaScript/CSS for staging server
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/automate-builds'
     steps:
       - uses: actions/checkout@v1
       - name: NPM Build
