@@ -1,5 +1,4 @@
 import React from "react";
-import Meta from "./Meta.js";
 
 class ViewLibrarian extends React.Component {
     render() {

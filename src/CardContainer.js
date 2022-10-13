@@ -9,7 +9,6 @@ import CardResource from "./CardResource.js";
 import CardUserInterestFeed from "./CardUserInterestFeed.js";
 import LastUpdated from "./LastUpdated.js";
 import ButtonShowAll from "./ButtonShowAll.js";
-import { BrowserRouter as Link } from "react-router-dom";
 
 class CardContainer extends React.Component {
     constructor(props) {

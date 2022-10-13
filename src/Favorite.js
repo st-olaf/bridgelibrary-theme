@@ -1,6 +1,6 @@
 import React from "react";
 import { ADD_USER_FAVORITE, REMOVE_USER_FAVORITE } from "./Graphql.js";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 
 function Favorite(props) {
 
