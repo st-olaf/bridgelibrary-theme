@@ -43,19 +43,20 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/automate-builds'
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout repo
+        uses: actions/checkout@v2
       - name: NPM Build
         run: |
           npm ci
           npm run build
-      - name: Commit changes for PR
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: EndBug/add-and-commit@v9
-        with:
-          default_author: github_actions
-          ref: ${{ github.event.pull_request.head.ref }}
-          message: 'build production assets'
-          add: 'assets/js/* --force'
+    #   - name: Commit changes for PR
+    #     if: ${{ github.event_name == 'pull_request' }}
+    #     uses: EndBug/add-and-commit@v9
+    #     with:
+    #       default_author: github_actions
+    #       ref: ${{ github.event.pull_request.head.ref }}
+    #       message: 'build production assets'
+    #       add: 'assets/js/* --force'
       - name: Commit changes
         if: ${{ github.event_name != 'pull_request' }}
         uses: EndBug/add-and-commit@v9
