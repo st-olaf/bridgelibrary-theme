@@ -48,8 +48,9 @@ jobs:
         run: |
           npm ci
           npm run build
-      - name: Put built assets in Artifacts
-        uses: actions/upload-artifact@v1
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
         with:
-          name: assets
-          path: assets
+          default_author: github-actions
+          message: 'build production assets'
+          add: 'assets/js/* --force'
