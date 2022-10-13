@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - develop
-      - automate-builds
 
 jobs:
   build-js-production:
@@ -30,23 +29,6 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     steps:
       - uses: actions/checkout@v1
-      - name: NPM Build
-        run: |
-          npm ci
-          npm run build
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          default_author: github_actions
-          message: 'build production assets'
-          add: 'assets/js/* --force'
-  build-js-test:
-    name: Build JavaScript/CSS for staging server
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/automate-builds'
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
       - name: NPM Build
         run: |
           npm ci
