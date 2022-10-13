@@ -17,7 +17,7 @@ jobs:
       - name: NPM Build
         run: |
           npm ci
-          npm run build --loglevel=error
+          npm run build
       - name: Put built assets in Artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -32,7 +32,7 @@ jobs:
       - name: NPM Build
         run: |
           npm ci
-          npm run build --loglevel=error
+          npm run build
       - name: Put built assets in Artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -47,7 +47,7 @@ jobs:
       - name: NPM Build
         run: |
           npm ci
-          npm run build --loglevel=error
+          npm run build
       - name: Put built assets in Artifacts
         uses: actions/upload-artifact@v1
         with:
