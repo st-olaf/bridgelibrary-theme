@@ -1,0 +1,41 @@
+name: build-assets
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build-js-production:
+    name: Build JavaScript/CSS for production server
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v1
+      - name: NPM Build
+        run: |
+          npm ci
+          npm run build
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: 'build production assets'
+          add: 'assets/js/* --force'
+  build-js-develop:
+    name: Build JavaScript/CSS for staging server
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v1
+      - name: NPM Build
+        run: |
+          npm ci
+          npm run build
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: 'build production assets'
+          add: 'assets/js/* --force'

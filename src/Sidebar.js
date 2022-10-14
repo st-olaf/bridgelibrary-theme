@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Link } from "react-router-dom";
 
 class Sidebar extends React.Component {
     buildWidgets(course) {
@@ -88,8 +88,8 @@ class CourseWidget extends React.Component {
             var courseTitle = course.title;
 
             if ('undefined' !== typeof course.courseData.courseCode && null !== course.courseData.courseCode && course.courseData.courseCode.length > 0) {
-                var splitCode = course.courseData.courseCode.split("|"),
-                    courseTitle = splitCode[1] + " " + splitCode[2] + ": " + courseTitle;
+                var splitCode = course.courseData.courseCode.split("|");
+                courseTitle = splitCode[1] + " " + splitCode[2] + ": " + courseTitle;
             }
 
             return courseTitle;
@@ -127,26 +127,6 @@ class CirculationWidget extends React.Component {
                     onClick={e => this.props.handleClick("", "circulation")}
                 >
                     Checkouts and Requests
-                </Link>
-            </li>
-        );
-    }
-}
-
-class UserInterestFeedsWidget extends React.Component {
-    render() {
-        var widgetClass = "menu-item";
-
-        if ("userInterestFeeds" === this.props.parentState.view) {
-            widgetClass += " current-menu-item";
-        }
-        return (
-            <li className={widgetClass}>
-                <Link
-                    to={"/user-interest-feeds/"}
-                    onClick={e => this.props.handleClick("", "user-interest-feeds")}
-                >
-                    User Interest Feeds
                 </Link>
             </li>
         );

@@ -1,5 +1,3 @@
-import { USER_QUERY } from "./Graphql";
-
 export let GET_COURSES = `
     query GetCourses($slug: String) {
         courses(where: {name: $slug}, first: 1) {

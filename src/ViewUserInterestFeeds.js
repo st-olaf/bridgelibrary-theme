@@ -1,5 +1,4 @@
 import React from "react";
-import CardCourse from "./CardCourse.js";
 import CardUserInterestFeed from "./CardUserInterestFeed.js";
 
 class ViewUserInterestFeeds extends React.Component {
