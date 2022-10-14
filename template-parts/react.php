@@ -24,7 +24,6 @@ $graphql_query = array(
 		'token' => Bridge_Library_GraphQL_Authentication::get_user_token(),
 	),
 );
-wp_add_inline_script( 'bridge-graphql-main', 'var graphqlQuery = ' . wp_json_encode( $graphql_query ) . ';', 'before' );
 
-wp_enqueue_script( 'bridge-graphql-main' );
-wp_enqueue_script( 'bridge-graphql-react' );
+Bridge_Library_Assets::get_instance()->enqueue_assets();
+Bridge_Library_Assets::get_instance()->add_inline_script( 'var graphqlQuery = ' . wp_json_encode( $graphql_query ) . ';' );

@@ -6,6 +6,13 @@
  */
 
 /**
+ * Assets.
+ *
+ * @since 1.0.0.0
+ */
+require_once 'inc/class-bridge-library-assets.php';
+
+/**
  * Branding.
  *
  * @since 1.0.0.0
@@ -29,8 +36,8 @@ require_once 'inc/class-bridge-library-content.php';
 function bridge_custom_assets() {
 	wp_enqueue_style( 'bridge-child-styles', get_stylesheet_directory_uri() . '/assets/css/style.css', array(), wp_get_theme()->get( 'Version' ) );
 	wp_enqueue_style( 'source-sans-pro', 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i&display=swap' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-	wp_register_script( 'bridge-graphql-main', get_stylesheet_directory_uri() . '/assets/js/main.js', array(), wp_get_theme()->get( 'Version' ), true );
-	wp_register_script( 'bridge-graphql-react', get_stylesheet_directory_uri() . '/assets/js/1.chunk.js', array(), wp_get_theme()->get( 'Version' ), true );
+
+	Bridge_Library_Assets::get_instance()->register_assets();
 }
 add_action( 'wp_enqueue_scripts', 'bridge_custom_assets' );
 

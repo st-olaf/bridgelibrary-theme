@@ -7,28 +7,37 @@ on:
       - develop
 
 jobs:
-  build-js-production:
-    name: Build JavaScript/CSS for production server
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v1
-      - name: NPM Build
-        run: |
-          npm ci
-          npm run build
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          default_author: github_actions
-          message: 'build production assets'
-          add: 'assets/js/* --force'
   build-js-develop:
     name: Build JavaScript/CSS for staging server
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          ref: develop
+      - name: NPM Build
+        run: |
+          npm ci
+          mv .env.production .env.production-old
+          mv .env.development .env.production
+          npm run build
+          mv .env.production .env.development
+          mv .env.production-old .env.production
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: 'build production assets'
+          pull: -v
+          add: 'assets/js/* --force'
+  build-js-production:
+    name: Build JavaScript/CSS for production server
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: master
       - name: NPM Build
         run: |
           npm ci
@@ -38,4 +47,5 @@ jobs:
         with:
           default_author: github_actions
           message: 'build production assets'
+          pull: -v
           add: 'assets/js/* --force'
