@@ -26,6 +26,7 @@ jobs:
         with:
           default_author: github_actions
           message: 'build production assets'
+          pull: -v
           add: 'assets/js/* --force'
   build-js-production:
     name: Build JavaScript/CSS for production server
@@ -42,4 +43,5 @@ jobs:
         with:
           default_author: github_actions
           message: 'build production assets'
+          pull: -v
           add: 'assets/js/* --force'
