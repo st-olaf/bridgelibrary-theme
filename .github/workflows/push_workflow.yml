@@ -32,7 +32,11 @@ jobs:
       - name: NPM Build
         run: |
           npm ci
+          mv .env.production .env.production-old
+          mv .env.development .env.production
           npm run build
+          mv .env.production .env.development
+          mv .env.production-old .env.production
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
