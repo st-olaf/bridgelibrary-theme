@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { ApolloProvider } from "@apollo/client";
@@ -249,9 +249,10 @@ function AppWrapper() {
     );
 }
 
-render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
     <ApolloProvider client={client}>
         <AppWrapper />
-    </ApolloProvider>,
-    document.getElementById("root")
+    </ApolloProvider>
 );
