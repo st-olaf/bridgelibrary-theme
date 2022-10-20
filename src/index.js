@@ -4,7 +4,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { ApolloProvider } from "@apollo/client";
 import App from "./App.js";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { USER_QUERY } from "./Graphql.js";
 import Spinner from "./Spinner.js";
 import Error from "./Error.js";
@@ -91,160 +91,163 @@ function AppWrapper() {
                 updateKey={setKey}
             />
 
-            <Route
-                exact
-                path="/"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        data={data}
-                        view={"home"}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/courses/:slug"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"courses"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/courses/:course/resources/:slug"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"resources"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/primo-favorites/:slug"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={queryError ? "error" : "primoFavorites"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/librarians/:slug"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"librarians"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/circulation-data/"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"circulation"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/circulation-data/loans/:id"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"loans"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/circulation-data/requests/:id"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"requests"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/circulation-data/fees/:id"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"fees"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/support/"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={queryError ? "error" : "support"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/user-interest-feeds/"
-                render={props => (
-                    <App
-                        key={key ? 1 : Date.now()}
-                        {...props}
-                        view={"user-interest-feeds"}
-                        data={data}
-                        error={queryError}
-                        errorMessage={errorMessage}
-                    />
-                )}
-            />
+            <Routes>
+
+                <Route
+                    exact
+                    path="/"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            data={data}
+                            view={"home"}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/courses/:slug"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"courses"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/courses/:course/resources/:slug"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"resources"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/primo-favorites/:slug"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={queryError ? "error" : "primoFavorites"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/librarians/:slug"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"librarians"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/circulation-data/"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"circulation"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/circulation-data/loans/:id"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"loans"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/circulation-data/requests/:id"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"requests"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/circulation-data/fees/:id"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"fees"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/support/"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={queryError ? "error" : "support"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+                <Route
+                    exact
+                    path="/user-interest-feeds/"
+                    element={
+                        <App
+                            key={key ? 1 : Date.now()}
+                            // {...props}
+                            view={"user-interest-feeds"}
+                            data={data}
+                            error={queryError}
+                            errorMessage={errorMessage}
+                        />
+                    }
+                />
+            </Routes>
         </Router>
     );
 }
