@@ -137,7 +137,11 @@ function single_course() {
 				$content = ob_get_clean();
 
 				foreach ( wp_get_post_terms( $post->ID, 'resource_type' ) as $resource_type ) {
-					$resource_types[ $resource_type->name ] .= $content;
+					if ( array_key_exists( $resource_type->name, $resource_types ) ) {
+						$resource_types[ $resource_type->name ] .= $content;
+					} else {
+						$resource_types[ $resource_type->name ] = $content;
+					}
 				}
 			}
 
