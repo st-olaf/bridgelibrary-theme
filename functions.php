@@ -54,7 +54,45 @@ function bridge_get_timestamp( $type, $user_id ) {
 }
 
 /**
- * Displa the user’s home content.
+ * Display user-specific sidebar.
+ *
+ * @since 1.3.0
+ *
+ * @return void
+ */
+function display_user_sidebar() {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$courses = array_filter( (array) get_field( 'courses', 'user_' . get_current_user_id() ) );
+
+	?>
+	<aside class="widget widget_nav_menu">
+		<div class="menu-sidebar-container">
+			<ul id="menu-sidebar" class="menu">
+				<li class="menu-item current-menu-item"><a href="/"><?php esc_html_e( 'Home', 'bridge-library' ); ?></a></li>
+				<li class="menu-item"><a href="/"><?php esc_html_e( 'Courses', 'bridge-library' ); ?></a>
+					<ul class="sub-menu">
+						<?php
+						foreach ( $courses as $course ) {
+							?>
+								<li class="menu-item"><a href="<?php echo esc_url( get_permalink( $course ) ); ?>"><?php echo esc_attr( get_the_title( $course ) ); ?></a></li>
+							<?php
+						}
+						?>
+					</ul>
+				</li>
+				<li class="menu-item"><a href="/circulation-data/"><?php esc_html_e( 'Checkouts and Requests', 'bridge-library' ); ?></a></li>
+			</ul>
+		</div>
+	</aside>
+	<?php
+}
+add_action( 'astra_sidebars_after', 'display_user_sidebar' );
+
+/**
+ * Display the user’s home content.
  *
  * @since 1.3.0
  *
