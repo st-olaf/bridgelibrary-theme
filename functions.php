@@ -218,7 +218,7 @@ function single_course_page() {
 		echo '<div class="card-container">';
 		foreach ( $librarians as $librarian_id ) {
 			$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-			include 'template-parts/card-resource.php';
+			include 'template-parts/card-librarian.php';
 		}
 		echo '</div>';
 
@@ -288,6 +288,54 @@ function single_resource_page() {
 	}
 }
 add_action( 'astra_entry_content_single', 'single_resource_page', 11 );
+
+/**
+ * Add librarian data.
+ *
+ * @since 1.0.0
+ */
+function single_librarian() {
+	if ( ! is_singular( 'librarian' ) ) {
+		return;
+	}
+
+	$related_user = get_field( 'librarian_user_id' );
+	if ( is_object( $related_user ) ) {
+
+		$librarian_email_address   = get_field( 'librarian_email_address', 'user_' . $related_user->ID );
+		$librarian_phone_number    = get_field( 'librarian_phone_number', 'user_' . $related_user->ID );
+		$librarian_office_location = get_field( 'librarian_office_location', 'user_' . $related_user->ID );
+
+		$picture_url = get_field( 'librarian_picture_url', 'user_' . $related_user->ID );
+		$google_url  = get_field( 'picture_url', 'user_' . $related_user->ID );
+		$avatar_url  = get_avatar_url( $related_user->ID );
+
+		if ( ! empty( $picture_url ) ) {
+			echo '<img width="100" class="alignright manual image" src="' . esc_url( $picture_url ) . '" alt="Librarian" />';
+		} elseif ( ! empty( $google_url ) ) {
+			echo '<img width="100" class="alignright google image" src="' . esc_url( $google_url ) . '" alt="Librarian" />';
+		} elseif ( ! empty( $avatar_url ) ) {
+			echo '<img width="100" class="alignright avatar image" src="' . esc_url( $avatar_url ) . '" alt="Librarian" />';
+		}
+		?>
+		<ul class="meta">
+			<?php
+			if ( $librarian_email_address ) {
+				echo '<li class="email">' . esc_html__( 'Email Address', 'bridge-library' ) . ': <a href="mailto:' . esc_attr( $librarian_email_address ) . '">' . esc_attr( $librarian_email_address ) . '</a></li>';
+			}
+			if ( $librarian_phone_number ) {
+				echo '<li class="email">' . esc_html__( 'Phone Number', 'bridge-library' ) . ': ' . esc_attr( $librarian_phone_number ) . '</li>';
+			}
+			if ( $librarian_office_location ) {
+				echo '<li class="email">' . esc_html__( 'Office Location', 'bridge-library' ) . ': ' . esc_attr( $librarian_office_location ) . '</li>';
+			}
+			?>
+		</ul>
+		<p class="description"><?php the_field( 'biography', 'user_' . $related_user->ID ); ?></p>
+		<?php
+	}
+}
+add_action( 'astra_entry_content_single', 'single_librarian', 11 );
 
 /**
  * Display user’s circulation data.
