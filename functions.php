@@ -20,13 +20,6 @@ require_once 'inc/class-bridge-library-assets.php';
 require_once 'inc/class-bridge-library-branding.php';
 
 /**
- * Content.
- *
- * @since 1.0.0.0
- */
-require_once 'inc/class-bridge-library-content.php';
-
-/**
  * Enqueue custom styles.
  *
  * @since 1.0.0.0
@@ -40,26 +33,6 @@ function bridge_custom_assets() {
 	Bridge_Library_Assets::get_instance()->register_assets();
 }
 add_action( 'wp_enqueue_scripts', 'bridge_custom_assets' );
-
-/**
- * Add div#root for React.
- */
-add_action(
-	'astra_content_top',
-	function() {
-		echo '<div id="root">';
-	}
-);
-
-/**
- * Close div#root.
- */
-add_action(
-	'astra_content_bottom',
-	function() {
-		echo '</div><!-- div#root -->';
-	}
-);
 
 /**
  * Get cache timestamp.
@@ -78,6 +51,113 @@ function bridge_get_timestamp( $type, $user_id ) {
 	}
 
 	return DateTime::createFromFormat( 'U', $cache_date );
+}
+
+/**
+ * Displa the user’s home content.
+ *
+ * @since 1.3.0
+ *
+ * @param string $content Content.
+ *
+ * @return string
+ */
+function display_home_content( string $content ) {
+	if ( ! is_user_logged_in() ) {
+		return $content . '<p id="bridge-login">Please <a href="' . esc_url( home_url( '/wp-login.php?gaautologin=true&redirect_to=' . home_url() ) ) . '"><img src="' . esc_url( get_stylesheet_directory_uri() . '/assets/img/sign-in-with-google.png' ) . '" alt="Sign in with Google" /></a> using your college Gmail account.</p>';
+	}
+
+	global $post;
+	$user_id       = get_current_user_id();
+	$original_post = $post;
+
+	// Prevent recursive filtering.
+	remove_filter( 'the_content', 'display_home_content' );
+
+	// Load content.
+	$user_favorites  = array_filter( (array) get_field( 'user_favorites', 'user_' . $user_id ) );
+	$courses         = array_filter( (array) get_field( 'courses', 'user_' . $user_id ) );
+	$primo_favorites = array_filter( (array) get_field( 'primo_favorites', 'user_' . $user_id ) );
+
+	ob_start();
+
+	if ( $user_favorites ) {
+		?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
+			<p class="meta">
+				<?php
+				// Translators: %s is the timestamp.
+				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'user_favorite', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+				?>
+			</p>
+			<div class="card-container">
+				<?php
+				foreach ( $user_favorites as $user_favorite ) {
+					$post = get_post( $user_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					switch ( get_post_type( $post ) ) {
+						case 'course':
+							include 'template-parts/card-course.php';
+							break;
+
+						case 'resource':
+							include 'template-parts/card-resource.php';
+							break;
+					}
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	if ( $courses ) {
+		?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( 'Courses', 'bridge-library' ); ?></h2>
+			<p class="meta">
+				<?php
+				// Translators: %s is the timestamp.
+				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'course', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+				?>
+			</p>
+			<div class="card-container">
+				<?php
+				foreach ( $courses as $course ) {
+					$post = get_post( $course ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					include 'template-parts/card-course.php';
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	if ( $primo_favorites ) {
+		?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( 'Catalyst Favorites', 'bridge-library' ); ?></h2>
+			<p class="meta">
+				<?php
+				// Translators: %s is the timestamp.
+				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorite', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+				?>
+			</p>
+			<div class="card-container">
+				<?php
+				foreach ( $primo_favorites as $primo_favorite ) {
+					$post     = get_post( $primo_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					$favorite = true; // Used in the template.
+					include 'template-parts/card-resource.php';
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	return $content . ob_get_clean();
 }
 
 /**
