@@ -187,32 +187,18 @@ function single_course_page() {
 		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
 
-	$core_resources = get_field( 'core_resources' );
-	if ( ! empty( $core_resources ) ) {
-		$core_resources = array_unique( $core_resources );
-		$original_post  = $post;
-
-		echo '<h2>Core Resources</h2>';
-		echo '<div class="card-container">';
-		foreach ( $core_resources as $resource_id ) {
-			$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-			include 'template-parts/card-resource.php';
-		}
-		echo '</div>';
-
-		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-	}
-
+	$core_resources    = get_field( 'core_resources' );
 	$related_resources = get_field( 'related_courses_resources' );
-	if ( ! empty( $related_resources ) ) {
-		$related_resources = array_unique( $related_resources );
-		$original_post     = $post;
+	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
+	if ( ! empty( $all_resources ) ) {
+		$all_resources = array_unique( $all_resources );
+		$original_post = $post;
 
-		echo '<h2>Related Resources</h2>';
+		echo '<h2>Resources</h2>';
 
 		$resource_types = array();
 
-		foreach ( $related_resources as $resource_id ) {
+		foreach ( $all_resources as $resource_id ) {
 			$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 			ob_start();
 			include 'template-parts/card-resource.php';
