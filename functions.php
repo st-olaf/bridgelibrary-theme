@@ -114,7 +114,7 @@ function display_home_content( string $content ) {
 	if ( $courses ) {
 		?>
 		<div class="bridge-card-container">
-			<h2><?php esc_html_e( 'Courses', 'bridge-library' ); ?></h2>
+			<h2><?php esc_html_e( 'Current Courses', 'bridge-library' ); ?></h2>
 			<p class="meta">
 				<?php
 				// Translators: %s is the timestamp.
