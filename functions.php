@@ -187,8 +187,8 @@ function single_course_page() {
 		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
 
-	$core_resources    = get_field( 'core_resources' );
-	$related_resources = get_field( 'related_courses_resources' );
+	$core_resources    = array_filter( (array) get_field( 'core_resources' ) );
+	$related_resources = array_filter( (array) get_field( 'related_courses_resources' ) );
 	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
 	if ( ! empty( $all_resources ) ) {
 		$all_resources = array_unique( $all_resources );
