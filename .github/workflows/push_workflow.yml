@@ -7,8 +7,8 @@ on:
       - develop
 
 jobs:
-  build-js-develop:
-    name: Build JavaScript/CSS for staging server
+  build-assets-develop:
+    name: Build assets for staging server
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:
@@ -18,20 +18,16 @@ jobs:
       - name: NPM Build
         run: |
           npm ci
-          mv .env.production .env.production-old
-          mv .env.development .env.production
           npm run build
-          mv .env.production .env.development
-          mv .env.production-old .env.production
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          message: 'build production assets'
+          message: 'build staging assets'
           pull: -v
-          add: 'assets/js/* --force'
-  build-js-production:
-    name: Build JavaScript/CSS for production server
+          add: 'assets/* --force'
+  build-assets-production:
+    name: Build assets for production server
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
@@ -48,4 +44,4 @@ jobs:
           default_author: github_actions
           message: 'build production assets'
           pull: -v
-          add: 'assets/js/* --force'
+          add: 'assets/* --force'
