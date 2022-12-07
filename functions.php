@@ -85,7 +85,7 @@ function bridge_get_timestamp( $type, $user_id ) {
  *
  * @since 1.0.0
  */
-function single_course() {
+function single_course_page() {
 	global $post;
 	if ( ! is_singular( 'course' ) ) {
 		return;
@@ -154,14 +154,14 @@ function single_course() {
 		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
 }
-add_action( 'astra_entry_content_single', 'single_course', 11 );
+add_action( 'astra_entry_content_single', 'single_course_page', 11 );
 
 /**
  * Add related courses to single course views.
  *
  * @since 1.0.0
  */
-function single_resource() {
+function single_resource_page() {
 	global $post;
 	if ( ! is_singular( 'resource' ) ) {
 		return;
@@ -183,4 +183,4 @@ function single_resource() {
 		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
 }
-add_action( 'astra_entry_content_single', 'single_resource', 11 );
+add_action( 'astra_entry_content_single', 'single_resource_page', 11 );
