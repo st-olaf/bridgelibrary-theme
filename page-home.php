@@ -21,7 +21,7 @@ add_filter( 'the_content', 'display_home_content' );
 
 get_header(); ?>
 
-<?php if ( astra_page_layout() == 'left-sidebar' ) : ?>
+<?php if ( 'left-sidebar' === astra_page_layout() ) : ?>
 
 	<?php get_sidebar(); ?>
 
@@ -37,7 +37,7 @@ get_header(); ?>
 
 	</div><!-- #primary -->
 
-<?php if ( astra_page_layout() == 'right-sidebar' ) : ?>
+<?php if ( 'right-sidebar' === astra_page_layout() ) : ?>
 
 	<?php get_sidebar(); ?>
 
