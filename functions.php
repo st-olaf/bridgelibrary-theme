@@ -194,7 +194,7 @@ function single_course_page() {
 		$all_resources = array_unique( $all_resources );
 		$original_post = $post;
 
-		echo '<h2>Resources</h2>';
+		echo '<h2>' . esc_attr__( 'Resources', 'bridge-library' ) . '</h2>';
 
 		$resource_types = array();
 
