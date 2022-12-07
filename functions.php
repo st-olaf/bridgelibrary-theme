@@ -288,3 +288,95 @@ function single_resource_page() {
 	}
 }
 add_action( 'astra_entry_content_single', 'single_resource_page', 11 );
+
+/**
+ * Display user’s circulation data.
+ *
+ * @since 1.3.0
+ *
+ * @return void
+ */
+function display_circulation_data_content() {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+
+	$circulation_data = json_decode( get_field( 'circulation_data', 'user_' . $user_id ) );
+
+	?>
+	<p className="bridge-info">
+		<?php esc_html_e( 'For renewals, request cancellations, and more options, please visit', 'bridge-library' ); ?>
+		<a class="catalyst-link carleton" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:CCO&lang=en">
+			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
+		</a>
+		<a class="catalyst-link stolaf" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:SOC&lang=en">
+			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
+		</a>
+	</p>
+
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Checkouts', 'bridge-library' ); ?></h2>
+
+		<div class="card-container">
+			<?php
+			if ( empty( $circulation_data->loans ) ) {
+				display_no_results( __( 'loans', 'bridge-library' ) );
+			} else {
+				foreach ( $circulation_data->loans as $loan ) {
+					include 'template-parts/card-loan.php';
+				}
+			}
+			?>
+		</div>
+	</div>
+
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Requests', 'bridge-library' ); ?></h2>
+
+		<div class="card-container">
+			<?php
+			if ( empty( $circulation_data->requests ) ) {
+				display_no_results( __( 'requests', 'bridge-library' ) );
+			} else {
+				foreach ( $circulation_data->requests as $loan ) {
+					include 'template-parts/card-loan.php';
+				}
+			}
+			?>
+		</div>
+	</div>
+
+	<h2><?php esc_html_e( 'Interlibrary Loan', 'bridge-library' ); ?></h2>
+	<p class="bridge-no-results">
+		<?php esc_html_e( 'We are not currently importing your Interlibrary Loan account information into myLibrary (though we plan to do that soon!).  In the meantime, you can view your account information here:', 'bridge-library' ); ?>
+		<a class="ill-link carleton" href="https://apps.carleton.edu/campus/library/ill/">
+			<?php esc_html_e( 'Interlibrary Loan Requests', 'bridge-library' ); ?>
+		</a>
+		<a class="ill-link stolaf" href="https://ezproxy.stolaf.edu/login?url=https://stolaf.illiad.oclc.org/illiad/illiad.dll">
+			<?php esc_html_e( 'Interlibrary Loan Requests', 'bridge-library' ); ?>
+		</a>
+	</p>
+	<?php
+}
+
+/**
+ * Display a no-results message.
+ *
+ * @since 1.3.0
+ *
+ * @param string $type Plural type of resource.
+ *
+ * @return void
+ */
+function display_no_results( string $type ) {
+	echo wp_kses_post(
+		sprintf(
+			// Translators: %1$s is the type passed into the function; %2$s is the hyperlink to the form.
+			__( 'We didn’t find any %1$s for your account. Please %2$ssubmit a feedback form</a> if you think that is an error!', 'bridge-library' ),
+			$type,
+			'<a href="https://docs.google.com/forms/d/e/1FAIpQLSe1G0muhWFoVZ_4_AEPzr-ms7Trdk3YWO_cxF62vki9nqP-eQ/viewform?usp=sf_link">'
+		)
+	);
+}
