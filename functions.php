@@ -69,7 +69,7 @@ add_action(
  * @param string $type    CPT type.
  * @param int    $user_id WP user ID.
  *
- * @return int            Unix timestamp.
+ * @return DateTime            Unix timestamp.
  */
 function bridge_get_timestamp( $type, $user_id ) {
 	$cache_date = get_field( $type . '_cache_updated', 'user_' . $user_id );
@@ -77,7 +77,7 @@ function bridge_get_timestamp( $type, $user_id ) {
 		$cache_date = time();
 	}
 
-	return $cache_date;
+	return DateTime::createFromFormat( 'U', $cache_date );
 }
 
 /**
