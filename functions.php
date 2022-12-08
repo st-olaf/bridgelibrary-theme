@@ -141,7 +141,7 @@ function display_home_content( string $content ) {
 			<p class="meta">
 				<?php
 				// Translators: %s is the timestamp.
-				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'course', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) );
 				?>
 			</p>
 			<div class="card-container">
@@ -163,7 +163,7 @@ function display_home_content( string $content ) {
 			<p class="meta">
 				<?php
 				// Translators: %s is the timestamp.
-				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorite', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorites', $user_id )->format( 'F j, Y g:i:s a' ) ) );
 				?>
 			</p>
 			<div class="card-container">
