@@ -21,4 +21,15 @@ if ( isset( $force_favorite ) && $force_favorite ) {
 		</div>
 	</div>
 	<h3 class="title"><a href="<?php echo esc_url( get_field( 'url' ) ); ?>"><?php the_title(); ?></a></h3>
+	<?php
+	$meta = array(
+		get_field( 'author' ),
+		get_field( 'publication_year' ),
+		implode( ', ', wp_list_pluck( get_the_term_list( get_the_ID(), 'resource_format' ), 'term_name' ) ),
+	);
+
+	if ( ! empty( $meta ) ) {
+		echo '<p class="meta">' . esc_attr( implode( ' ', $meta ) ) . '</p>';
+	}
+	?>
 </div>
