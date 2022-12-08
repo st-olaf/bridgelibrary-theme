@@ -36,9 +36,9 @@
         }
     }
 
-    &.favorited .dashicons {
-        color: $color-red;
-    }
+	&.favorited .favorite .dashicons {
+		color: $color-red;
+	}
 
     &.librarian {
         img {

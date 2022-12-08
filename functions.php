@@ -175,8 +175,8 @@ function display_home_content( string $content ) {
 			<div class="card-container">
 				<?php
 				foreach ( $primo_favorites as $primo_favorite ) {
-					$post     = get_post( $primo_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-					$favorite = true; // Used in the template.
+					$post           = get_post( $primo_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					$force_favorite = true; // Used in the template.
 					include 'template-parts/card-resource.php';
 				}
 				?>
