@@ -110,6 +110,12 @@ function display_home_content( string $content ) {
 
 	ob_start();
 
+	if ( bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) {
+		if ( ! ( new DateTimeImmutable() )->diff( bridge_get_timestamp( 'courses', $user_id ) )->days < 7 ) {
+			echo '<h2>' . esc_html__( 'Your Content', 'bridge-library' ) . '</h2><p>' . esc_html__( 'It looks like you haven’t logged in recently; please refresh the page to get fresh data', 'bridge-library' ) . '.</p>';
+		}
+	}
+
 	if ( $user_favorites ) {
 		?>
 		<div class="bridge-card-container">
