@@ -33,7 +33,7 @@ add_action( 'wp_enqueue_scripts', 'bridge_custom_assets' );
  * @param string $type    CPT type.
  * @param int    $user_id WP user ID.
  *
- * @return DateTime            Unix timestamp.
+ * @return DateTimeImmutable|false
  */
 function bridge_get_timestamp( $type, $user_id ) {
 	$cache_date = get_field( $type . '_cache_updated', 'user_' . $user_id );
@@ -41,7 +41,7 @@ function bridge_get_timestamp( $type, $user_id ) {
 		$cache_date = time();
 	}
 
-	return DateTime::createFromFormat( 'U', $cache_date );
+	return DateTimeImmutable::createFromFormat( 'U', $cache_date );
 }
 
 /**
