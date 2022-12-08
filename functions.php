@@ -114,12 +114,6 @@ function display_home_content( string $content ) {
 		?>
 		<div class="bridge-card-container">
 			<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
-			<p class="meta">
-				<?php
-				// Translators: %s is the timestamp.
-				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'user_favorite', $user_id )->format( 'F j, Y g:i:s a' ) ) );
-				?>
-			</p>
 			<div class="card-container">
 				<?php
 				foreach ( $user_favorites as $user_favorite ) {
