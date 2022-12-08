@@ -22,8 +22,6 @@ require_once 'inc/class-bridge-library-branding.php';
 function bridge_custom_assets() {
 	wp_enqueue_style( 'bridge-child-styles', get_stylesheet_directory_uri() . '/assets/css/bridge-library-theme.css', array(), wp_get_theme()->get( 'Version' ) );
 	wp_enqueue_style( 'source-sans-pro', 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i&display=swap' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-
-	wp_enqueue_script( 'bridge-library', get_stylesheet_directory_uri() . '/assets/js/bridge-library-theme.js', array( 'jquery' ), wp_get_theme()->get( 'Version' ), true );
 }
 add_action( 'wp_enqueue_scripts', 'bridge_custom_assets' );
 
