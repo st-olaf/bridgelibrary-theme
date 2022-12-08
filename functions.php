@@ -200,6 +200,38 @@ function single_course_page() {
 		return;
 	}
 
+	$meta = array();
+
+	$instructors = get_field( 'instructors' );
+	if ( ! empty( $instructors ) ) {
+		$meta[] = array(
+			'label' => _n( 'Professor', 'Professors', count( $instructors ), 'bridge-library' ),
+			'value' => implode( ', ', wp_list_pluck( $instructors, 'name' ) ),
+		);
+	}
+
+	if ( get_field( 'course_section' ) ) {
+		$meta[] = array(
+			'label' => __( 'Section', 'bridge-library' ),
+			'value' => get_field( 'course_section' ),
+		);
+	}
+
+	if ( get_field( 'course_term' ) ) {
+		$meta[] = array(
+			'label' => __( 'Term', 'bridge-library' ),
+			'value' => implode( ', ', wp_list_pluck( get_the_terms( get_the_ID(), 'course_term' ), 'name' ) ),
+		);
+	}
+
+	if ( ! empty( $meta ) ) {
+		echo '<ul class="meta">';
+		foreach ( $meta as $meta_item ) {
+			echo '<li><strong>' . esc_attr( $meta_item['label'] ) . '</strong>: ' . esc_attr( $meta_item['value'] ) . '</li>';
+		}
+		echo '</ul>';
+	}
+
 	$librarians = get_field( 'librarians' );
 	if ( ! empty( $librarians ) ) {
 		$librarians    = array_unique( $librarians );
