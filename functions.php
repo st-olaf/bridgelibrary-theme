@@ -285,8 +285,6 @@ function single_course_page() {
 		$all_resources = array_unique( $all_resources );
 		$original_post = $post;
 
-		echo '<h2>' . esc_attr__( 'Resources', 'bridge-library' ) . '</h2>';
-
 		$resource_types = array();
 
 		foreach ( $all_resources as $resource_id ) {
@@ -305,7 +303,7 @@ function single_course_page() {
 		}
 
 		foreach ( $resource_types as $title => $content ) {
-			echo '<div><h3>' . esc_attr( $title ) . '</h3><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+			echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
 		}
 
 		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
