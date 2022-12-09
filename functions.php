@@ -179,7 +179,7 @@ function display_home_content( string $content ) {
 					include 'template-parts/card-resource.php';
 				}
 			} else {
-				display_no_results( 'Primo favorites' );
+				display_no_results( 'Catalyst favorites' );
 			}
 			?>
 		</div><!-- .card-container -->
