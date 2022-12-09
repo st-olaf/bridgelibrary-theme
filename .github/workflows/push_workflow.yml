@@ -10,7 +10,7 @@ jobs:
   build-assets-develop:
     name: Build assets for staging server
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
         with:
@@ -18,7 +18,7 @@ jobs:
       - name: NPM Build
         run: |
           npm ci
-          npm run build
+          npm run development
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -37,7 +37,7 @@ jobs:
       - name: NPM Build
         run: |
           npm ci
-          npm run build
+          npm run production
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
