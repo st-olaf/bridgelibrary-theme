@@ -191,6 +191,35 @@ function display_home_content( string $content ) {
 }
 
 /**
+ * Display course code with title.
+ *
+ * @param string $post_title Post title.
+ * @param int    $post_id    Pos tID.
+ *
+ * @return string
+ */
+function bridge_library_include_course_code_in_title( $post_title, $post_id ) {
+	if ( 'course' !== get_post_type( $post_id ) ) {
+		return $post_title;
+	}
+
+	$course_number = get_field( 'course_number', $post_id );
+	$course_code   = explode( '|', get_field( 'course_code', $post_id ) );
+
+	if ( $course_number && $course_code ) {
+		return sprintf(
+			'%1$s%2$s: %3$s',
+			$course_code[1],
+			$course_number ? ' ' . $course_number : '',
+			$post_title,
+		);
+	}
+
+	return $course_code;
+}
+add_filter( 'the_title', 'bridge_library_include_course_code_in_title', 10, 2 );
+
+/**
  * Add related resources to single course views.
  *
  * @since 1.0.0
