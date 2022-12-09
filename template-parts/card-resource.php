@@ -29,7 +29,7 @@ if ( isset( $force_favorite ) && $force_favorite ) {
 	);
 
 	if ( ! empty( $meta ) ) {
-		echo '<p class="meta">' . wp_kses_post( implode( '<br/>', array_filter( $meta ) ) ) . '</p>';
+		echo '<ul class="meta"><li>' . wp_kses_post( implode( '</li><li>', array_filter( $meta ) ) ) . '</li></ul>';
 	}
 	?>
 </div>

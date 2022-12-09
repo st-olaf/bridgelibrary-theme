@@ -14,11 +14,8 @@
 	$image_url        = get_field( 'image_url' );
 	$primo_image_url  = get_field( 'primo_image_url' );
 	$primo_image_info = get_field( 'primo_image_info' );
-	$instructors      = get_field( 'instructors' );
 
-	if ( ! empty( $instructors ) ) {
-		echo '<p class="meta"><strong>' . esc_attr( _n( 'Professor', 'Professors', count( $instructors ), 'bridge-library' ) ) . '</strong>: ' . esc_attr( implode( ', ', wp_list_pluck( $instructors, 'name' ) ) ) . '</strong></p>';
-	}
+	display_course_meta();
 
 	if ( ! empty( $image_url ) ) {
 		echo '<a href="' . esc_url( get_the_permalink() ) . '"><img class="manual image" src="' . esc_url( $image_url ) . '" alt="Manually-supplied image for ' . esc_attr( get_the_title() ) . '" /></a>';
