@@ -115,13 +115,12 @@ function display_home_content( string $content ) {
 			echo '<h2>' . esc_html__( 'Your Content', 'bridge-library' ) . '</h2><p>' . esc_html__( 'It looks like you haven’t logged in recently; please refresh the page to get fresh data', 'bridge-library' ) . '.</p>';
 		}
 	}
-
-	if ( $user_favorites ) {
-		?>
-		<div class="bridge-card-container">
-			<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
-			<div class="card-container">
-				<?php
+	?>
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
+		<div class="card-container">
+			<?php
+			if ( $user_favorites ) {
 				foreach ( $user_favorites as $user_favorite ) {
 					$post = get_post( $user_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					switch ( get_post_type( $post ) ) {
@@ -134,56 +133,58 @@ function display_home_content( string $content ) {
 							break;
 					}
 				}
-				?>
-			</div><!-- .card-container -->
-		</div><!-- .bridge-card-container -->
-		<?php
-	}
+			} else {
+				display_no_results( 'favorites' );
+			}
+			?>
+		</div><!-- .card-container -->
+	</div><!-- .bridge-card-container -->
 
-	if ( $courses ) {
-		?>
-		<div class="bridge-card-container">
-			<h2><?php esc_html_e( 'Current Courses', 'bridge-library' ); ?></h2>
-			<p class="meta">
-				<?php
-				// Translators: %s is the timestamp.
-				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) );
-				?>
-			</p>
-			<div class="card-container">
-				<?php
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Current Courses', 'bridge-library' ); ?></h2>
+		<p class="meta">
+			<?php
+			// Translators: %s is the timestamp.
+			echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+			?>
+		</p>
+		<div class="card-container">
+			<?php
+			if ( $courses ) {
 				foreach ( $courses as $course ) {
 					$post = get_post( $course ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					include 'template-parts/card-course.php';
 				}
-				?>
-			</div><!-- .card-container -->
-		</div><!-- .bridge-card-container -->
-		<?php
-	}
+			} else {
+				display_no_results( 'courses' );
+			}
+			?>
+		</div><!-- .card-container -->
+	</div><!-- .bridge-card-container -->
 
-	if ( $primo_favorites ) {
-		?>
-		<div class="bridge-card-container">
-			<h2><?php esc_html_e( 'Catalyst Favorites', 'bridge-library' ); ?></h2>
-			<p class="meta">
-				<?php
-				// Translators: %s is the timestamp.
-				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorites', $user_id )->format( 'F j, Y g:i:s a' ) ) );
-				?>
-			</p>
-			<div class="card-container">
-				<?php
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Catalyst Favorites', 'bridge-library' ); ?></h2>
+		<p class="meta">
+			<?php
+			// Translators: %s is the timestamp.
+			echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorites', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+			?>
+		</p>
+		<div class="card-container">
+			<?php
+			if ( $primo_favorites ) {
 				foreach ( $primo_favorites as $primo_favorite ) {
 					$post           = get_post( $primo_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					$force_favorite = true; // Used in the template.
 					include 'template-parts/card-resource.php';
 				}
-				?>
-			</div><!-- .card-container -->
-		</div><!-- .bridge-card-container -->
-		<?php
-	}
+			} else {
+				display_no_results( 'Primo favorites' );
+			}
+			?>
+		</div><!-- .card-container -->
+	</div><!-- .bridge-card-container -->
+	<?php
 
 	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	return $content . ob_get_clean();
