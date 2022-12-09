@@ -442,12 +442,12 @@ function display_circulation_data_content() {
  * @return void
  */
 function display_no_results( string $type ) {
-	echo wp_kses_post(
+	echo '<p class="bridge-no-results">' . wp_kses_post(
 		sprintf(
 			// Translators: %1$s is the type passed into the function; %2$s is the hyperlink to the form.
 			__( 'We didn’t find any %1$s for your account. Please %2$ssubmit a feedback form</a> if you think that is an error!', 'bridge-library' ),
 			$type,
 			'<a href="https://docs.google.com/forms/d/e/1FAIpQLSe1G0muhWFoVZ_4_AEPzr-ms7Trdk3YWO_cxF62vki9nqP-eQ/viewform?usp=sf_link">'
 		)
-	);
+	) . '</p>';
 }
