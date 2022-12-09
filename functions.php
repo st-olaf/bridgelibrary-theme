@@ -104,9 +104,10 @@ function display_home_content( string $content ) {
 	remove_filter( 'the_content', 'display_home_content' );
 
 	// Load content.
-	$user_favorites  = array_filter( (array) get_field( 'user_favorites', 'user_' . $user_id ) );
-	$courses         = array_filter( (array) get_field( 'courses', 'user_' . $user_id ) );
-	$primo_favorites = array_filter( (array) get_field( 'primo_favorites', 'user_' . $user_id ) );
+	$users           = Bridge_Library_Users::get_instance();
+	$user_favorites  = $users->get_favorite_posts( $user_id );
+	$courses         = $users->get_courses( $user_id );
+	$primo_favorites = $users->get_primo_favorites( $user_id );
 
 	ob_start();
 
