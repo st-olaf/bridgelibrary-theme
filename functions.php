@@ -6,25 +6,11 @@
  */
 
 /**
- * Assets.
- *
- * @since 1.0.0.0
- */
-require_once 'inc/class-bridge-library-assets.php';
-
-/**
  * Branding.
  *
  * @since 1.0.0.0
  */
 require_once 'inc/class-bridge-library-branding.php';
-
-/**
- * Content.
- *
- * @since 1.0.0.0
- */
-require_once 'inc/class-bridge-library-content.php';
 
 /**
  * Enqueue custom styles.
@@ -34,32 +20,10 @@ require_once 'inc/class-bridge-library-content.php';
  * @return void
  */
 function bridge_custom_assets() {
-	wp_enqueue_style( 'bridge-child-styles', get_stylesheet_directory_uri() . '/assets/css/style.css', array(), wp_get_theme()->get( 'Version' ) );
+	wp_enqueue_style( 'bridge-child-styles', get_stylesheet_directory_uri() . '/assets/css/bridge-library-theme.css', array(), wp_get_theme()->get( 'Version' ) );
 	wp_enqueue_style( 'source-sans-pro', 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i&display=swap' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-
-	Bridge_Library_Assets::get_instance()->register_assets();
 }
 add_action( 'wp_enqueue_scripts', 'bridge_custom_assets' );
-
-/**
- * Add div#root for React.
- */
-add_action(
-	'astra_content_top',
-	function() {
-		echo '<div id="root">';
-	}
-);
-
-/**
- * Close div#root.
- */
-add_action(
-	'astra_content_bottom',
-	function() {
-		echo '</div><!-- div#root -->';
-	}
-);
 
 /**
  * Get cache timestamp.
@@ -69,7 +33,7 @@ add_action(
  * @param string $type    CPT type.
  * @param int    $user_id WP user ID.
  *
- * @return int            Unix timestamp.
+ * @return DateTimeImmutable|false
  */
 function bridge_get_timestamp( $type, $user_id ) {
 	$cache_date = get_field( $type . '_cache_updated', 'user_' . $user_id );
@@ -77,7 +41,152 @@ function bridge_get_timestamp( $type, $user_id ) {
 		$cache_date = time();
 	}
 
-	return $cache_date;
+	return DateTimeImmutable::createFromFormat( 'U', $cache_date );
+}
+
+/**
+ * Display user-specific sidebar.
+ *
+ * @since 1.3.0
+ *
+ * @return void
+ */
+function display_user_sidebar() {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$courses = array_filter( (array) get_field( 'courses', 'user_' . get_current_user_id() ) );
+
+	?>
+	<aside class="widget widget_nav_menu">
+		<div class="menu-sidebar-container">
+			<ul id="menu-sidebar" class="menu">
+				<li class="menu-item current-menu-item"><a href="/"><?php esc_html_e( 'Home', 'bridge-library' ); ?></a></li>
+				<li class="menu-item"><a href="/"><?php esc_html_e( 'Courses', 'bridge-library' ); ?></a>
+					<ul class="sub-menu">
+						<?php
+						foreach ( $courses as $course ) {
+							?>
+								<li class="menu-item"><a href="<?php echo esc_url( get_permalink( $course ) ); ?>"><?php echo esc_attr( get_the_title( $course ) ); ?></a></li>
+							<?php
+						}
+						?>
+					</ul>
+				</li>
+				<li class="menu-item"><a href="/circulation-data/"><?php esc_html_e( 'Checkouts and Requests', 'bridge-library' ); ?></a></li>
+			</ul>
+		</div>
+	</aside>
+	<?php
+}
+add_action( 'astra_sidebars_after', 'display_user_sidebar' );
+
+/**
+ * Display the user’s home content.
+ *
+ * @since 1.3.0
+ *
+ * @param string $content Content.
+ *
+ * @return string
+ */
+function display_home_content( string $content ) {
+	if ( ! is_user_logged_in() ) {
+		return $content . '<p id="bridge-login">Please <a href="' . esc_url( home_url( '/wp-login.php?gaautologin=true&redirect_to=' . home_url() ) ) . '"><img src="' . esc_url( get_stylesheet_directory_uri() . '/assets/img/sign-in-with-google.png' ) . '" alt="Sign in with Google" /></a> using your college Gmail account.</p>';
+	}
+
+	global $post;
+	$user_id       = get_current_user_id();
+	$original_post = $post;
+
+	// Prevent recursive filtering.
+	remove_filter( 'the_content', 'display_home_content' );
+
+	// Load content.
+	$user_favorites  = array_filter( (array) get_field( 'user_favorites', 'user_' . $user_id ) );
+	$courses         = array_filter( (array) get_field( 'courses', 'user_' . $user_id ) );
+	$primo_favorites = array_filter( (array) get_field( 'primo_favorites', 'user_' . $user_id ) );
+
+	ob_start();
+
+	if ( bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) {
+		if ( ! ( new DateTimeImmutable() )->diff( bridge_get_timestamp( 'courses', $user_id ) )->days < 7 ) {
+			echo '<h2>' . esc_html__( 'Your Content', 'bridge-library' ) . '</h2><p>' . esc_html__( 'It looks like you haven’t logged in recently; please refresh the page to get fresh data', 'bridge-library' ) . '.</p>';
+		}
+	}
+
+	if ( $user_favorites ) {
+		?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
+			<div class="card-container">
+				<?php
+				foreach ( $user_favorites as $user_favorite ) {
+					$post = get_post( $user_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					switch ( get_post_type( $post ) ) {
+						case 'course':
+							include 'template-parts/card-course.php';
+							break;
+
+						case 'resource':
+							include 'template-parts/card-resource.php';
+							break;
+					}
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	if ( $courses ) {
+		?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( 'Current Courses', 'bridge-library' ); ?></h2>
+			<p class="meta">
+				<?php
+				// Translators: %s is the timestamp.
+				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+				?>
+			</p>
+			<div class="card-container">
+				<?php
+				foreach ( $courses as $course ) {
+					$post = get_post( $course ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					include 'template-parts/card-course.php';
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	if ( $primo_favorites ) {
+		?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( 'Catalyst Favorites', 'bridge-library' ); ?></h2>
+			<p class="meta">
+				<?php
+				// Translators: %s is the timestamp.
+				echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorites', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+				?>
+			</p>
+			<div class="card-container">
+				<?php
+				foreach ( $primo_favorites as $primo_favorite ) {
+					$post           = get_post( $primo_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					$force_favorite = true; // Used in the template.
+					include 'template-parts/card-resource.php';
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	return $content . ob_get_clean();
 }
 
 /**
@@ -85,99 +194,260 @@ function bridge_get_timestamp( $type, $user_id ) {
  *
  * @since 1.0.0
  */
-function single_course() {
+function single_course_page() {
 	global $post;
-	if ( is_singular( 'course' ) ) {
+	if ( ! is_singular( 'course' ) ) {
+		return;
+	}
 
-		$librarians = get_field( 'librarians' );
-		if ( ! empty( $librarians ) ) {
-			$librarians    = array_unique( $librarians );
-			$original_post = $post;
+	$meta = array();
 
-			echo '<h2>Librarians</h2>';
-			echo '<div class="card-container">';
-			foreach ( $librarians as $librarian_id ) {
-				$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-				include 'template-parts/card-resource.php';
-			}
-			echo '</div>';
+	$instructors = get_field( 'instructors' );
+	if ( ! empty( $instructors ) ) {
+		$meta[] = array(
+			'label' => _n( 'Professor', 'Professors', count( $instructors ), 'bridge-library' ),
+			'value' => implode( ', ', wp_list_pluck( $instructors, 'name' ) ),
+		);
+	}
 
-			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	if ( get_field( 'course_section' ) ) {
+		$meta[] = array(
+			'label' => __( 'Section', 'bridge-library' ),
+			'value' => get_field( 'course_section' ),
+		);
+	}
+
+	if ( get_field( 'course_term' ) ) {
+		$meta[] = array(
+			'label' => __( 'Term', 'bridge-library' ),
+			'value' => implode( ', ', wp_list_pluck( get_the_terms( get_the_ID(), 'course_term' ), 'name' ) ),
+		);
+	}
+
+	if ( ! empty( $meta ) ) {
+		echo '<ul class="meta">';
+		foreach ( $meta as $meta_item ) {
+			echo '<li><strong>' . esc_attr( $meta_item['label'] ) . '</strong>: ' . esc_attr( $meta_item['value'] ) . '</li>';
 		}
+		echo '</ul>';
+	}
 
-		$core_resources = get_field( 'core_resources' );
-		if ( ! empty( $core_resources ) ) {
-			$core_resources = array_unique( $core_resources );
-			$original_post  = $post;
+	$librarians = get_field( 'librarians' );
+	if ( ! empty( $librarians ) ) {
+		$librarians    = array_unique( $librarians );
+		$original_post = $post;
 
-			echo '<h2>Core Resources</h2>';
-			echo '<div class="card-container">';
-			foreach ( $core_resources as $resource_id ) {
-				$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-				include 'template-parts/card-resource.php';
-			}
-			echo '</div>';
-
-			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+		echo '<h2>Librarians</h2>';
+		echo '<div class="card-container">';
+		foreach ( $librarians as $librarian_id ) {
+			$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+			include 'template-parts/card-librarian.php';
 		}
+		echo '</div>';
 
-		$related_resources = get_field( 'related_courses_resources' );
-		if ( ! empty( $related_resources ) ) {
-			$related_resources = array_unique( $related_resources );
-			$original_post     = $post;
+		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	}
 
-			echo '<h2>Related Resources</h2>';
+	$core_resources    = array_filter( (array) get_field( 'core_resources' ) );
+	$related_resources = array_filter( (array) get_field( 'related_courses_resources' ) );
+	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
+	if ( ! empty( $all_resources ) ) {
+		$all_resources = array_unique( $all_resources );
+		$original_post = $post;
 
-			$resource_types = array();
+		echo '<h2>' . esc_attr__( 'Resources', 'bridge-library' ) . '</h2>';
 
-			foreach ( $related_resources as $resource_id ) {
-				$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-				ob_start();
-				include 'template-parts/card-resource.php';
-				$content = ob_get_clean();
+		$resource_types = array();
 
-				foreach ( wp_get_post_terms( $post->ID, 'resource_type' ) as $resource_type ) {
-					if ( array_key_exists( $resource_type->name, $resource_types ) ) {
-						$resource_types[ $resource_type->name ] .= $content;
-					} else {
-						$resource_types[ $resource_type->name ] = $content;
-					}
+		foreach ( $all_resources as $resource_id ) {
+			$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+			ob_start();
+			include 'template-parts/card-resource.php';
+			$content = ob_get_clean();
+
+			foreach ( wp_get_post_terms( $post->ID, 'resource_type' ) as $resource_type ) {
+				if ( array_key_exists( $resource_type->name, $resource_types ) ) {
+					$resource_types[ $resource_type->name ] .= $content;
+				} else {
+					$resource_types[ $resource_type->name ] = $content;
 				}
 			}
-
-			foreach ( $resource_types as $title => $content ) {
-				echo '<div><h3>' . esc_attr( $title ) . '</h3><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
-			}
-
-			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 		}
+
+		foreach ( $resource_types as $title => $content ) {
+			echo '<div><h3>' . esc_attr( $title ) . '</h3><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+		}
+
+		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
 }
-add_action( 'astra_entry_content_single', 'single_course', 11 );
+add_action( 'astra_entry_content_single', 'single_course_page', 11 );
 
 /**
  * Add related courses to single course views.
  *
  * @since 1.0.0
  */
-function single_resource() {
+function single_resource_page() {
 	global $post;
-	if ( is_singular( 'resource' ) ) {
-		$courses = get_field( 'related_courses_resources' );
-		if ( ! empty( $courses ) ) {
-			$courses       = array_unique( $courses );
-			$original_post = $post;
+	if ( ! is_singular( 'resource' ) ) {
+		return;
+	}
 
-			echo '<h2>Related Courses</h2>';
-			echo '<div class="card-container">';
-			foreach ( $courses as $course_id ) {
-				$post = get_post( $course_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-				include 'template-parts/card-course.php';
-			}
-			echo '</div>';
+	$courses = get_field( 'related_courses_resources' );
+	if ( ! empty( $courses ) ) {
+		$courses       = array_unique( $courses );
+		$original_post = $post;
 
-			$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+		echo '<h2>Related Courses</h2>';
+		echo '<div class="card-container">';
+		foreach ( $courses as $course_id ) {
+			$post = get_post( $course_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+			include 'template-parts/card-course.php';
 		}
+		echo '</div>';
+
+		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
 }
-add_action( 'astra_entry_content_single', 'single_resource', 11 );
+add_action( 'astra_entry_content_single', 'single_resource_page', 11 );
+
+/**
+ * Add librarian data.
+ *
+ * @since 1.0.0
+ */
+function single_librarian() {
+	if ( ! is_singular( 'librarian' ) ) {
+		return;
+	}
+
+	$related_user = get_field( 'librarian_user_id' );
+	if ( is_object( $related_user ) ) {
+
+		$librarian_email_address   = get_field( 'librarian_email_address', 'user_' . $related_user->ID );
+		$librarian_phone_number    = get_field( 'librarian_phone_number', 'user_' . $related_user->ID );
+		$librarian_office_location = get_field( 'librarian_office_location', 'user_' . $related_user->ID );
+
+		$picture_url = get_field( 'librarian_picture_url', 'user_' . $related_user->ID );
+		$google_url  = get_field( 'picture_url', 'user_' . $related_user->ID );
+		$avatar_url  = get_avatar_url( $related_user->ID );
+
+		if ( ! empty( $picture_url ) ) {
+			echo '<img width="100" class="alignright manual image" src="' . esc_url( $picture_url ) . '" alt="Librarian" />';
+		} elseif ( ! empty( $google_url ) ) {
+			echo '<img width="100" class="alignright google image" src="' . esc_url( $google_url ) . '" alt="Librarian" />';
+		} elseif ( ! empty( $avatar_url ) ) {
+			echo '<img width="100" class="alignright avatar image" src="' . esc_url( $avatar_url ) . '" alt="Librarian" />';
+		}
+		?>
+		<ul class="meta">
+			<?php
+			if ( $librarian_email_address ) {
+				echo '<li class="email">' . esc_html__( 'Email Address', 'bridge-library' ) . ': <a href="mailto:' . esc_attr( $librarian_email_address ) . '">' . esc_attr( $librarian_email_address ) . '</a></li>';
+			}
+			if ( $librarian_phone_number ) {
+				echo '<li class="email">' . esc_html__( 'Phone Number', 'bridge-library' ) . ': ' . esc_attr( $librarian_phone_number ) . '</li>';
+			}
+			if ( $librarian_office_location ) {
+				echo '<li class="email">' . esc_html__( 'Office Location', 'bridge-library' ) . ': ' . esc_attr( $librarian_office_location ) . '</li>';
+			}
+			?>
+		</ul>
+		<p class="description"><?php the_field( 'biography', 'user_' . $related_user->ID ); ?></p>
+		<?php
+	}
+}
+add_action( 'astra_entry_content_single', 'single_librarian', 11 );
+
+/**
+ * Display user’s circulation data.
+ *
+ * @since 1.3.0
+ *
+ * @return void
+ */
+function display_circulation_data_content() {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+
+	$circulation_data = json_decode( get_field( 'circulation_data', 'user_' . $user_id ) );
+
+	?>
+	<p className="bridge-info">
+		<?php esc_html_e( 'For renewals, request cancellations, and more options, please visit', 'bridge-library' ); ?>
+		<a class="catalyst-link carleton" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:CCO&lang=en">
+			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
+		</a>
+		<a class="catalyst-link stolaf" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:SOC&lang=en">
+			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
+		</a>
+	</p>
+
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Checkouts', 'bridge-library' ); ?></h2>
+
+		<div class="card-container">
+			<?php
+			if ( empty( $circulation_data->loans ) ) {
+				display_no_results( __( 'loans', 'bridge-library' ) );
+			} else {
+				foreach ( $circulation_data->loans as $loan ) {
+					include 'template-parts/card-loan.php';
+				}
+			}
+			?>
+		</div>
+	</div>
+
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Requests', 'bridge-library' ); ?></h2>
+
+		<div class="card-container">
+			<?php
+			if ( empty( $circulation_data->requests ) ) {
+				display_no_results( __( 'requests', 'bridge-library' ) );
+			} else {
+				foreach ( $circulation_data->requests as $loan ) {
+					include 'template-parts/card-loan.php';
+				}
+			}
+			?>
+		</div>
+	</div>
+
+	<h2><?php esc_html_e( 'Interlibrary Loan', 'bridge-library' ); ?></h2>
+	<p class="bridge-no-results">
+		<?php esc_html_e( 'We are not currently importing your Interlibrary Loan account information into myLibrary (though we plan to do that soon!).  In the meantime, you can view your account information here:', 'bridge-library' ); ?>
+		<a class="ill-link carleton" href="https://apps.carleton.edu/campus/library/ill/">
+			<?php esc_html_e( 'Interlibrary Loan Requests', 'bridge-library' ); ?>
+		</a>
+		<a class="ill-link stolaf" href="https://ezproxy.stolaf.edu/login?url=https://stolaf.illiad.oclc.org/illiad/illiad.dll">
+			<?php esc_html_e( 'Interlibrary Loan Requests', 'bridge-library' ); ?>
+		</a>
+	</p>
+	<?php
+}
+
+/**
+ * Display a no-results message.
+ *
+ * @since 1.3.0
+ *
+ * @param string $type Plural type of resource.
+ *
+ * @return void
+ */
+function display_no_results( string $type ) {
+	echo wp_kses_post(
+		sprintf(
+			// Translators: %1$s is the type passed into the function; %2$s is the hyperlink to the form.
+			__( 'We didn’t find any %1$s for your account. Please %2$ssubmit a feedback form</a> if you think that is an error!', 'bridge-library' ),
+			$type,
+			'<a href="https://docs.google.com/forms/d/e/1FAIpQLSe1G0muhWFoVZ_4_AEPzr-ms7Trdk3YWO_cxF62vki9nqP-eQ/viewform?usp=sf_link">'
+		)
+	);
+}

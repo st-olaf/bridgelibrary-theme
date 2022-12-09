@@ -41,7 +41,5 @@ class Bridge_Library_Branding {
 		</div>
 		<?php
 	}
-
 }
-
 new Bridge_Library_Branding();
