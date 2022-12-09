@@ -25,7 +25,7 @@ if ( isset( $force_favorite ) && $force_favorite ) {
 	$meta = array(
 		get_field( 'author' ),
 		get_field( 'publication_year' ),
-		implode( ', ', wp_list_pluck( get_the_term_list( get_the_ID(), 'resource_format' ), 'term_name' ) ),
+		implode( ', ', wp_list_pluck( get_the_terms( get_the_ID(), 'resource_format' ), 'name' ) ),
 	);
 
 	if ( ! empty( $meta ) ) {
