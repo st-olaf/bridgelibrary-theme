@@ -228,7 +228,10 @@ function single_course_page() {
 	display_course_meta();
 
 	$librarians = get_field( 'librarians' );
-	if ( ! empty( $librarians ) ) {
+
+	if ( empty( $librarians ) ) {
+		the_field( 'default_librarian', 'options' );
+	} else {
 		$librarians    = array_unique( $librarians );
 		$original_post = $post;
 
@@ -265,6 +268,10 @@ function single_course_page() {
 					$resource_types[ $resource_type->name ] = $content;
 				}
 			}
+		}
+
+		if ( ! array_key_exists( 'Guide', array_flip( $resource_types ) ) ) {
+			the_field( 'default_guide', 'option' );
 		}
 
 		foreach ( $resource_types as $title => $content ) {
