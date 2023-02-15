@@ -270,7 +270,7 @@ function single_course_page() {
 			}
 		}
 
-		if ( ! array_key_exists( 'Guide', array_flip( $resource_types ) ) ) {
+		if ( ! array_key_exists( 'Guide', $resource_types ) ) {
 			the_field( 'default_guide', 'option' );
 		}
 
