@@ -227,13 +227,15 @@ function single_course_page() {
 
 	display_course_meta();
 
+	// Override the global post object so we can include templates.
+	$original_post = $post;
+
 	$librarians = get_field( 'librarians' );
 
 	if ( empty( $librarians ) ) {
 		the_field( 'default_librarian', 'options' );
 	} else {
-		$librarians    = array_unique( $librarians );
-		$original_post = $post;
+		$librarians = array_unique( $librarians );
 
 		echo '<h2>Librarians</h2>';
 		echo '<div class="card-container">';
@@ -242,44 +244,38 @@ function single_course_page() {
 			include 'template-parts/card-librarian.php';
 		}
 		echo '</div>';
-
-		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
 
 	$core_resources    = array_filter( (array) get_field( 'core_resources' ) );
 	$related_resources = array_filter( (array) get_field( 'related_courses_resources' ) );
 	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
-	if ( ! empty( $all_resources ) ) {
-		$all_resources = array_unique( $all_resources );
-		$original_post = $post;
 
-		$resource_types = array();
+	$resource_types = array();
 
-		foreach ( $all_resources as $resource_id ) {
-			$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-			ob_start();
-			include 'template-parts/card-resource.php';
-			$content = ob_get_clean();
+	foreach ( $all_resources as $resource_id ) {
+		$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+		ob_start();
+		include 'template-parts/card-resource.php';
+		$content = ob_get_clean();
 
-			foreach ( wp_get_post_terms( $post->ID, 'resource_type' ) as $resource_type ) {
-				if ( array_key_exists( $resource_type->name, $resource_types ) ) {
-					$resource_types[ $resource_type->name ] .= $content;
-				} else {
-					$resource_types[ $resource_type->name ] = $content;
-				}
+		foreach ( wp_get_post_terms( $post->ID, 'resource_type' ) as $resource_type ) {
+			if ( array_key_exists( $resource_type->name, $resource_types ) ) {
+				$resource_types[ $resource_type->name ] .= $content;
+			} else {
+				$resource_types[ $resource_type->name ] = $content;
 			}
 		}
-
-		if ( ! array_key_exists( 'Guide', $resource_types ) ) {
-			the_field( 'default_guide', 'option' );
-		}
-
-		foreach ( $resource_types as $title => $content ) {
-			echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
-		}
-
-		$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 	}
+
+	if ( ! array_key_exists( 'Guide', $resource_types ) ) {
+		the_field( 'default_guide', 'option' );
+	}
+
+	foreach ( $resource_types as $title => $content ) {
+		echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+	}
+
+	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 }
 add_action( 'astra_entry_content_single', 'single_course_page', 11 );
 
