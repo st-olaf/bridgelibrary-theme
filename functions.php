@@ -232,19 +232,25 @@ function single_course_page() {
 
 	$librarians = get_field( 'librarians' );
 
-	if ( empty( $librarians ) ) {
-		the_field( 'default_librarian', 'options' );
-	} else {
-		$librarians = array_unique( $librarians );
+	$librarians = array_unique( $librarians );
 
-		echo '<h2>Librarians</h2>';
-		echo '<div class="card-container">';
+	echo '<h2>Librarians</h2>';
+	echo '<div class="card-container">';
+	if ( $librarians ) {
 		foreach ( $librarians as $librarian_id ) {
 			$post = get_post( $librarian_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 			include 'template-parts/card-librarian.php';
 		}
-		echo '</div>';
+	} else {
+		?>
+		<div class="card librarian">
+			<h3 class="title">
+				<?php the_field( 'default_librarian', 'options' ); ?>
+			</h3>
+		</div>
+		<?php
 	}
+	echo '</div>';
 
 	$core_resources    = array_filter( (array) get_field( 'core_resources' ) );
 	$related_resources = array_filter( (array) get_field( 'related_courses_resources' ) );
@@ -267,12 +273,23 @@ function single_course_page() {
 		}
 	}
 
-	if ( ! array_key_exists( 'Guide', $resource_types ) ) {
-		the_field( 'default_guide', 'option' );
-	}
-
-	foreach ( $resource_types as $title => $content ) {
-		echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+	if ( array_key_exists( 'Guide', $resource_types ) ) {
+		foreach ( $resource_types as $title => $content ) {
+			echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+		}
+	} else {
+		?>
+		<div>
+			<h2><?php esc_html_e( 'Guide', 'bridge-library' ); ?></h2>
+			<div class="card-container">
+				<div class="card resource">
+					<h3 class="title">
+						<?php the_field( 'default_guide', 'option' ); ?>
+					</h3>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 
 	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
