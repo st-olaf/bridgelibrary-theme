@@ -209,6 +209,9 @@ body {
     width: calc(33% - 1em);
   }
 }
+.card h3 p {
+  margin-bottom: 0;
+}
 .card .contains-button {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
