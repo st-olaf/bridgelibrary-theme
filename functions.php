@@ -467,8 +467,8 @@ function display_circulation_data_content() {
 			if ( empty( $circulation_data->requests ) ) {
 				display_no_results( __( 'requests', 'bridge-library' ) );
 			} else {
-				foreach ( $circulation_data->requests as $loan ) {
-					include 'template-parts/card-loan.php';
+				foreach ( $circulation_data->requests as $request ) {
+					include 'template-parts/card-request.php';
 				}
 			}
 			?>
