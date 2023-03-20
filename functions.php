@@ -20,8 +20,12 @@ require_once 'inc/class-bridge-library-branding.php';
  * @return void
  */
 function bridge_custom_assets() {
-	wp_enqueue_style( 'bridge-child-styles', get_stylesheet_directory_uri() . '/assets/css/bridge-library-theme.css', array(), wp_get_theme()->get( 'Version' ) );
+	$theme_version = wp_get_theme()->get( 'Version' );
+
+	wp_enqueue_style( 'bridge-child-styles', get_stylesheet_directory_uri() . '/assets/css/bridge-library-theme.css', array(), $theme_version );
 	wp_enqueue_style( 'source-sans-pro', 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i&display=swap' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+
+	wp_enqueue_script( 'bridge-js', get_stylesheet_directory_uri() . '/assets/js/bridge-library-theme.js', array( 'jquery' ), wp_get_theme()->get( 'Version' ), true );
 }
 add_action( 'wp_enqueue_scripts', 'bridge_custom_assets' );
 
@@ -442,7 +446,7 @@ function display_circulation_data_content() {
 	<div class="bridge-card-container">
 		<h2><?php esc_html_e( 'Checkouts', 'bridge-library' ); ?></h2>
 
-		<div class="card-container">
+		<div class="card-container collapsible">
 			<?php
 			if ( empty( $circulation_data->loans ) ) {
 				display_no_results( __( 'loans', 'bridge-library' ) );
@@ -458,7 +462,7 @@ function display_circulation_data_content() {
 	<div class="bridge-card-container">
 		<h2><?php esc_html_e( 'Requests', 'bridge-library' ); ?></h2>
 
-		<div class="card-container">
+		<div class="card-container collapsible">
 			<?php
 			if ( empty( $circulation_data->requests ) ) {
 				display_no_results( __( 'requests', 'bridge-library' ) );

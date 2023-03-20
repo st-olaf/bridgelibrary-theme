@@ -68,3 +68,21 @@
         }
     }
 }
+
+.collapsible-hidden {
+	border: 0;
+    clip: rect(1px,1px,1px,1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px !important;
+    overflow: hidden;
+    padding: 0 !important;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal!important;
+}
+
+.expand-hidden-cards {
+	margin-bottom: 12px;
+}
