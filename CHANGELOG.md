@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] — 2023-03-31
+
+- Feature: display instructors and other meta on courses
+- Feature: display publication year, author, and format on resources
+- Feature: add fallback resources for librarians and guides
+- Change: replace React templates with WordPress templates
+- Change: combine core and related resources
+- Bugfix: hide 7+ checkouts/requests with a button to expand
+
 ## [1.2.3] — 2022-11-17
 
 - Update routes and render functions due to React upgrades

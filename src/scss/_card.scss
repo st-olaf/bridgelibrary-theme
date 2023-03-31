@@ -19,6 +19,10 @@
         width: calc(33% - 1em);
     }
 
+	h3 p {
+		margin-bottom: 0;
+	}
+
     .contains-button {
         margin-top: 1.5em;
         margin-bottom: 1.5em;
@@ -36,9 +40,9 @@
         }
     }
 
-    &.favorited .dashicons {
-        color: $color-red;
-    }
+	&.favorited .favorite .dashicons {
+		color: $color-red;
+	}
 
     &.librarian {
         img {
@@ -63,4 +67,22 @@
             margin: 20px 0 0;
         }
     }
+}
+
+.collapsible-hidden {
+	border: 0;
+    clip: rect(1px,1px,1px,1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px !important;
+    overflow: hidden;
+    padding: 0 !important;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal!important;
+}
+
+.expand-hidden-cards {
+	margin-bottom: 12px;
 }
