@@ -109,9 +109,9 @@ function display_home_content( string $content ) {
 
 	// Load content.
 	$users           = Bridge_Library_Users::get_instance();
-	$user_favorites  = $users->get_favorite_posts( $user_id );
-	$courses         = $users->get_courses( $user_id );
-	$primo_favorites = $users->get_primo_favorites( $user_id );
+	$user_favorites  = $users->get_favorite_posts( $user_id, true );
+	$courses         = $users->get_courses( $user_id, true );
+	$primo_favorites = $users->get_primo_favorites( $user_id, true );
 
 	ob_start();
 	?>
@@ -120,8 +120,7 @@ function display_home_content( string $content ) {
 		<div class="card-container">
 			<?php
 			if ( $user_favorites ) {
-				foreach ( $user_favorites as $user_favorite ) {
-					$post = get_post( $user_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+				foreach ( $user_favorites as $post ) {
 					switch ( get_post_type( $post ) ) {
 						case 'course':
 							include 'template-parts/card-course.php';
@@ -150,8 +149,7 @@ function display_home_content( string $content ) {
 		<div class="card-container">
 			<?php
 			if ( $courses ) {
-				foreach ( $courses as $course ) {
-					$post = get_post( $course ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+				foreach ( $courses as $post ) {
 					include 'template-parts/card-course.php';
 				}
 			} else {
@@ -172,8 +170,7 @@ function display_home_content( string $content ) {
 		<div class="card-container">
 			<?php
 			if ( $primo_favorites ) {
-				foreach ( $primo_favorites as $primo_favorite ) {
-					$post           = get_post( $primo_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+				foreach ( $primo_favorites as $post ) {
 					$force_favorite = true; // Used in the template.
 					include 'template-parts/card-resource.php';
 				}
