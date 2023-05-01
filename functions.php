@@ -81,6 +81,9 @@ function display_user_sidebar() {
 				<li class="menu-item"><a href="/circulation-data/"><?php esc_html_e( 'Checkouts and Requests', 'bridge-library' ); ?></a></li>
 			</ul>
 		</div>
+		<div id="feedback-button">
+			<a href="https://docs.google.com/forms/d/e/1FAIpQLSeOCNLJP484FbKprhHSD4pGLteAQuRnervlblOTdQwF4E43NA/viewform">We're piloting myLibrary.<br/><strong>Please send us feedback!</strong></a>
+		</div>
 	</aside>
 	<?php
 }
