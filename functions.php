@@ -501,7 +501,7 @@ function display_no_results( string $type ) {
 	echo '<p class="bridge-no-results">' . wp_kses_post(
 		sprintf(
 			// Translators: %1$s is the type passed into the function.
-			__( 'There are no %1$s in your account', 'bridge-library' ),
+			__( 'There are no %1$s in your account.', 'bridge-library' ),
 			$type,
 		)
 	) . '</p>';
