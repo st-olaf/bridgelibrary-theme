@@ -475,8 +475,8 @@ function display_circulation_data_content() {
 		</div>
 	</div>
 
-	<h2><?php esc_html_e( 'Interlibrary Loan', 'bridge-library' ); ?></h2>
-	<p class="bridge-no-results">
+	<h2 class="carleton"><?php esc_html_e( 'Interlibrary Loan', 'bridge-library' ); ?></h2>
+	<p class="bridge-no-results carleton">
 		<?php esc_html_e( 'We are not currently importing your Interlibrary Loan account information into myLibrary (though we plan to do that soon!).  In the meantime, you can view your account information here:', 'bridge-library' ); ?>
 		<a class="ill-link carleton" href="https://apps.carleton.edu/campus/library/ill/">
 			<?php esc_html_e( 'Interlibrary Loan Requests', 'bridge-library' ); ?>
