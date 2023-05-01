@@ -437,10 +437,10 @@ function display_circulation_data_content() {
 		<?php esc_html_e( 'For renewals, request cancellations, and more options, please visit', 'bridge-library' ); ?>
 		<a class="catalyst-link carleton" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:CCO&lang=en">
 			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
-		</a>
+		.</a>
 		<a class="catalyst-link stolaf" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:SOC&lang=en">
 			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
-		</a>
+		.</a>
 	</p>
 
 	<div class="bridge-card-container">
