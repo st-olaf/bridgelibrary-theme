@@ -82,7 +82,7 @@ function display_user_sidebar() {
 			</ul>
 		</div>
 		<div id="feedback-button">
-			<a href="https://docs.google.com/forms/d/e/1FAIpQLSeOCNLJP484FbKprhHSD4pGLteAQuRnervlblOTdQwF4E43NA/viewform">We're piloting myLibrary.<br/><strong>Please send us feedback!</strong></a>
+			<a href="https://docs.google.com/forms/d/e/1FAIpQLSeOCNLJP484FbKprhHSD4pGLteAQuRnervlblOTdQwF4E43NA/viewform" target="_blank">We're piloting myLibrary.<br/><strong>Please send us feedback!</strong></a>
 		</div>
 	</aside>
 	<?php
