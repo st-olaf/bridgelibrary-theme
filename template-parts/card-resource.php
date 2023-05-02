@@ -20,7 +20,7 @@ if ( isset( $force_favorite ) && $force_favorite ) {
 			<div class="dashicons dashicons-heart"></div>
 		</div>
 	</div>
-	<h3 class="title"><a href="<?php echo esc_url( get_field( 'url' ) ); ?>"><?php the_title(); ?></a></h3>
+	<h3 class="title"><a href="<?php echo esc_url( get_field( 'url' ) ); ?>" target="_blank"><?php the_title(); ?></a></h3>
 	<?php
 	$meta = array_filter(
 		array(
