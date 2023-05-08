@@ -231,7 +231,11 @@ function single_course_page() {
 
 	display_course_meta();
 
-	// Override the global post object so we can include templates.
+	/**
+	 * Override the global post object so we can include templates.
+	 *
+	 * @var WP_Post $original_post
+	 */
 	$original_post = $post;
 
 	$librarians = get_field( 'librarians' );
@@ -256,8 +260,8 @@ function single_course_page() {
 	}
 	echo '</div>';
 
-	$core_resources    = array_filter( (array) get_field( 'core_resources' ) );
-	$related_resources = array_filter( (array) get_field( 'related_courses_resources' ) );
+	$core_resources    = array_filter( (array) get_field( 'core_resources', $original_post->ID ) );
+	$related_resources = array_filter( (array) get_field( 'related_courses_resources', $original_post->ID ) );
 	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
 
 	$resource_types = array();
