@@ -81,6 +81,9 @@ function display_user_sidebar() {
 				<li class="menu-item"><a href="/circulation-data/"><?php esc_html_e( 'Checkouts and Requests', 'bridge-library' ); ?></a></li>
 			</ul>
 		</div>
+		<div id="feedback-button">
+			<a href="https://docs.google.com/forms/d/e/1FAIpQLSeOCNLJP484FbKprhHSD4pGLteAQuRnervlblOTdQwF4E43NA/viewform" target="_blank">We're piloting myLibrary.<br/><strong>Please send us feedback!</strong></a>
+		</div>
 	</aside>
 	<?php
 }
@@ -109,9 +112,9 @@ function display_home_content( string $content ) {
 
 	// Load content.
 	$users           = Bridge_Library_Users::get_instance();
-	$user_favorites  = $users->get_favorite_posts( $user_id );
-	$courses         = $users->get_courses( $user_id );
-	$primo_favorites = $users->get_primo_favorites( $user_id );
+	$user_favorites  = $users->get_favorite_posts( $user_id, true );
+	$courses         = $users->get_courses( $user_id, true );
+	$primo_favorites = $users->get_primo_favorites( $user_id, true );
 
 	ob_start();
 	?>
@@ -120,8 +123,7 @@ function display_home_content( string $content ) {
 		<div class="card-container">
 			<?php
 			if ( $user_favorites ) {
-				foreach ( $user_favorites as $user_favorite ) {
-					$post = get_post( $user_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+				foreach ( $user_favorites as $post ) {
 					switch ( get_post_type( $post ) ) {
 						case 'course':
 							include 'template-parts/card-course.php';
@@ -150,8 +152,7 @@ function display_home_content( string $content ) {
 		<div class="card-container">
 			<?php
 			if ( $courses ) {
-				foreach ( $courses as $course ) {
-					$post = get_post( $course ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+				foreach ( $courses as $post ) {
 					include 'template-parts/card-course.php';
 				}
 			} else {
@@ -172,8 +173,7 @@ function display_home_content( string $content ) {
 		<div class="card-container">
 			<?php
 			if ( $primo_favorites ) {
-				foreach ( $primo_favorites as $primo_favorite ) {
-					$post           = get_post( $primo_favorite ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+				foreach ( $primo_favorites as $post ) {
 					$force_favorite = true; // Used in the template.
 					include 'template-parts/card-resource.php';
 				}
@@ -231,7 +231,11 @@ function single_course_page() {
 
 	display_course_meta();
 
-	// Override the global post object so we can include templates.
+	/**
+	 * Override the global post object so we can include templates.
+	 *
+	 * @var WP_Post $original_post
+	 */
 	$original_post = $post;
 
 	$librarians = get_field( 'librarians' );
@@ -256,8 +260,8 @@ function single_course_page() {
 	}
 	echo '</div>';
 
-	$core_resources    = array_filter( (array) get_field( 'core_resources' ) );
-	$related_resources = array_filter( (array) get_field( 'related_courses_resources' ) );
+	$core_resources    = array_filter( (array) get_field( 'core_resources', $original_post->ID ) );
+	$related_resources = array_filter( (array) get_field( 'related_courses_resources', $original_post->ID ) );
 	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
 
 	$resource_types = array();
@@ -437,10 +441,10 @@ function display_circulation_data_content() {
 		<?php esc_html_e( 'For renewals, request cancellations, and more options, please visit', 'bridge-library' ); ?>
 		<a class="catalyst-link carleton" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:CCO&lang=en">
 			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
-		</a>
+		.</a>
 		<a class="catalyst-link stolaf" href="https://bridge.primo.exlibrisgroup.com/discovery/login?vid=01BRC_INST:SOC&lang=en">
 			<?php esc_attr_e( 'your account page in Catalyst', 'bridge-library' ); ?>
-		</a>
+		.</a>
 	</p>
 
 	<div class="bridge-card-container">
@@ -475,8 +479,8 @@ function display_circulation_data_content() {
 		</div>
 	</div>
 
-	<h2><?php esc_html_e( 'Interlibrary Loan', 'bridge-library' ); ?></h2>
-	<p class="bridge-no-results">
+	<h2 class="carleton"><?php esc_html_e( 'Interlibrary Loan', 'bridge-library' ); ?></h2>
+	<p class="bridge-no-results carleton">
 		<?php esc_html_e( 'We are not currently importing your Interlibrary Loan account information into myLibrary (though we plan to do that soon!).  In the meantime, you can view your account information here:', 'bridge-library' ); ?>
 		<a class="ill-link carleton" href="https://apps.carleton.edu/campus/library/ill/">
 			<?php esc_html_e( 'Interlibrary Loan Requests', 'bridge-library' ); ?>
@@ -501,7 +505,7 @@ function display_no_results( string $type ) {
 	echo '<p class="bridge-no-results">' . wp_kses_post(
 		sprintf(
 			// Translators: %1$s is the type passed into the function.
-			__( 'There are no %1$s in your account', 'bridge-library' ),
+			__( 'There are no %1$s in your account.', 'bridge-library' ),
 			$type,
 		)
 	) . '</p>';
