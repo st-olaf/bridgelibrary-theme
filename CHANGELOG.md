@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.1] — 2023-05-08
+## [1.4.0] — 2023-05-08
 
+- Feature: add feedback button
 - Bugfix: fix fallback content for deleted favorites
 - Bugfix: fix incorrect resource display for courses
+- Change: tweak copy for complete sentences
+- Change: display interlibrary loan message only for Carleton users
 
 ## [1.3.0] — 2023-03-31
 
