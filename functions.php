@@ -122,6 +122,7 @@ function display_home_content( string $content ) {
 		<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
 		<div class="card-container">
 			<p class="bridge-no-results">You can add library guides and other resources to your myLibrary Favorites by clicking the heart icons in the resources.</p>
+			<br>
 			<?php
 			if ( $user_favorites ) {
 				foreach ( $user_favorites as $post ) {
