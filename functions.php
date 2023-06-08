@@ -122,7 +122,6 @@ function display_home_content( string $content ) {
 		<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
 		<div class="card-container">
 			<p class="bridge-no-results">You can add library guides and other resources to your myLibrary Favorites by clicking the heart icons in the resources.</p>
-			<br>
 			<?php
 			if ( $user_favorites ) {
 				foreach ( $user_favorites as $post ) {
@@ -165,7 +164,8 @@ function display_home_content( string $content ) {
 	</div><!-- .bridge-card-container -->
 
 	<div class="bridge-card-container">
-		<h2><?php esc_html_e( 'Catalyst Favorites', 'bridge-library' ); ?></h2>
+		<h2><?php esc_html_e( 'Pinned in Catalyst', 'bridge-library' ); ?></h2>
+		<p class="bridge-no-results">Items you have pinned in your Catalyst account.</p>
 		<p class="meta">
 			<?php
 			// Translators: %s is the timestamp.
