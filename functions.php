@@ -121,6 +121,7 @@ function display_home_content( string $content ) {
 	<div class="bridge-card-container">
 		<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
 		<div class="card-container">
+			<p class="bridge-no-results">You can add library guides and other resources to your myLibrary Favorites by clicking the heart icons in the resources.</p>
 			<?php
 			if ( $user_favorites ) {
 				foreach ( $user_favorites as $post ) {
@@ -163,7 +164,8 @@ function display_home_content( string $content ) {
 	</div><!-- .bridge-card-container -->
 
 	<div class="bridge-card-container">
-		<h2><?php esc_html_e( 'Catalyst Favorites', 'bridge-library' ); ?></h2>
+		<h2><?php esc_html_e( 'Pinned in Catalyst', 'bridge-library' ); ?></h2>
+		<p class="bridge-no-results">Items you have pinned in your Catalyst account.</p>
 		<p class="meta">
 			<?php
 			// Translators: %s is the timestamp.
@@ -281,14 +283,13 @@ function single_course_page() {
 		}
 	}
 
-	if ( array_key_exists( 'Guide', $resource_types ) ) {
-		foreach ( $resource_types as $title => $content ) {
-			echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
-		}
-	} else {
+	foreach ( $resource_types as $title => $content ) {
+		echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+	}
+	if ( ! array_key_exists( 'Guide', $resource_types ) ) {
 		?>
 		<div>
-			<h2><?php esc_html_e( 'Guide', 'bridge-library' ); ?></h2>
+			<h2><?php esc_html_e( 'Guides', 'bridge-library' ); ?></h2>
 			<div class="card-container">
 				<div class="card resource">
 					<h3 class="title">
