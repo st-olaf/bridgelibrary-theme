@@ -283,11 +283,10 @@ function single_course_page() {
 		}
 	}
 
-	if ( array_key_exists( 'Guide', $resource_types ) ) {
-		foreach ( $resource_types as $title => $content ) {
-			echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
-		}
-	} else {
+	foreach ( $resource_types as $title => $content ) {
+		echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
+	}
+	if ( ! array_key_exists( 'Guide', $resource_types ) ) {
 		?>
 		<div>
 			<h2><?php esc_html_e( 'Guides', 'bridge-library' ); ?></h2>
