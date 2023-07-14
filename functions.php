@@ -266,7 +266,10 @@ function single_course_page() {
 	$related_resources = array_filter( (array) get_field( 'related_courses_resources', $original_post->ID ) );
 	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
 
-	$resource_types = array();
+	$resource_types = array(
+		__( 'Guides', 'bridge-library' )          => '<h3 class="title">' . get_field( 'default_guide', 'option' ) . '</h3>',
+		__( 'Course Reserves', 'bridge-library' ) => '',
+	);
 
 	foreach ( $all_resources as $resource_id ) {
 		$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
@@ -283,22 +286,8 @@ function single_course_page() {
 		}
 	}
 
-	foreach ( $resource_types as $title => $content ) {
+	foreach ( array_filter( $resource_types ) as $title => $content ) {
 		echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
-	}
-	if ( ! array_key_exists( 'Guide', $resource_types ) ) {
-		?>
-		<div>
-			<h2><?php esc_html_e( 'Guides', 'bridge-library' ); ?></h2>
-			<div class="card-container">
-				<div class="card resource">
-					<h3 class="title">
-						<?php the_field( 'default_guide', 'option' ); ?>
-					</h3>
-				</div>
-			</div>
-		</div>
-		<?php
 	}
 
 	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
