@@ -375,8 +375,10 @@ function single_librarian() {
 	$related_user = get_field( 'librarian_user_id' );
 	if ( is_object( $related_user ) ) {
 
+		$librarian_title           = get_field( 'librarian_title', 'user_' . $related_user->ID );
 		$librarian_email_address   = get_field( 'librarian_email_address', 'user_' . $related_user->ID );
 		$librarian_phone_number    = get_field( 'librarian_phone_number', 'user_' . $related_user->ID );
+		$librarian_scheduling_url  = get_field( 'librarian_scheduling_url', 'user_' . $related_user->ID );
 		$librarian_office_location = get_field( 'librarian_office_location', 'user_' . $related_user->ID );
 
 		$picture_url = get_field( 'librarian_picture_url', 'user_' . $related_user->ID );
@@ -393,14 +395,20 @@ function single_librarian() {
 		?>
 		<ul class="meta">
 			<?php
+			if ( $librarian_title ) {
+				echo '<li class="title">' . esc_attr( $librarian_title ) . '</li>';
+			}
+			if ( $librarian_scheduling_url ) {
+				echo '<li class="scheduling-url"><a href="' . esc_attr( $librarian_scheduling_url ) . '" target="_blank">' . __( 'Schedule an Appointment', 'bridge-library' ) . '</a></li>';
+			}
 			if ( $librarian_email_address ) {
 				echo '<li class="email">' . esc_html__( 'Email Address', 'bridge-library' ) . ': <a href="mailto:' . esc_attr( $librarian_email_address ) . '">' . esc_attr( $librarian_email_address ) . '</a></li>';
 			}
 			if ( $librarian_phone_number ) {
-				echo '<li class="email">' . esc_html__( 'Phone Number', 'bridge-library' ) . ': ' . esc_attr( $librarian_phone_number ) . '</li>';
+				echo '<li class="phone">' . esc_html__( 'Phone Number', 'bridge-library' ) . ': ' . esc_attr( $librarian_phone_number ) . '</li>';
 			}
 			if ( $librarian_office_location ) {
-				echo '<li class="email">' . esc_html__( 'Office Location', 'bridge-library' ) . ': ' . esc_attr( $librarian_office_location ) . '</li>';
+				echo '<li class="office-location">' . esc_html__( 'Office Location', 'bridge-library' ) . ': ' . esc_attr( $librarian_office_location ) . '</li>';
 			}
 			?>
 		</ul>
