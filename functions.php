@@ -266,7 +266,10 @@ function single_course_page() {
 	$related_resources = array_filter( (array) get_field( 'related_courses_resources', $original_post->ID ) );
 	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
 
-	$resource_types = array();
+	$resource_types = array(
+		__( 'Guides', 'bridge-library' )          => '<h3 class="title">' . get_field( 'default_guide', 'option' ) . '</h3>',
+		__( 'Course Reserves', 'bridge-library' ) => '',
+	);
 
 	foreach ( $all_resources as $resource_id ) {
 		$post = get_post( $resource_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
@@ -283,22 +286,8 @@ function single_course_page() {
 		}
 	}
 
-	foreach ( $resource_types as $title => $content ) {
+	foreach ( array_filter( $resource_types ) as $title => $content ) {
 		echo '<div><h2>' . esc_attr( $title ) . '</h2><div class="card-container">' . $content . '</div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the template.
-	}
-	if ( ! array_key_exists( 'Guide', $resource_types ) ) {
-		?>
-		<div>
-			<h2><?php esc_html_e( 'Guides', 'bridge-library' ); ?></h2>
-			<div class="card-container">
-				<div class="card resource">
-					<h3 class="title">
-						<?php the_field( 'default_guide', 'option' ); ?>
-					</h3>
-				</div>
-			</div>
-		</div>
-		<?php
 	}
 
 	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
@@ -386,8 +375,10 @@ function single_librarian() {
 	$related_user = get_field( 'librarian_user_id' );
 	if ( is_object( $related_user ) ) {
 
+		$librarian_title           = get_field( 'librarian_title', 'user_' . $related_user->ID );
 		$librarian_email_address   = get_field( 'librarian_email_address', 'user_' . $related_user->ID );
 		$librarian_phone_number    = get_field( 'librarian_phone_number', 'user_' . $related_user->ID );
+		$librarian_scheduling_url  = get_field( 'librarian_scheduling_url', 'user_' . $related_user->ID );
 		$librarian_office_location = get_field( 'librarian_office_location', 'user_' . $related_user->ID );
 
 		$picture_url = get_field( 'librarian_picture_url', 'user_' . $related_user->ID );
@@ -404,14 +395,20 @@ function single_librarian() {
 		?>
 		<ul class="meta">
 			<?php
+			if ( $librarian_title ) {
+				echo '<li class="title">' . esc_attr( $librarian_title ) . '</li>';
+			}
+			if ( $librarian_scheduling_url ) {
+				echo '<li class="scheduling-url"><a href="' . esc_attr( $librarian_scheduling_url ) . '" target="_blank">' . __( 'Schedule an Appointment', 'bridge-library' ) . '</a></li>';
+			}
 			if ( $librarian_email_address ) {
 				echo '<li class="email">' . esc_html__( 'Email Address', 'bridge-library' ) . ': <a href="mailto:' . esc_attr( $librarian_email_address ) . '">' . esc_attr( $librarian_email_address ) . '</a></li>';
 			}
 			if ( $librarian_phone_number ) {
-				echo '<li class="email">' . esc_html__( 'Phone Number', 'bridge-library' ) . ': ' . esc_attr( $librarian_phone_number ) . '</li>';
+				echo '<li class="phone">' . esc_html__( 'Phone Number', 'bridge-library' ) . ': ' . esc_attr( $librarian_phone_number ) . '</li>';
 			}
 			if ( $librarian_office_location ) {
-				echo '<li class="email">' . esc_html__( 'Office Location', 'bridge-library' ) . ': ' . esc_attr( $librarian_office_location ) . '</li>';
+				echo '<li class="office-location">' . esc_html__( 'Office Location', 'bridge-library' ) . ': ' . esc_attr( $librarian_office_location ) . '</li>';
 			}
 			?>
 		</ul>
