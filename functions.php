@@ -267,7 +267,7 @@ function single_course_page() {
 	$all_resources     = array_unique( array_merge( $core_resources, $related_resources ) );
 
 	$resource_types = array(
-		__( 'Guides', 'bridge-library' )          => '<h3 class="title">' . get_field( 'default_guide', 'option' ) . '</h3>',
+		__( 'Guides', 'bridge-library' )          => '',
 		__( 'Course Reserves', 'bridge-library' ) => '',
 	);
 
@@ -284,6 +284,10 @@ function single_course_page() {
 				$resource_types[ $resource_type->name ] = $content;
 			}
 		}
+	}
+
+	if ( ! $resource_types[ __( 'Guides', 'bridge-library' ) ] ) {
+		$resource_types[ __( 'Guides', 'bridge-library' ) ] = '<h3 class="title">' . get_field( 'default_guide', 'option' ) . '</h3>';
 	}
 
 	foreach ( array_filter( $resource_types ) as $title => $content ) {
