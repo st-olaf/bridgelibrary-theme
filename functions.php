@@ -76,6 +76,7 @@ function display_user_sidebar() {
 							<?php
 						}
 						?>
+						<li class="menu-item"><a href="<?php echo esc_url( '/my-courses' ); ?>"><?php esc_html_e( 'All Courses', 'bridge-library' ); ?></a></li>
 					</ul>
 				</li>
 				<li class="menu-item"><a href="/circulation-data/"><?php esc_html_e( 'Checkouts and Requests', 'bridge-library' ); ?></a></li>
