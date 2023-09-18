@@ -60,7 +60,7 @@ function display_user_sidebar() {
 		return;
 	}
 
-	$courses = array_filter( (array) get_field( 'courses', 'user_' . get_current_user_id() ) );
+	$courses = Bridge_Library_Users::get_instance()->get_courses( get_current_user_id(), true );
 
 	?>
 	<aside class="widget widget_nav_menu">
