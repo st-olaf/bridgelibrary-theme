@@ -496,7 +496,7 @@ function display_circulation_data_content() {
 }
 
 /**
- * Display user’s circulation courses.
+ * Display all of a user’s courses.
  *
  * @since 1.3.0
  *
