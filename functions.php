@@ -498,7 +498,7 @@ function display_circulation_data_content() {
 /**
  * Display all of a user’s courses.
  *
- * @since 1.3.0
+ * @since 1.6.0
  *
  * @return void
  */
@@ -538,6 +538,87 @@ function display_my_courses() {
 	}
 
 	wp_reset_postdata();
+}
+
+
+/**
+ * Display the user’s home content.
+ *
+ * @since 1.6.0
+ *
+ * @param string $content Content.
+ *
+ * @return string
+ */
+function display_my_favorites( string $content ) {
+	if ( ! is_user_logged_in() ) {
+		return $content . '<p id="bridge-login">Please <a href="' . esc_url( home_url( '/wp-login.php?gaautologin=true&redirect_to=' . home_url() ) ) . '"><img src="' . esc_url( get_stylesheet_directory_uri() . '/assets/img/sign-in-with-google.png' ) . '" alt="Sign in with Google" /></a> using your college Gmail account.</p>';
+	}
+
+	global $post;
+	$user_id       = get_current_user_id();
+	$original_post = $post;
+
+	// Prevent recursive filtering.
+	remove_filter( 'the_content', 'display_home_content' );
+
+	// Load content.
+	$users           = Bridge_Library_Users::get_instance();
+	$user_favorites  = $users->get_favorite_posts( $user_id, true );
+	$primo_favorites = $users->get_primo_favorites( $user_id, true );
+
+	ob_start();
+	?>
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
+		<div class="card-container">
+			<p class="bridge-no-results">You can add library guides and other resources to your myLibrary Favorites by clicking the heart icons in the resources.</p>
+			<?php
+			if ( $user_favorites ) {
+				foreach ( $user_favorites as $post ) {
+					switch ( get_post_type( $post ) ) {
+						case 'course':
+							include 'template-parts/card-course.php';
+							break;
+
+						case 'resource':
+							include 'template-parts/card-resource.php';
+							break;
+					}
+				}
+			} else {
+				display_no_results( 'favorites' );
+			}
+			?>
+		</div><!-- .card-container -->
+	</div><!-- .bridge-card-container -->
+
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Pinned in Catalyst', 'bridge-library' ); ?></h2>
+		<p class="bridge-no-results">Items you have pinned in your Catalyst account.</p>
+		<p class="meta">
+			<?php
+			// Translators: %s is the timestamp.
+			echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorites', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+			?>
+		</p>
+		<div class="card-container">
+			<?php
+			if ( $primo_favorites ) {
+				foreach ( $primo_favorites as $post ) {
+					$force_favorite = true; // Used in the template.
+					include 'template-parts/card-resource.php';
+				}
+			} else {
+				display_no_results( 'Catalyst favorites' );
+			}
+			?>
+		</div><!-- .card-container -->
+	</div><!-- .bridge-card-container -->
+	<?php
+
+	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	return $content . ob_get_clean();
 }
 
 /**
