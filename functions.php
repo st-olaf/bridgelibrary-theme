@@ -558,3 +558,28 @@ function display_no_results( string $type ) {
 		)
 	) . '</p>';
 }
+
+/**
+ * Add logout link to menu.
+ *
+ * @since 1.6.0
+ *
+ * @param string    $items Menu items.
+ * @param \stdClass $args  Menu args.
+ *
+ * @return string
+ */
+function bridge_nav_menu_items( $items, $args ) {
+	if ( 'primary-menu' !== $args->menu_id ) {
+		return $items;
+	}
+
+	if ( ! is_user_logged_in() ) {
+		return $items;
+	}
+
+	$items .= '<li id="menu-item-logout" class="menu-item menu-item-logout"><a href="' . wp_logout_url( home_url() ) . '" class="menu-link">' . esc_html__( 'Log Out', 'bridge-library' ) . '</a></li>';
+
+	return $items;
+}
+add_filter( 'wp_nav_menu_items', 'bridge_nav_menu_items', 10, 2 );
