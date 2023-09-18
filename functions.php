@@ -60,7 +60,7 @@ function display_user_sidebar() {
 		return;
 	}
 
-	$courses = Bridge_Library_Users::get_instance()->get_courses( get_current_user_id(), true );
+	$courses = Bridge_Library_Users::get_instance()->get_current_term_courses( get_current_user_id() );
 
 	?>
 	<aside class="widget widget_nav_menu">
@@ -113,7 +113,7 @@ function display_home_content( string $content ) {
 	// Load content.
 	$users           = Bridge_Library_Users::get_instance();
 	$user_favorites  = $users->get_favorite_posts( $user_id, true );
-	$courses         = $users->get_courses( $user_id, true );
+	$courses         = $users->get_current_term_courses( $user_id );
 	$primo_favorites = $users->get_primo_favorites( $user_id, true );
 
 	ob_start();
