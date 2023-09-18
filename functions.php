@@ -208,11 +208,11 @@ function bridge_library_include_course_code_in_title( $post_title, $post_id ) {
 	$course_number = get_field( 'course_number', $post_id );
 	$course_code   = explode( '|', get_field( 'course_code', $post_id ) );
 
-	if ( $course_number && $course_code ) {
+	if ( $course_number && ! empty( $course_code ) ) {
 		return sprintf(
-			'%1$s%2$s: %3$s',
+			'%1$s %2$s: %3$s',
 			$course_code[1],
-			$course_number ? ' ' . $course_number : '',
+			$course_number,
 			$post_title,
 		);
 	}
