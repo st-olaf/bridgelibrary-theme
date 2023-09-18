@@ -495,6 +495,51 @@ function display_circulation_data_content() {
 }
 
 /**
+ * Display user’s circulation courses.
+ *
+ * @since 1.3.0
+ *
+ * @return void
+ */
+function display_my_courses() {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+
+	$course_terms = Bridge_Library_Users::get_instance()->get_courses_grouped_by_term( $user_id );
+
+	?>
+	<p class="meta">
+		<?php
+		// Translators: %s is the timestamp.
+		echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+		?>
+	</p>
+	<?php foreach ( $course_terms as $term => $courses ) { ?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( $term ); ?></h2>
+			<div class="card-container">
+				<?php
+				if ( $courses ) {
+					foreach ( $courses as $post ) {
+						$GLOBALS['post'] = $post;
+						include 'template-parts/card-course.php';
+					}
+				} else {
+					display_no_results( 'courses' );
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	wp_reset_postdata();
+}
+
+/**
  * Display a no-results message.
  *
  * @since 1.3.0
