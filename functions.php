@@ -60,7 +60,7 @@ function display_user_sidebar() {
 		return;
 	}
 
-	$courses = array_filter( (array) get_field( 'courses', 'user_' . get_current_user_id() ) );
+	$courses = Bridge_Library_Users::get_instance()->get_current_term_courses( get_current_user_id() );
 
 	?>
 	<aside class="widget widget_nav_menu">
@@ -76,6 +76,7 @@ function display_user_sidebar() {
 							<?php
 						}
 						?>
+						<li class="menu-item"><a href="<?php echo esc_url( '/my-courses' ); ?>"><?php esc_html_e( 'All Courses', 'bridge-library' ); ?></a></li>
 					</ul>
 				</li>
 				<li class="menu-item"><a href="/circulation-data/"><?php esc_html_e( 'Checkouts and Requests', 'bridge-library' ); ?></a></li>
@@ -113,7 +114,7 @@ function display_home_content( string $content ) {
 	// Load content.
 	$users           = Bridge_Library_Users::get_instance();
 	$user_favorites  = $users->get_favorite_posts( $user_id, true );
-	$courses         = $users->get_courses( $user_id, true );
+	$courses         = $users->get_current_term_courses( $user_id );
 	$primo_favorites = $users->get_primo_favorites( $user_id, true );
 
 	ob_start();
@@ -207,11 +208,11 @@ function bridge_library_include_course_code_in_title( $post_title, $post_id ) {
 	$course_number = get_field( 'course_number', $post_id );
 	$course_code   = explode( '|', get_field( 'course_code', $post_id ) );
 
-	if ( $course_number && $course_code ) {
+	if ( $course_number && ! empty( $course_code ) ) {
 		return sprintf(
-			'%1$s%2$s: %3$s',
+			'%1$s %2$s: %3$s',
 			$course_code[1],
-			$course_number ? ' ' . $course_number : '',
+			$course_number,
 			$post_title,
 		);
 	}
@@ -495,6 +496,132 @@ function display_circulation_data_content() {
 }
 
 /**
+ * Display all of a user’s courses.
+ *
+ * @since 1.6.0
+ *
+ * @return void
+ */
+function display_my_courses() {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+
+	$course_terms = Bridge_Library_Users::get_instance()->get_courses_grouped_by_term( $user_id );
+
+	?>
+	<p class="meta">
+		<?php
+		// Translators: %s is the timestamp.
+		echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'courses', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+		?>
+	</p>
+	<?php foreach ( $course_terms as $term => $courses ) { ?>
+		<div class="bridge-card-container">
+			<h2><?php esc_html_e( $term ); ?></h2>
+			<div class="card-container">
+				<?php
+				if ( $courses ) {
+					foreach ( $courses as $post ) {
+						$GLOBALS['post'] = $post;
+						include 'template-parts/card-course.php';
+					}
+				} else {
+					display_no_results( 'courses' );
+				}
+				?>
+			</div><!-- .card-container -->
+		</div><!-- .bridge-card-container -->
+		<?php
+	}
+
+	wp_reset_postdata();
+}
+
+
+/**
+ * Display the user’s home content.
+ *
+ * @since 1.6.0
+ *
+ * @param string $content Content.
+ *
+ * @return string
+ */
+function display_my_favorites( string $content ) {
+	if ( ! is_user_logged_in() ) {
+		return $content . '<p id="bridge-login">Please <a href="' . esc_url( home_url( '/wp-login.php?gaautologin=true&redirect_to=' . home_url() ) ) . '"><img src="' . esc_url( get_stylesheet_directory_uri() . '/assets/img/sign-in-with-google.png' ) . '" alt="Sign in with Google" /></a> using your college Gmail account.</p>';
+	}
+
+	global $post;
+	$user_id       = get_current_user_id();
+	$original_post = $post;
+
+	// Prevent recursive filtering.
+	remove_filter( 'the_content', 'display_home_content' );
+
+	// Load content.
+	$users           = Bridge_Library_Users::get_instance();
+	$user_favorites  = $users->get_favorite_posts( $user_id, true );
+	$primo_favorites = $users->get_primo_favorites( $user_id, true );
+
+	ob_start();
+	?>
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Favorite Resources', 'bridge-library' ); ?></h2>
+		<div class="card-container">
+			<p class="bridge-no-results">You can add library guides and other resources to your myLibrary Favorites by clicking the heart icons in the resources.</p>
+			<?php
+			if ( $user_favorites ) {
+				foreach ( $user_favorites as $post ) {
+					switch ( get_post_type( $post ) ) {
+						case 'course':
+							include 'template-parts/card-course.php';
+							break;
+
+						case 'resource':
+							include 'template-parts/card-resource.php';
+							break;
+					}
+				}
+			} else {
+				display_no_results( 'favorites' );
+			}
+			?>
+		</div><!-- .card-container -->
+	</div><!-- .bridge-card-container -->
+
+	<div class="bridge-card-container">
+		<h2><?php esc_html_e( 'Pinned in Catalyst', 'bridge-library' ); ?></h2>
+		<p class="bridge-no-results">Items you have pinned in your Catalyst account.</p>
+		<p class="meta">
+			<?php
+			// Translators: %s is the timestamp.
+			echo esc_attr( sprintf( __( 'Last updated: %s', 'bridge-library' ), bridge_get_timestamp( 'primo_favorites', $user_id )->format( 'F j, Y g:i:s a' ) ) );
+			?>
+		</p>
+		<div class="card-container">
+			<?php
+			if ( $primo_favorites ) {
+				foreach ( $primo_favorites as $post ) {
+					$force_favorite = true; // Used in the template.
+					include 'template-parts/card-resource.php';
+				}
+			} else {
+				display_no_results( 'Catalyst favorites' );
+			}
+			?>
+		</div><!-- .card-container -->
+	</div><!-- .bridge-card-container -->
+	<?php
+
+	$post = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	return $content . ob_get_clean();
+}
+
+/**
  * Display a no-results message.
  *
  * @since 1.3.0
@@ -512,3 +639,28 @@ function display_no_results( string $type ) {
 		)
 	) . '</p>';
 }
+
+/**
+ * Add logout link to menu.
+ *
+ * @since 1.6.0
+ *
+ * @param string    $items Menu items.
+ * @param \stdClass $args  Menu args.
+ *
+ * @return string
+ */
+function bridge_nav_menu_items( $items, $args ) {
+	if ( 'primary-menu' !== $args->menu_id ) {
+		return $items;
+	}
+
+	if ( ! is_user_logged_in() ) {
+		return $items;
+	}
+
+	$items .= '<li id="menu-item-logout" class="menu-item menu-item-logout"><a href="' . wp_logout_url( home_url() ) . '" class="menu-link">' . esc_html__( 'Log Out', 'bridge-library' ) . '</a></li>';
+
+	return $items;
+}
+add_filter( 'wp_nav_menu_items', 'bridge_nav_menu_items', 10, 2 );
