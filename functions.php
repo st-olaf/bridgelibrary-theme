@@ -161,6 +161,9 @@ function display_home_content( string $content ) {
 				display_no_results( 'courses' );
 			}
 			?>
+			<p>
+				<a href="<?php echo esc_url( '/my-courses' ); ?>"><?php esc_html_e( 'All Courses', 'bridge-library' ); ?></a>
+			</p>
 		</div><!-- .card-container -->
 	</div><!-- .bridge-card-container -->
 
