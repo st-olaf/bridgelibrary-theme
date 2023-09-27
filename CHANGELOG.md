@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.2] — 2023-09-27
+
+- Feature: add link on homepage to view all courses
+- Change: limit homepage favorites to 3, add link to view all
+
 ## [1.6.1] — 2023-09-20
 
 - Bugfix: update theme version
