@@ -162,6 +162,11 @@ function display_home_content( string $content ) {
 			}
 			?>
 		</div><!-- .card-container -->
+		<?php if ( $courses ) { ?>
+			<p>
+				<a href="<?php echo esc_url( '/my-courses' ); ?>"><?php esc_html_e( 'All Courses', 'bridge-library' ); ?></a>
+			</p>
+		<?php } ?>
 	</div><!-- .bridge-card-container -->
 
 	<div class="bridge-card-container">
@@ -564,8 +569,8 @@ function display_my_favorites( string $content ) {
 
 	// Load content.
 	$users           = Bridge_Library_Users::get_instance();
-	$user_favorites  = $users->get_favorite_posts( $user_id, true );
-	$primo_favorites = $users->get_primo_favorites( $user_id, true );
+	$user_favorites  = $users->get_favorite_posts( $user_id, true, 3 );
+	$primo_favorites = $users->get_primo_favorites( $user_id, true, 3 );
 
 	ob_start();
 	?>
@@ -591,6 +596,11 @@ function display_my_favorites( string $content ) {
 			}
 			?>
 		</div><!-- .card-container -->
+		<?php if ( $user_favorites ) { ?>
+			<p>
+				<a href="<?php echo esc_url( '/my-favorites' ); ?>"><?php esc_html_e( 'All Favorites', 'bridge-library' ); ?></a>
+			</p>
+		<?php } ?>
 	</div><!-- .bridge-card-container -->
 
 	<div class="bridge-card-container">
@@ -614,6 +624,11 @@ function display_my_favorites( string $content ) {
 			}
 			?>
 		</div><!-- .card-container -->
+		<?php if ( $primo_favorites ) { ?>
+			<p>
+				<a href="<?php echo esc_url( '/my-favorites' ); ?>"><?php esc_html_e( 'All Favorites', 'bridge-library' ); ?></a>
+			</p>
+		<?php } ?>
 	</div><!-- .bridge-card-container -->
 	<?php
 
