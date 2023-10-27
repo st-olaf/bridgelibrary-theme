@@ -113,7 +113,7 @@ function display_home_content( string $content ) {
 
 	// Load content.
 	$users           = Bridge_Library_Users::get_instance();
-	$user_favorites  = $users->get_favorite_posts( $user_id, true );
+	$user_favorites  = $users->get_favorite_posts( $user_id, true, 3 );
 	$courses         = $users->get_current_term_courses( $user_id );
 	$primo_favorites = $users->get_primo_favorites( $user_id, true );
 
